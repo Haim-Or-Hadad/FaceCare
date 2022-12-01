@@ -9,6 +9,9 @@ import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 
+
+
+
 public class Activity2 extends AppCompatActivity {
 
     @Override
@@ -17,7 +20,7 @@ public class Activity2 extends AppCompatActivity {
         setContentView(R.layout.admin_screen);
         TextView username = (TextView) findViewById(R.id.username);
         TextView password = (TextView) findViewById(R.id.password);
-
+        dataAccess.t();
         MaterialButton loginbtn = (MaterialButton) findViewById(R.id.loginbtn);
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
