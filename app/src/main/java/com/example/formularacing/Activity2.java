@@ -28,7 +28,7 @@ public class Activity2 extends AppCompatActivity {
 
         // this block of code is for dataAccess testing
         dataAccess test = new dataAccess(); // object that connects to the db
-        test.loginUser("ilangay"); // connect to user and load info to test.existingTimes
+        test.loginUser("0527142312"); // connect to user and load info to test.existingTimes
         // test.existstingtimes is still empty:
         Log.d("res", test.existingAppointments.toString()); // this will be empty now
         // if we wait here for a second, existingTime will include a hashmap(json)
@@ -45,6 +45,8 @@ public class Activity2 extends AppCompatActivity {
                     Toast.makeText(Activity2.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(Activity2.this, "LOGIN FAILED", Toast.LENGTH_SHORT).show();
+                    Log.d("res", test.existingAppointments.toString()); // this will be empty now
+
                 }
             }
         });

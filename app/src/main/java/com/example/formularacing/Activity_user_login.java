@@ -107,10 +107,14 @@ public class Activity_user_login extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+<<<<<<< HEAD
                 date = (i1 + 1) + "/" + i2 + "/" + i;
                 slotsList = getSlots(date, selectedTreatment, Integer.parseInt(MainActivity.phoneNumber));
                 ArrayAdapter arrayAdapter = new ArrayAdapter(Activity_user_login.this, R.layout.text_style_list, slotsList);
                 listView.setAdapter(arrayAdapter);
+=======
+                String date = (i1 + 1) + "-" + i2 + "-" + i;
+>>>>>>> ac812a21f6fd6b6c3219477325c1b939a07e7e81
             }
         });
 
