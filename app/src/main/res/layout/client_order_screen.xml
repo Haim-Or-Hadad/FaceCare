@@ -4,7 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/client_order_screen"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/acne"
+        android:layout_width="142dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:text="acne" />
+
+    <Button
+        android:id="@+id/haircut"
+        android:layout_width="142dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="10dp"
+        android:text="haircut" />
+
+    <Button
+        android:id="@+id/beard"
+        android:layout_width="142dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/haircut"
+        android:layout_marginLeft="20dp"
+
+        android:backgroundTintMode="add"
+        android:text="beard"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/classic_facial"
+        android:layout_width="142dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/haircut"
+        android:layout_marginLeft="200dp"
+        android:text="beard" />
+
+    <CalendarView
+        android:id="@+id/calendarView2"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        android:layout_below="@id/classic_facial"/>
+
+    <ListView
+        android:id = "@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_below="@+id/calendarView2"
+        android:background="@color/cardview_light_background"
+        />
 </RelativeLayout>
