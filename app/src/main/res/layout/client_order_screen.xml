@@ -42,16 +42,30 @@
         android:layout_marginLeft="200dp"
         android:text="beard" />
 
+    <Button
+        android:id="@+id/mySlots"
+        android:layout_width="142dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="200dp"
+        android:layout_below="@id/beard"
+        android:layout_centerHorizontal="true"
+        android:text="show my appointments" />
+
+        />
+
     <CalendarView
         android:id="@+id/calendarView2"
         android:layout_width="400dp"
         android:layout_height="300dp"
-        android:layout_below="@id/classic_facial"/>
+
+        android:layout_below="@id/classic_facial"
+        android:maxDate="01/12/2022"
+        android:minDate="01/12/2022" />
 
     <ListView
         android:id = "@+id/listView"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="170dp"
         android:layout_below="@+id/calendarView2"
         android:background="@color/cardview_light_background"
         />

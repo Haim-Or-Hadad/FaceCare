@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
      * parameter to save the phone of the user
      */
     EditText userPhone;
-    String phoneNumber;
+    static String phoneNumber;
     ImageView whatsapp,facebook,instagram;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     //need to add a function that send to ilan and raz the phone number
                     openActivity_user_login();
+
                 }
             }
         });
