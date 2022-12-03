@@ -91,7 +91,7 @@ public class Activity_user_login extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                String date = (i1 + 1) + "/" + i2 + "/" + i;
+                String date = (i1 + 1) + "-" + i2 + "-" + i;
             }
         });
 

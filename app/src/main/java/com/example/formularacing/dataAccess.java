@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class dataAccess {
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/");
     public Map<String, List<String>> existingAppointments = new HashMap<>();
     public dataAccess() {
@@ -56,9 +57,33 @@ public class dataAccess {
                 }
             }
         });
+        return null;
+    }
+
+    public Map<String, List<String>> scheduleAppointment(String date,String time){
+        // Create a map to store the Date objects
+        DatabaseReference myRef = database.getReference("OpenAppoint");
+        Map<String, List<String>> newAppointmentDate = new HashMap<>();
+        List<String> appointmentTime = new ArrayList<>();
+        // Add the Date objects to the map with unique keys
+        appointmentTime.add(time);
+        newAppointmentDate.put(date, appointmentTime);
+        myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                //need to check if the time is open for reservation
+                task.getResult();//or times or null\
+
+                database.getReference().child("users").child("0527142312").setValue(newAppointmentDate);
+
+            }
+        });
+
 
         return null;
     }
+
+
     public void t() {
     // Write a message to the database
         DatabaseReference myRef = database.getReference("message/users");
