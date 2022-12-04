@@ -1,10 +1,8 @@
 package com.example.formularacing;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,17 +10,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
-import java.net.URI;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     /**
      * @param userPhone
      * parameter to save the phone of the user
+     * @param phoneNUmber
+     * phone number save the input phone that the user insert
+     * @params whatsapp,facebook,instagram
+     * imageviews to link the user to home page of company and to chat in whatsapp
      */
     EditText userPhone;
     static String phoneNumber;
-    ImageView whatsapp,facebook,instagram;
+    ImageView whatsapp,facebook,instagram,support;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,62 +73,63 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        userPhone = (EditText) findViewById(R.id.user_phone);
-        //click on admin button to login
-        Button adminButton = (Button) findViewById(R.id.admin_button);
+        userPhone = (EditText) findViewById(R.id.user_phone);//text box to write a phone number
+        Button userButton = (Button) findViewById(R.id.user_button);//button to login
+        Button adminButton = (Button) findViewById(R.id.admin_button);//button to admin login
+
+        //when admin button clicked it's trigger this function and open admin screen
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openActivity2();
+                openAdminScreen();
             }
         });
-        //click on user button to login
-        Button userButton = (Button) findViewById(R.id.user_button);
+
+        //when user button clicked this trigger this function and check the pgone number
         userButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 phoneNumber = userPhone.getText().toString();
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setCancelable(true);
-                builder.setTitle("alert");
-                builder.setMessage("please enter a phone number");
-                builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                if (phoneNumber.isEmpty()) {
-                    builder.show();
-                } else {
+                if (phoneNumber.isEmpty()) {//check if the user press on user button in dont insert a pgone number
+                    Toast.makeText(MainActivity.this, "enter phone number", Toast.LENGTH_SHORT).show();
+                }else  if(!phoneNumber.matches("05[023489]-?\\d{3}-?\\d{4}")) {//check valid phone number
+                    Toast.makeText(MainActivity.this, "invalid phone number", Toast.LENGTH_SHORT).show();
+                }
+                else {
                     //need to add a function that send to ilan and raz the phone number
                     openActivity_user_login();
-
                 }
             }
         });
+         support = findViewById(R.id.support);
+         support.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Uri uri = Uri.parse("http://www.google.com"); // missing 'http://' will cause crashed
+                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                 startActivity(intent);
+             }
+         });
+
     }
 
     /**
-     * function that send to DAL request to get a details about user according his phone number
-     * return String
+     * func to open other intent(screen) when admin want to log in
      */
-    public String get_currnt_appointments(int phoneNumber) {
-        return "a";
-    }
-
-
-        public void openActivity2 () {
-            Intent intent = new Intent(this, Activity2.class);
+    public void openAdminScreen () {
+            Intent intent = new Intent(this, admin_screen.class);
             startActivity(intent);
         }
-        public void openActivity_user_login () {
+
+    /**
+     * func to open other intent when user want to log in to order
+     */
+    public void openActivity_user_login () {
             Intent intent = new Intent(this, Activity_user_login.class);
             startActivity(intent);
         }
 
     /**
-     *
      * @param sAppLink enter to the app if exist
      * @param sPackage
      * @param sWebLink enter to facebook page in browser

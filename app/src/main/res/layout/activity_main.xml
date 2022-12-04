@@ -40,29 +40,36 @@
 
     <ImageView
         android:id="@+id/facebook"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/admin_button"
         android:src="@drawable/facebook" />
 
     <ImageView
         android:id="@+id/whatsapp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="20dp"
         android:layout_below="@id/admin_button"
         android:layout_toLeftOf="@id/facebook"
         android:src="@drawable/whatsapp_icon" />
 
     <ImageView
         android:id="@+id/instagram"
-        android:layout_width="62dp"
-        android:layout_height="38dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_below="@id/admin_button"
-        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="9dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="114dp"
+        android:layout_marginEnd="132dp"
         android:layout_toRightOf="@id/facebook"
         android:src="@drawable/instagram" />
+
+    <ImageView
+        android:id="@+id/support"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="530dp"
+        android:src="@drawable/support"/>
 </RelativeLayout>

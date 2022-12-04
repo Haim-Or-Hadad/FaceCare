@@ -13,7 +13,7 @@ import com.google.android.material.button.MaterialButton;
 
 
 
-public class Activity2 extends AppCompatActivity {
+public class admin_screen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +42,9 @@ public class Activity2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (username.getText().toString().equals("admin") && password.getText().toString().equals("admin")) {
-                    Toast.makeText(Activity2.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(admin_screen.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(Activity2.this, "LOGIN FAILED", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(admin_screen.this, "LOGIN FAILED", Toast.LENGTH_SHORT).show();
                     Log.d("res", test.existingAppointments.toString()); // this will be empty now
 
                 }

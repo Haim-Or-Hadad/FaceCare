@@ -107,11 +107,16 @@ public class Activity_user_login extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                date = (i1 + 1) + "/" + i2 + "/" + i;
-                slotsList = getSlots(date, selectedTreatment, Integer.parseInt(MainActivity.phoneNumber));
-                ArrayAdapter arrayAdapter = new ArrayAdapter(Activity_user_login.this, R.layout.text_style_list, slotsList);
-                listView.setAdapter(arrayAdapter);
-            }
+                if(selectedTreatment == null){
+                    dialogBox("empty");
+                }
+                else {
+                    date = (i1 + 1) + "/" + i2 + "/" + i;
+                    slotsList = getSlots(date, selectedTreatment, Integer.parseInt(MainActivity.phoneNumber));
+                    ArrayAdapter arrayAdapter = new ArrayAdapter(Activity_user_login.this, R.layout.text_style_list, slotsList);
+                    listView.setAdapter(arrayAdapter);
+                }
+                }
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -125,13 +130,16 @@ public class Activity_user_login extends AppCompatActivity {
 
             }
         });
-        Button mySlots = (Button) findViewById(R.id.mySlots);
-        mySlots.setOnClickListener(new View.OnClickListener() {
+        ListView cancelOrder = findViewById(R.id.listCancelOrder);
+        Button userAppointment = (Button) findViewById(R.id.mySlots);
+        userAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Activity_user_login.this, "replace here function that show my slots", Toast.LENGTH_SHORT).show();
+                ArrayAdapter arrayAdapter = new ArrayAdapter(Activity_user_login.this, R.layout.text_style_list, slotsList);
+                cancelOrder.setAdapter(arrayAdapter);
             }
         });
+
     }
 
 
@@ -162,7 +170,7 @@ public class Activity_user_login extends AppCompatActivity {
                     setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();//to dal
+                            dialogInterface.dismiss();//add finction to dal
                         }
                     }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -190,6 +198,5 @@ public class Activity_user_login extends AppCompatActivity {
         classicFacial.setEnabled(false);
         beardButton.setEnabled(false);
         acneButton.setEnabled(false);
-        calendarView.setMaxDate(20231101);
     }
 }
