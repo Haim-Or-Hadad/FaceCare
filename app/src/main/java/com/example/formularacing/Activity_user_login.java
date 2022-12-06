@@ -49,11 +49,13 @@ public class Activity_user_login extends AppCompatActivity {
     ListView listView;
     String date;
     List<String> slotsList = new ArrayList<>();
+    dataAccess dal;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.client_order_screen);
         /**
          * detects the id of the beard treatment button and saves the selection if the button is pressed
@@ -109,6 +111,7 @@ public class Activity_user_login extends AppCompatActivity {
     }
     private List<String> getSlots(String date, String treatmentType, int phoneNUmber) {
         List<String> l = new ArrayList<>();
+
         l.add("10:00");
         l.add("10:30");
         return l;

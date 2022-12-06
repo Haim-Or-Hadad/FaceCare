@@ -31,7 +31,9 @@ public class admin_screen extends AppCompatActivity {
         dataAccess test = new dataAccess(); // object that connects to the db
         test.loginUser("0527142312"); // connect to user and load info to test.existingTimes
         // test.existstingtimes is still empty:
+        test.getAvailableTimes("13-12-2022");
         Log.d("res", test.existingAppointments.toString()); // this will be empty now
+        test.adminSetWorkingTimes("10-12-2022","11:00");
         // if we wait here for a second, existingTime will include a hashmap(json)
 
         /*

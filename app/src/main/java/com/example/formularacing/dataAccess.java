@@ -91,35 +91,33 @@ public class dataAccess {
         return null;
     }
 
-    // Create a function that retrieves data from the database and updates a list
     public void getAvailableTimes(String wantedDate) {
-        List<String> times=new ArrayList<>();
+        List<String> times = new ArrayList<>();
+        database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference appointmentsRef = database.getReference("OpenAppointment");
-        // Save the list of times to the availableAppointments map
-        availableAppointments.put(wantedDate, times);
 
         // Use the `child()` method to get a reference to the child node with the specified date
         DatabaseReference dateRef = appointmentsRef.child(wantedDate);
 
-        dateRef.get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // Retrieve the data and add it to the list
-                            DataSnapshot dataSnapshot = task.getResult();
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                times.add((String) snapshot.getValue());
-                            }
+        // Use the `addListenerForSingleValueEvent()` method to attach a listener to the database reference
+        dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Retrieve the data and add it to the list
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    times.add((String) snapshot.getValue());
+                }
 
-                            // Save the list of times to the availableAppointments map
-                            availableAppointments.put(wantedDate, times);
-                        } else {
-                            // Handle error
-                            Log.e(TAG, "Failed to retrieve data: " + task.getException().getMessage());
-                        }
-                    }
-                });
+                // Save the list of times to the availableAppointments map
+                availableAppointments.put(wantedDate, times);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error
+                Log.e(TAG, "Failed to retrieve data: " + databaseError.getMessage());
+            }
+        });
     }
 
 
@@ -129,19 +127,19 @@ public class dataAccess {
 
 
 
-//    public void adminSetWorkingTimes(String date,String time){
-//        DatabaseReference myRef = database.getReference("OpenAppointment");
-//        AppointmentCreator newAppointment= new AppointmentCreator(date);
-//        newAppointment.setTime(time);
-//        myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                task.getResult();//or times or null\
-//                myRef.child(newAppointment.getDate()).setValue(newAppointment.getAvailableTimes());
-//
-//            }
-//        });
-//    }
+    public void adminSetWorkingTimes(String date,String time){
+        DatabaseReference myRef = database.getReference("OpenAppointment");
+        AppointmentCreator newAppointment= new AppointmentCreator(date);
+        newAppointment.setTime(time);
+        myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                task.getResult();//or times or null\
+                myRef.child(newAppointment.getDate()).setValue(newAppointment.getAvailableTimes());
+
+            }
+        });
+    }
 
     public void t() {
     // Write a message to the database
