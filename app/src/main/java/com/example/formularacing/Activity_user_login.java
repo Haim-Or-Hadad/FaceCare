@@ -44,10 +44,12 @@ public class Activity_user_login extends AppCompatActivity {
     Button haircutButton;
     Button acneButton;
     Button classicFacial;
+    Button resetAll;
     String selectedTreatment;
     ListView listView;
     String date;
     List<String> slotsList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,43 +62,12 @@ public class Activity_user_login extends AppCompatActivity {
         haircutButton = (Button) findViewById(R.id.haircut);
         acneButton = (Button) findViewById(R.id.acne);
         classicFacial = (Button) findViewById(R.id.classic_facial);
-        beardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedTreatment = "beard";
-                disabledAllButtons();
-            }
-        });
-        /**
-         * detects the id of the haircut treatment button and saves the selection if the button is pressed
-         */
-        haircutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedTreatment = "haircut";
-                disabledAllButtons();
-            }
-        });
-        /**
-         * detects the id of the acne treatment button and saves the selection if the button is pressed
-         */
-        acneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedTreatment = "acne";
-                disabledAllButtons();
-            }
-        });
-        /**
-         * detects the id of the classic facial treatment button and saves the selection if the button is pressed
-         */
-        classicFacial.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedTreatment = "facial";
-                disabledAllButtons();
-            }
-        });
+        resetAll = (Button) findViewById(R.id.reset);
+        beardButton.setOnClickListener((view)->typeOfTreatment("beard"));
+        haircutButton.setOnClickListener((view)->typeOfTreatment("haircut"));
+        acneButton.setOnClickListener((view)->typeOfTreatment("acne"));
+        classicFacial.setOnClickListener((view)->typeOfTreatment("classic_facial"));
+        resetAll.setOnClickListener((view)-> resetAllButtons());
         listView = findViewById(R.id.listView);
         //save the date of calander picker
         calendarView = (CalendarView) findViewById(R.id.calendarView2);
@@ -130,19 +101,12 @@ public class Activity_user_login extends AppCompatActivity {
 
             }
         });
-        ListView cancelOrder = findViewById(R.id.listCancelOrder);
-        Button userAppointment = (Button) findViewById(R.id.mySlots);
-        userAppointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayAdapter arrayAdapter = new ArrayAdapter(Activity_user_login.this, R.layout.text_style_list, slotsList);
-                cancelOrder.setAdapter(arrayAdapter);
-            }
-        });
-
     }
 
-
+    private void typeOfTreatment(String type){
+        selectedTreatment=type;
+        disabledAllButtons();
+    }
     private List<String> getSlots(String date, String treatmentType, int phoneNUmber) {
         List<String> l = new ArrayList<>();
         l.add("10:00");
@@ -193,10 +157,29 @@ public class Activity_user_login extends AppCompatActivity {
                 alertDialog.show();
         }
     }
+
+    /**
+     * when the client press on type of any treatment all the button become disabled
+     */
     private void disabledAllButtons(){
         haircutButton.setEnabled(false);
         classicFacial.setEnabled(false);
         beardButton.setEnabled(false);
         acneButton.setEnabled(false);
+    }
+
+    /**
+     * this function get all avialable appointments from dal in json format
+     */
+    //private List<String> getAppointments(){}
+
+
+    private void resetAllButtons(){
+        date = null;
+        selectedTreatment = " ";
+        haircutButton.setEnabled(true);
+        classicFacial.setEnabled(true);
+        beardButton.setEnabled(true);
+        acneButton.setEnabled(true);
     }
 }

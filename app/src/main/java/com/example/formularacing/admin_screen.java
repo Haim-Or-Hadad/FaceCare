@@ -2,6 +2,7 @@ package com.example.formularacing;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +43,9 @@ public class admin_screen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (username.getText().toString().equals("admin") && password.getText().toString().equals("admin")) {
-                    Toast.makeText(admin_screen.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
+                    open_adminActivity();
+
+                    //Toast.makeText(admin_screen.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(admin_screen.this, "LOGIN FAILED", Toast.LENGTH_SHORT).show();
                     Log.d("res", test.existingAppointments.toString()); // this will be empty now
@@ -50,5 +53,9 @@ public class admin_screen extends AppCompatActivity {
                 }
             }
         });
+    }
+    public void open_adminActivity(){
+        Intent admin_intent = new Intent(admin_screen.this, admin_view.class);
+        admin_screen.this.startActivity(admin_intent);
     }
 }

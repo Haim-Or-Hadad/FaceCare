@@ -13,6 +13,20 @@
         android:theme="@style/Theme.FormulaRacing"
         tools:targetApi="31">
         <activity
+            android:name=".admin_view"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".workplan_activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Activity_user_login"
             android:exported="false">
             <meta-data
