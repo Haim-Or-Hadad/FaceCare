@@ -14,6 +14,9 @@ import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -122,12 +125,25 @@ public class Activity_user_login extends AppCompatActivity {
     }
 
     private List<String> getSlots(String date, String treatmentType, int phoneNUmber) {
+<<<<<<< HEAD
         List<String> l = new ArrayList<>();
         //need add data access function to get the avialable slots
         l.add("10:00");//test
         l.add("10:30");//test
         if(date.equals("12/8/2022")){l.add("14:00");}
         else {l.add("17:00");}
+=======
+        List<String> l;
+        //Task from the fire base
+        Task test =dal.getAvailableTimes(date);
+        //wait untill firebase data is received
+        while (!test.isComplete()){
+
+        }
+        //get the Available Times
+        DataSnapshot test2=(DataSnapshot)test.getResult();
+        l=(List<String>)test2.getValue();
+>>>>>>> 400e49f9779508c8e6715a3256e678af52820583
         return l;
 
     }

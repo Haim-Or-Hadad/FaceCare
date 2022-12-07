@@ -25,21 +25,23 @@ import javax.security.auth.callback.Callback;
 public class dataAccess {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/");
-    public Map<String, List<String>> existingAppointments = new HashMap<>();
-    public Map<String, List<String>> availableAppointments = new HashMap<>();
     public dataAccess() {
     // empty constructor
     }
 
 
-    public Map<String, List<String>> loginUser(String phoneNum) {
+    public Task loginUser(String phoneNum) {
+        /*
+        This function is called when a user enters his phone number.
+        The function asks the server if the user is a new user or returning user.
+        The function returns a Task object, after the Task is completed: (task.isCompleted())
+            a. if user is new user task.getResult() will be null
+            b. else task.getResult() will be a hashmap of { date: listof(existing appointments) }
+         */
         DatabaseReference myRef = database.getReference("users");
         //every user must have an email
-        Task<DataSnapshot> task = myRef.child(phoneNum).get();
-
-
-
-        myRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        Task<DataSnapshot> task =
+            myRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()) {
@@ -52,23 +54,20 @@ public class dataAccess {
                         Log.d("creating new user", returnedValue);
                         Map<String, List<String>> emptyMap = new HashMap<>();
                         List<String> newList = new ArrayList<>();
-                        newList.add("t");
-                        newList.add("t2");
-                        emptyMap.put("date",newList);
+                        newList.add("");
+                        emptyMap.put(" ",newList);
                         myRef.child(phoneNum).setValue(emptyMap);
-                        existingAppointments = emptyMap;
+
                     } else {
                         Log.d("returning user", returnedValue);
-                        existingAppointments = (Map<String, List<String>>) task.getResult().getValue();
                     }
-
                 }
             }
         });
-        return null;
+        return task;
     }
 
-    public Map<String, List<String>> scheduleAppointment(String phoneNumber,String date,String time){
+    public Task scheduleAppointment(String phoneNumber,String date,String time){
         // Create a map to store the Date objects
         DatabaseReference myRef = database.getReference("OpenAppointment");
         Map<String, List<String>> newAppointmentDate = new HashMap<>();
@@ -76,7 +75,8 @@ public class dataAccess {
         // Add the Date objects to the map with unique keys
         appointmentTime.add(time);
         newAppointmentDate.put(date, appointmentTime);
-        myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        Task task =
+            myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 //need to check if the time is open for reservation
@@ -88,44 +88,26 @@ public class dataAccess {
         });
 
 
-        return null;
+        return task;
     }
 
-    public void getAvailableTimes(String wantedDate) {
+    public Task getAvailableTimes(String wantedDate) {
         List<String> times = new ArrayList<>();
-        database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/");
-        DatabaseReference appointmentsRef = database.getReference("OpenAppointment");
+        //database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference myRef = database.getReference("OpenAppointment");
 
         // Use the `child()` method to get a reference to the child node with the specified date
-        DatabaseReference dateRef = appointmentsRef.child(wantedDate);
-
-        // Use the `addListenerForSingleValueEvent()` method to attach a listener to the database reference
-        dateRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        Task task = myRef.child(wantedDate).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Retrieve the data and add it to the list
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    times.add((String) snapshot.getValue());
-                }
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                Log.d("task completed,", String.valueOf(task.getResult()));//or times or null\
+                //myRef.child(newAppointment.getDate()).setValue(newAppointment.getAvailableTimes());
 
-                // Save the list of times to the availableAppointments map
-                availableAppointments.put(wantedDate, times);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle error
-                Log.e(TAG, "Failed to retrieve data: " + databaseError.getMessage());
             }
         });
+        return task;
+
     }
-
-
-
-
-
-
-
 
     public void adminSetWorkingTimes(String date,String time){
         DatabaseReference myRef = database.getReference("OpenAppointment");
@@ -141,31 +123,6 @@ public class dataAccess {
         });
     }
 
-    public void t() {
-    // Write a message to the database
-        DatabaseReference myRef = database.getReference("message/users");
 
-        myRef.setValue("Hello, World!");
-
-        String userId = "0503331464";
-        String user = "date: time";
-        myRef.child("users").child(userId).setValue(user);
-        // Read from the database
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                HashMap value = dataSnapshot.getValue(HashMap.class);
-//                Log.d(TAG, "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
-    }
 
 }
