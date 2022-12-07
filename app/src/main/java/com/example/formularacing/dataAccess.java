@@ -76,6 +76,10 @@ public class dataAccess {
      * @return
      */
     public Task scheduleAppointment(String phoneNumber,String date,String time,String type){
+        /*
+
+
+         */
         //Reference to user path where the users data are stored
         DatabaseReference usersRef = database.getReference("users");
         //Reference to OpenAppointment path where the available appointment times data are stored
@@ -89,10 +93,9 @@ public class dataAccess {
                 openAppointRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        //get the data of all the appointment of that date
-                        Task adminAppoint=scheduledAppointmentRef.child(date).get();
+
                         //if the task found the requested time available for that date
-                        if(task.getResult().exists()){
+                        if(task.getResult().exists()) {
                             //get the a list with all the available times
                             List<String> tempAvailableTimesList=(List<String>) ((DataSnapshot) task.getResult()).getValue();
                             //find the time the client requset to see if its not taken/
@@ -104,16 +107,22 @@ public class dataAccess {
                                 tempAvailableTimesList.remove(index);
                                 openAppointRef.child(date).setValue(tempAvailableTimesList);
                                 usersRef.child(phoneNumber).child(date).setValue(appointmentInfo);
-                                List<AppointmentCreator> adminAppointmentList=(List<AppointmentCreator>) ((DataSnapshot) adminAppoint.getResult()).getValue();
-                                appointmentInfo.setPhone(phoneNumber);
-                                if(adminAppointmentList!= null)
-                                    adminAppointmentList.add(appointmentInfo);
-                                else{
-                                    adminAppointmentList=new ArrayList<>();
-                                    adminAppointmentList.add(appointmentInfo);
-                                }
-                                scheduledAppointmentRef.child(date).setValue(adminAppointmentList);
+                                //get the data of all the appointment of that date
+                                Task adminAppoint=scheduledAppointmentRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
 
+                                        List<AppointmentCreator> adminAppointmentList= (List<AppointmentCreator>) task.getResult().getValue();
+                                        appointmentInfo.setPhone(phoneNumber);
+                                        if(adminAppointmentList!= null)
+                                            adminAppointmentList.add(appointmentInfo);
+                                        else{
+                                            adminAppointmentList=new ArrayList<>();
+                                            adminAppointmentList.add(appointmentInfo);
+                                        }
+                                        scheduledAppointmentRef.child(date).setValue(adminAppointmentList);
+                                    }
+                                });
                             }
                         }
                         else{
@@ -147,6 +156,12 @@ public class dataAccess {
     }
 
     public Task cancelAppointment(String date, String time, String phoneNum) {
+        /*
+        TODO Go to user (phoneNum) get dates list, remove the time from the list and send the list back.
+        TODO Append to openAppointments on this date the time
+        TODO On schedualedAppointments
+
+         */
         Log.d("test", phoneNum);
         DatabaseReference myRef = database.getReference("users");
         //Map<String, scheduledAppointment> schApps = new HashMap<>();
