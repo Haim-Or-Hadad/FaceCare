@@ -57,6 +57,7 @@ public class admin_screen extends AppCompatActivity {
         });
     }
     public void open_adminActivity(){
+
         Intent admin_intent = new Intent(admin_screen.this, admin_view.class);
         admin_screen.this.startActivity(admin_intent);
     }
