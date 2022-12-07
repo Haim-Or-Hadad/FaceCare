@@ -19,7 +19,6 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Activity_user_login extends AppCompatActivity {
@@ -49,7 +48,6 @@ public class Activity_user_login extends AppCompatActivity {
     Button acneButton;
     Button classicFacial;
     Button resetAll;
-    Button mySlots;
     String selectedTreatment;
     ListView listView;
     String date;
@@ -70,7 +68,6 @@ public class Activity_user_login extends AppCompatActivity {
         acneButton = (Button) findViewById(R.id.acne);
         classicFacial = (Button) findViewById(R.id.classic_facial);
         resetAll = (Button) findViewById(R.id.reset);
-        mySlots = (Button) findViewById(R.id.mySlots);
         beardButton.setOnClickListener((view)->typeOfTreatment("beard"));
         haircutButton.setOnClickListener((view)->typeOfTreatment("haircut"));
         acneButton.setOnClickListener((view)->typeOfTreatment("acne"));
@@ -90,12 +87,12 @@ public class Activity_user_login extends AppCompatActivity {
                     dialogBox("empty");
                 }
                 else {
-                    date = (i1 + 1) + "/" + i2 + "/" + i;
-                    slotsList = getSlots(date, selectedTreatment, Integer.parseInt(MainActivity.phoneNumber));
+                    date = i2+ "-" + (i1 + 1)  + "-" + i;
+                    slotsList = getSlots(date, selectedTreatment);
                     ArrayAdapter arrayAdapter = new ArrayAdapter(Activity_user_login.this, R.layout.text_style_list, slotsList);
                     listView.setAdapter(arrayAdapter);
                 }
-                }
+            }
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -104,16 +101,8 @@ public class Activity_user_login extends AppCompatActivity {
                 if (selectedTreatment == null) {
                     dialogBox("empty");
                 }else {
-                    String timeSelectedFromList = (listView.getItemAtPosition(i).toString());
-                    dialogBox("make appointment",timeSelectedFromList);
+                    dialogBox("make appointment");
                 }
-
-            }
-        });
-
-        mySlots.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
             }
         });
@@ -124,33 +113,25 @@ public class Activity_user_login extends AppCompatActivity {
         disabledAllButtons();
     }
 
-    private List<String> getSlots(String date, String treatmentType, int phoneNUmber) {
-<<<<<<< HEAD
-        List<String> l = new ArrayList<>();
-        //need add data access function to get the avialable slots
-        l.add("10:00");//test
-        l.add("10:30");//test
-        if(date.equals("12/8/2022")){l.add("14:00");}
-        else {l.add("17:00");}
-=======
+    private List<String> getSlots(String date, String treatmentType) {
         List<String> l;
         //Task from the fire base
-        Task test =dal.getAvailableTimes(date);
+        Task test = dal.getAvailableTimes(date);
         //wait untill firebase data is received
         while (!test.isComplete()){
 
         }
         //get the Available Times
-        DataSnapshot test2=(DataSnapshot)test.getResult();
-        l=(List<String>)test2.getValue();
->>>>>>> 400e49f9779508c8e6715a3256e678af52820583
+        //DataSnapshot test2=(DataSnapshot)test.getResult();
+        l= (List<String>) ((DataSnapshot) test.getResult()).getValue();
+
+        l.add("10:00");
         return l;
 
     }
 
     private List<String> getMySlots(int phoneNumber) {
         List<String> l = new ArrayList<>();
-        //need to add a data access function to get client slots
         l.add("10:00");
         l.add("10:30");
         return l;
@@ -160,7 +141,7 @@ public class Activity_user_login extends AppCompatActivity {
      * when the client choose a appointment the dialog box open and ask him if he want
      * to confirm the order
      */
-    private void dialogBox(String boxType, String time) {
+    private void dialogBox(String boxType) {
         if (boxType == "make appointment") {
             AlertDialog alertDialog = new AlertDialog.Builder(Activity_user_login.this).
                     setTitle("order").
@@ -168,8 +149,6 @@ public class Activity_user_login extends AppCompatActivity {
                     setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            //setAppointments(time,date,phoneNUnmber);
-                            resetAllButtons();
                             dialogInterface.dismiss();//add finction to dal
                         }
                     }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -180,17 +159,17 @@ public class Activity_user_login extends AppCompatActivity {
                     }).create();
             alertDialog.show();
         }
-            if (boxType == "empty") {
-                AlertDialog alertDialog = new AlertDialog.Builder(Activity_user_login.this).
-                        setTitle("error").
-                        setMessage("no treatment type").
-                        setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).create();
-                alertDialog.show();
+        if (boxType == "empty") {
+            AlertDialog alertDialog = new AlertDialog.Builder(Activity_user_login.this).
+                    setTitle("error").
+                    setMessage("no treatment type").
+                    setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).create();
+            alertDialog.show();
         }
     }
 
@@ -204,16 +183,18 @@ public class Activity_user_login extends AppCompatActivity {
         acneButton.setEnabled(false);
     }
 
+    /**
+     * this function get all avialable appointments from dal in json format
+     */
+    //private List<String> getAppointments(){}
+
+
     private void resetAllButtons(){
         date = null;
         selectedTreatment = " ";
-        date = null;
         haircutButton.setEnabled(true);
         classicFacial.setEnabled(true);
         beardButton.setEnabled(true);
         acneButton.setEnabled(true);
-        listView.clearChoices();
-        List<String> EmptyList = Collections.<String>emptyList();
-        listView.setAdapter(new ArrayAdapter(Activity_user_login.this, R.layout.text_style_list, EmptyList));
     }
 }
