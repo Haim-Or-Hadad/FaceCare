@@ -155,6 +155,28 @@ public class dataAccess {
 
     }
 
+    public Task adminShowAppointment(String wantedDate){
+        //Reference to scheduledAppointment path where the admin can see the appointment
+        DatabaseReference scheduledAppointmentRef = database.getReference("scheduledAppointment");
+        Task task=scheduledAppointmentRef.child(wantedDate).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+                //if the task found the requested time available for that date
+                if(task.getResult().exists()) {
+                    Log.d("res", (String) task.getResult().getValue()); // this will be empty now
+                }
+                else{
+
+                }
+            }
+        });
+
+
+        return task;
+
+    }
+
     public Task cancelAppointment(String date, String time, String phoneNum) {
         /*
         TODO Go to user (phoneNum) get dates list, remove the time from the list and send the list back.
