@@ -1,6 +1,7 @@
 package com.example.formularacing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class AppointmentCreator {
@@ -12,7 +13,15 @@ public class AppointmentCreator {
         this.time=time;
         this.length=length;
         this.Phone=phone;
-        this.length=length;
+        this.type=type;
+    }
+
+    // ODM
+    public AppointmentCreator(HashMap<String, String> valueMap) {
+        this.time=valueMap.get("time");
+        this.length=valueMap.get("length");
+        this.Phone=valueMap.get("Phone");
+        this.type=valueMap.get("type");
     }
 
     public void setLength(String length) {
@@ -43,7 +52,8 @@ public class AppointmentCreator {
         return type;
     }
 
-    public String getDate() {
+    public String getTime() {
         return time;
     }
+
 }

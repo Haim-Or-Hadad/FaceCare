@@ -78,7 +78,6 @@ public class dataAccess {
     public Task scheduleAppointment(String phoneNumber,String date,String time,String type){
         /*
 
-
          */
         //Reference to user path where the users data are stored
         DatabaseReference usersRef = database.getReference("users");
@@ -181,32 +180,44 @@ public class dataAccess {
         /*
         TODO Go to user (phoneNum) get dates list, remove the time from the list and send the list back.
         TODO Append to openAppointments on this date the time
-        TODO On schedualedAppointments
+        TODO On scheduleAppointment remove
 
          */
-        Log.d("test", phoneNum);
-        DatabaseReference myRef = database.getReference("users");
-        //Map<String, scheduledAppointment> schApps = new HashMap<>();
-        //schApps.put("alanisawesome", new scheduledAppointment("1", time, date, phoneNum));
-        //cheduledAppointment t = new scheduledAppointment("1", time, date, phoneNum);
-        //return myRef.child(date).setValue(t);
+        //Reference to user path where the users data are stored
+        DatabaseReference usersRef = database.getReference("users");
+        //Reference to OpenAppointment path where the available appointment times data are stored
+        DatabaseReference openAppointRef = database.getReference("OpenAppointment");
+        //Reference to scheduledAppointment path where the admin can see the appointment
+        DatabaseReference scheduledAppointmentRef = database.getReference("scheduledAppointment");
+        //create an appointment with the data the user choose
+        //AppointmentCreator appointmentInfo=new AppointmentCreator(time,phoneNumber,type,"3");
+        Task t = usersRef.child(phoneNum).child(time).removeValue();
 
-        // DatabaseReference myRef = database.getReference("OpenAppointment");
-//        Log.d("test", date);
-//        Task addingAvailableTime = myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                List<String> times = (List<String>) task.getResult();
-//                times.add(time);
-//            }
-//        });
-//        Task removingAppointmentFromUser = myRef.child("users").child(phoneNum).child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DataSnapshot> task) {
-//
-//            }
-//        });
-        return null;
+        openAppointRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                List<String> times = (List<String>) task.getResult().getValue();
+                times.add(time);
+                openAppointRef.child(date).setValue(times);
+                }
+        });
+
+        scheduledAppointmentRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                List<HashMap<String, String>> appointmentCreatorList = (List<HashMap<String, String>>) task.getResult().getValue();
+                Log.d("res", appointmentCreatorList.toString());
+                for (int i = 0; i<appointmentCreatorList.size(); i++) {
+                    AppointmentCreator currAppointment = new AppointmentCreator(appointmentCreatorList.get(i));
+                    if (currAppointment.getTime() == time) {
+                        appointmentCreatorList.remove(i);
+                        break;
+                    }
+                }
+                scheduledAppointmentRef.child(date).setValue(appointmentCreatorList);
+            }
+        });
+        return t;
     }
 
 
