@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/admin_view"
+    tools:context=".workplanActivity">
+
+
+    <CheckBox
+        android:id="@+id/SundayBox"
+        android:layout_width="151dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:layout_marginTop="100dp"
+        android:text="Sunday" />
+    <CheckBox
+        android:id="@+id/MondayBox"
+        android:layout_width="151dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/SundayBox"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:text="Monday" />
+    <CheckBox
+        android:id="@+id/TuesdayBox"
+        android:layout_width="151dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/MondayBox"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:text="Tuesday" />
+    <CheckBox
+        android:id="@+id/WednesdayBox"
+        android:layout_width="151dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TuesdayBox"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:text="Wednesday" />
+    <CheckBox
+        android:id="@+id/ThursdayBox"
+        android:layout_width="151dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/WednesdayBox"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:text="Thursday" />
+    <CheckBox
+        android:id="@+id/FridayBox"
+        android:layout_width="151dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ThursdayBox"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:text="Friday" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:text="please choose 4-5 shifts"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="125dp"
+        android:layout_below="@id/FridayBox"
+        android:text="confirm"
+        android:backgroundTint="@android:color/holo_orange_dark"/>
+</RelativeLayout>
