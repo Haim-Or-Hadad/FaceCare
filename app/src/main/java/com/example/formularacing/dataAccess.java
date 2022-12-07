@@ -32,14 +32,11 @@ public class dataAccess {
     }
 
 
-    public Map<String, List<String>> loginUser(String phoneNum) {
+    public Task loginUser(String phoneNum) {
         DatabaseReference myRef = database.getReference("users");
         //every user must have an email
-        Task<DataSnapshot> task = myRef.child(phoneNum).get();
-
-
-
-        myRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        Task<DataSnapshot> task =
+            myRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()) {
@@ -52,8 +49,6 @@ public class dataAccess {
                         Log.d("creating new user", returnedValue);
                         Map<String, List<String>> emptyMap = new HashMap<>();
                         List<String> newList = new ArrayList<>();
-                        newList.add("t");
-                        newList.add("t2");
                         emptyMap.put("date",newList);
                         myRef.child(phoneNum).setValue(emptyMap);
                         existingAppointments = emptyMap;
@@ -65,10 +60,10 @@ public class dataAccess {
                 }
             }
         });
-        return null;
+        return task;
     }
 
-    public Map<String, List<String>> scheduleAppointment(String phoneNumber,String date,String time){
+    public Task scheduleAppointment(String phoneNumber,String date,String time){
         // Create a map to store the Date objects
         DatabaseReference myRef = database.getReference("OpenAppointment");
         Map<String, List<String>> newAppointmentDate = new HashMap<>();
@@ -76,7 +71,8 @@ public class dataAccess {
         // Add the Date objects to the map with unique keys
         appointmentTime.add(time);
         newAppointmentDate.put(date, appointmentTime);
-        myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        Task task =
+            myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 //need to check if the time is open for reservation
@@ -88,7 +84,7 @@ public class dataAccess {
         });
 
 
-        return null;
+        return task;
     }
 
     public Task getAvailableTimes(String wantedDate) {
@@ -97,7 +93,7 @@ public class dataAccess {
         DatabaseReference myRef = database.getReference("OpenAppointment");
 
         // Use the `child()` method to get a reference to the child node with the specified date
-        Task kaki = myRef.child(wantedDate).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        Task task = myRef.child(wantedDate).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 Log.d("task completed,", String.valueOf(task.getResult()));//or times or null\
@@ -105,7 +101,7 @@ public class dataAccess {
 
             }
         });
-        return kaki;
+        return task;
 
     }
 
