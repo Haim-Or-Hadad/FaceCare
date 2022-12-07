@@ -33,7 +33,7 @@ public class admin_screen extends AppCompatActivity {
         // test.existstingtimes is still empty:
         test.getAvailableTimes("13-12-2022");
         Log.d("res", test.toString()); // this will be empty now
-        test.adminSetWorkingTimes("10-12-2022","11:00");
+        test.adminSetWorkingTimes("10-12-2022","11:00","12:00");
         // if we wait here for a second, existingTime will include a hashmap(json)
 
         /*

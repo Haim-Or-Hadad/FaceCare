@@ -15,7 +15,8 @@
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:layout_marginTop="100dp"
-        android:text="Sunday" />
+        android:text="Sunday"
+        />
     <CheckBox
         android:id="@+id/MondayBox"
         android:layout_width="151dp"

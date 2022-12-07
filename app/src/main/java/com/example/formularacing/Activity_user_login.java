@@ -160,15 +160,10 @@ public class Activity_user_login extends AppCompatActivity {
         //get the Available Times
         DataSnapshot test2=(DataSnapshot)test.getResult();
         l=(List<String>)test2.getValue();
-//        if(l == null){
-//            l.add("ilan");
-//        }
         if(l==null){
             return new ArrayList<>();
         };
-
         return l;
-
     }
 
 
