@@ -26,7 +26,7 @@ public class dataAccess {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/");
     public dataAccess() {
-    // empty constructor
+        // empty constructor
     }
 
 
@@ -39,31 +39,31 @@ public class dataAccess {
             b. else task.getResult() will be a hashmap of { date: listof(existing appointments) }
          */
         DatabaseReference myRef = database.getReference("users");
-        //every user must have an email
-        Task<DataSnapshot> task =
-            myRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
-                }
-                else {
-                    String returnedValue = String.valueOf(task.getResult().getValue());
-                    Log.d("user trying to connect:", returnedValue);
-                    if (returnedValue == "null") {
-                        Log.d("creating new user", returnedValue);
-                        Map<String, List<String>> emptyMap = new HashMap<>();
-                        List<String> newList = new ArrayList<>();
-                        newList.add("");
-                        emptyMap.put(" ",newList);
-                        myRef.child(phoneNum).setValue(emptyMap);
 
-                    } else {
-                        Log.d("returning user", returnedValue);
+        Task<DataSnapshot> task =
+                myRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        }
+                        else {
+                            String returnedValue = String.valueOf(task.getResult().getValue());
+                            Log.d("user trying to connect:", returnedValue);
+                            if (returnedValue == "null") {
+                                Log.d("creating new user", returnedValue);
+                                Map<String, List<String>> emptyMap = new HashMap<>();
+                                List<String> newList = new ArrayList<>();
+                                newList.add("");
+                                emptyMap.put(" ",newList);
+                                myRef.child(phoneNum).setValue(emptyMap);
+
+                            } else {
+                                Log.d("returning user", returnedValue);
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
         return task;
     }
 
@@ -76,16 +76,15 @@ public class dataAccess {
         appointmentTime.add(time);
         newAppointmentDate.put(date, appointmentTime);
         Task task =
-            myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                //need to check if the time is open for reservation
-                task.getResult();//or times or null\
+                myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        //need to check if the time is open for reservation
+                        task.getResult();//or times or null\
+                        database.getReference().child("users").child(phoneNumber).setValue(newAppointmentDate);
 
-                database.getReference().child("users").child(phoneNumber).setValue(newAppointmentDate);
-
-            }
-        });
+                    }
+                });
 
 
         return task;
@@ -109,20 +108,31 @@ public class dataAccess {
 
     }
 
-    public void adminSetWorkingTimes(String date,String time){
+    public void adminSetWorkingTimes(String date,String startTime, String endTime){
+        /*
+        This function gets a date, a start time and an end time. It allocates available appointments
+        for the given date from startTime until endTime with 30m jumps between them.
+        THIS FUNCTIONS DESTROYS ANY DATA THAT WAS IN THE GIVEN DATE. DO NOT GIVE IT AN EXISTING DATE.
+        */
         DatabaseReference myRef = database.getReference("OpenAppointment");
-        AppointmentCreator newAppointment= new AppointmentCreator(date);
-        newAppointment.setTime(time);
-        myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                task.getResult();//or times or null\
-                myRef.child(newAppointment.getDate()).setValue(newAppointment.getAvailableTimes());
-
+        Log.d("creating working time", "on "+date+" from "+startTime+" to "+endTime);
+        List<String> times = new ArrayList<>();
+        // The following while loop creates a list of 'times' with 30min between each time string.
+        String currTime = startTime;
+        while (!currTime.equals(endTime)) {
+            times.add(currTime);
+            if (currTime.charAt(3) == '0') {
+                String newTime = currTime.substring(0,3)+'3'+'0';
+                currTime = newTime;
+            } else if (currTime.charAt(3) == '3') {
+                int H = Integer.parseInt(currTime.substring(0,2));
+                H++;
+                String newTime = String.valueOf(H)+':'+'0'+'0';
+                currTime = newTime;
             }
-        });
+        }
+        Log.d("time list added:", times.toString());
+        myRef.child(date).setValue(times);
     }
-
-
 
 }
