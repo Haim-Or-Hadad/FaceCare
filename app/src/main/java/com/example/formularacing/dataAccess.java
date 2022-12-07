@@ -91,17 +91,19 @@ public class dataAccess {
     }
 
     public Task getAvailableTimes(String wantedDate) {
+        /*
+        This function gets a date and returns a task.
+        The task result will be a list of available times in this date.
+        If there are no available times in this date, task.getResult() will be null.
+        Else task.getResult() will be a list of dates.
+         */
         List<String> times = new ArrayList<>();
-        //database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/");
         DatabaseReference myRef = database.getReference("OpenAppointment");
 
-        // Use the `child()` method to get a reference to the child node with the specified date
         Task task = myRef.child(wantedDate).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                Log.d("task completed,", String.valueOf(task.getResult()));//or times or null\
-                //myRef.child(newAppointment.getDate()).setValue(newAppointment.getAvailableTimes());
-
+                Log.d("task completed,", String.valueOf(task.getResult())); // list of times or null
             }
         });
         return task;
