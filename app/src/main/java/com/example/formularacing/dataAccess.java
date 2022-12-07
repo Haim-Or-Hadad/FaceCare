@@ -25,14 +25,19 @@ import javax.security.auth.callback.Callback;
 public class dataAccess {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/");
-    public Map<String, List<String>> existingAppointments = new HashMap<>();
-    public Map<String, List<String>> availableAppointments = new HashMap<>();
     public dataAccess() {
     // empty constructor
     }
 
 
     public Task loginUser(String phoneNum) {
+        /*
+        This function is called when a user enters his phone number.
+        The function asks the server if the user is a new user or returning user.
+        The function returns a Task object, after the Task is completed: (task.isCompleted())
+            a. if user is new user task.getResult() will be null
+            b. else task.getResult() will be a hashmap of { date: listof(existing appointments) }
+         */
         DatabaseReference myRef = database.getReference("users");
         //every user must have an email
         Task<DataSnapshot> task =
@@ -49,14 +54,13 @@ public class dataAccess {
                         Log.d("creating new user", returnedValue);
                         Map<String, List<String>> emptyMap = new HashMap<>();
                         List<String> newList = new ArrayList<>();
-                        emptyMap.put("date",newList);
+                        newList.add("");
+                        emptyMap.put(" ",newList);
                         myRef.child(phoneNum).setValue(emptyMap);
-                        existingAppointments = emptyMap;
+
                     } else {
                         Log.d("returning user", returnedValue);
-                        existingAppointments = (Map<String, List<String>>) task.getResult().getValue();
                     }
-
                 }
             }
         });
@@ -105,10 +109,6 @@ public class dataAccess {
 
     }
 
-
-
-
-
     public void adminSetWorkingTimes(String date,String time){
         DatabaseReference myRef = database.getReference("OpenAppointment");
         AppointmentCreator newAppointment= new AppointmentCreator(date);
@@ -123,31 +123,6 @@ public class dataAccess {
         });
     }
 
-    public void t() {
-    // Write a message to the database
-        DatabaseReference myRef = database.getReference("message/users");
 
-        myRef.setValue("Hello, World!");
-
-        String userId = "0503331464";
-        String user = "date: time";
-        myRef.child("users").child(userId).setValue(user);
-        // Read from the database
-//        myRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                HashMap value = dataSnapshot.getValue(HashMap.class);
-//                Log.d(TAG, "Value is: " + value);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
-    }
 
 }
