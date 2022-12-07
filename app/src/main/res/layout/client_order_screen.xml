@@ -101,7 +101,15 @@
         android:layout_height="140dp"
         android:layout_below="@+id/mySlots"
         android:background="@drawable/gradient_normal" />
-
+    <ProgressBar
+        android:id="@+id/Progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="425dp"
+        android:visibility="invisible"
+        />
 <!--    <ListView-->
 <!--        android:id = "@+id/listCancelOrder"-->
 <!--        android:layout_width="210dp"-->

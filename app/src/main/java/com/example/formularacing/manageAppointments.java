@@ -9,12 +9,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class manageAppointments extends AppCompatActivity {
     List<String> allAppointments = new ArrayList<String>();
     String[] mobileTypes = {"0549761170:10:30","0549761170:10:30","0549761170:10:30","0549761170:10:30"};
+    dataAccess dal = new dataAccess();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +29,22 @@ public class manageAppointments extends AppCompatActivity {
         ListView facialAppointments = findViewById(R.id.facial_listview);
         ListView acneAppointments = findViewById(R.id.acne_listview);
         ListView haircutAppointments = findViewById(R.id.haircut_listview);
+
+        Task test =dal.adminShowAppointment("12-12-2022");
+        //Progress.setVisibility(View.VISIBLE);
+        while (!test.isComplete()){
+
+        }
+        //Progress.setVisibility(View.INVISIBLE);
+        List<AppointmentCreator> appointmentList = (List<AppointmentCreator>)((DataSnapshot)test.getResult()).getValue();
+//        for (int i =0; i< appointmentList.size(); i++) {
+//            if (appointmentList.toArray()[i].toString().equals("beard")){
+//                mobileTypes[i] = appointmentList.get(i).getDate();
+//            }
+//            else{
+//                continue;
+//            }
+//        }
 
         //Array Adapter
         mobileTypes[0]= "Beard appointments";

@@ -117,15 +117,10 @@ public class MainActivity extends AppCompatActivity {
     public void openActivity_user_login () {
             Intent intent = new Intent(this, Activity_user_login.class);
             loginProgress.setVisibility(View.VISIBLE);
-            try {
-                Thread.sleep(3000);
-            }catch (InterruptedException ex)
-            {
-                ex.printStackTrace();
-            }
+
             ///try to connect to firebae..................
             startActivity(intent);
-            //loginProgress.setVisibility(View.INVISIBLE);
+            loginProgress.setVisibility(View.INVISIBLE);
         }
 
     /**

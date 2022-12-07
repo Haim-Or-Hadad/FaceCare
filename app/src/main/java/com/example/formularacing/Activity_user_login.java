@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
@@ -56,6 +57,7 @@ public class Activity_user_login extends AppCompatActivity {
     String date;
     List<String> slotsList;
     dataAccess dal = new dataAccess();
+    ProgressBar Progress;
 
 
     @Override
@@ -77,6 +79,7 @@ public class Activity_user_login extends AppCompatActivity {
         acneButton.setOnClickListener((view)->typeOfTreatment("acne"));
         classicFacial.setOnClickListener((view)->typeOfTreatment("classic_facial"));
         resetAll.setOnClickListener((view)-> resetAllButtons());
+        Progress = findViewById(R.id.Progress);
         listView = findViewById(R.id.listView);
         //save the date of calander picker
         calendarView = (CalendarView) findViewById(R.id.calendarView2);
@@ -120,9 +123,11 @@ public class Activity_user_login extends AppCompatActivity {
                 //Task from the fire base
                 Task test =dal.loginUser(MainActivity.phoneNumber);
                 //wait untill firebase data is received
+                Progress.setVisibility(View.VISIBLE);
                 while (!test.isComplete()){
 
                 }
+                Progress.setVisibility(View.INVISIBLE);
                 //get the Available Times
                 DataSnapshot test2=(DataSnapshot)test.getResult();
 
@@ -188,7 +193,13 @@ public class Activity_user_login extends AppCompatActivity {
                     setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            //setAppointments(time,date,phoneNUnmber);
+                            Task test =dal.scheduleAppointment(MainActivity.phoneNumber, date, time , selectedTreatment);
+                            //wait untill firebase data is received
+                            //Progress.setVisibility(View.VISIBLE);
+                            while (!test.isComplete()){
+
+                            }
+                            //Progress.setVisibility(View.INVISIBLE);
                             resetAllButtons();
                             dialogInterface.dismiss();//add finction to dal
                         }
