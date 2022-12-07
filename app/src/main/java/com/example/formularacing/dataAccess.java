@@ -253,4 +253,15 @@ public class dataAccess {
         myRef.child(date).setValue(times);
     }
 
+    public Task getLoginAdmin() {
+        DatabaseReference myRef = database.getReference("credentials");
+        Task task = myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                Log.d("attempt to connect", "at firebase");
+            }
+        });
+        return task;
+    }
+
 }
