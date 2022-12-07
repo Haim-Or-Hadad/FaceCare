@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,8 +54,8 @@ public class Activity_user_login extends AppCompatActivity {
     String selectedTreatment;
     ListView listView;
     String date;
-    List<String> slotsList = new ArrayList<>();
-    dataAccess dal;
+    List<String> slotsList;
+    dataAccess dal = new dataAccess();
 
 
     @Override
@@ -87,11 +88,12 @@ public class Activity_user_login extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
                 if(selectedTreatment == null){
-                    dialogBox("empty");
+                    dialogBox("empty"," ");
                 }
                 else {
-                    date = (i1 + 1) + "/" + i2 + "/" + i;
-                    slotsList = getSlots(date, selectedTreatment, Integer.parseInt(MainActivity.phoneNumber));
+                    date = i2 + "-" + (i1 + 1)  + "-" + i;
+                    slotsList = getSlots(date, selectedTreatment);
+
                     ArrayAdapter arrayAdapter = new ArrayAdapter(Activity_user_login.this, R.layout.text_style_list, slotsList);
                     listView.setAdapter(arrayAdapter);
                 }
@@ -102,7 +104,7 @@ public class Activity_user_login extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 if (selectedTreatment == null) {
-                    dialogBox("empty");
+                    dialogBox("empty"," ");
                 }else {
                     String timeSelectedFromList = (listView.getItemAtPosition(i).toString());
                     dialogBox("make appointment",timeSelectedFromList);
@@ -114,7 +116,30 @@ public class Activity_user_login extends AppCompatActivity {
         mySlots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                List<String> l = new ArrayList<>();
+                //Task from the fire base
+                Task test =dal.loginUser(MainActivity.phoneNumber);
+                //wait untill firebase data is received
+                while (!test.isComplete()){
 
+                }
+                //get the Available Times
+                DataSnapshot test2=(DataSnapshot)test.getResult();
+
+                if(l.isEmpty()){
+                    Toast.makeText(Activity_user_login.this, "no appointments", Toast.LENGTH_SHORT).show();
+                } else{
+                    l=(List<String>)test2.getValue();
+                AlertDialog alertDialog = new AlertDialog.Builder(Activity_user_login.this).
+                        setTitle("order").
+                        setMessage(Arrays.toString(l.toArray())).
+                        setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();//add finction to dal
+                            }
+                        }).create();
+                alertDialog.show();}
             }
         });
     }
@@ -124,15 +149,7 @@ public class Activity_user_login extends AppCompatActivity {
         disabledAllButtons();
     }
 
-    private List<String> getSlots(String date, String treatmentType, int phoneNUmber) {
-<<<<<<< HEAD
-        List<String> l = new ArrayList<>();
-        //need add data access function to get the avialable slots
-        l.add("10:00");//test
-        l.add("10:30");//test
-        if(date.equals("12/8/2022")){l.add("14:00");}
-        else {l.add("17:00");}
-=======
+    private List<String> getSlots(String date, String treatmentType) {
         List<String> l;
         //Task from the fire base
         Task test =dal.getAvailableTimes(date);
@@ -143,10 +160,18 @@ public class Activity_user_login extends AppCompatActivity {
         //get the Available Times
         DataSnapshot test2=(DataSnapshot)test.getResult();
         l=(List<String>)test2.getValue();
->>>>>>> 400e49f9779508c8e6715a3256e678af52820583
+//        if(l == null){
+//            l.add("ilan");
+//        }
+        if(l==null){
+            return new ArrayList<>();
+        };
+
         return l;
 
     }
+
+
 
     private List<String> getMySlots(int phoneNumber) {
         List<String> l = new ArrayList<>();

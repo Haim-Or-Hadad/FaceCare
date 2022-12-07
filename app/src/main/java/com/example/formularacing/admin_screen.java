@@ -32,7 +32,7 @@ public class admin_screen extends AppCompatActivity {
         test.loginUser("0527142312"); // connect to user and load info to test.existingTimes
         // test.existstingtimes is still empty:
         test.getAvailableTimes("13-12-2022");
-        Log.d("res", test.existingAppointments.toString()); // this will be empty now
+        Log.d("res", test.toString()); // this will be empty now
         test.adminSetWorkingTimes("10-12-2022","11:00");
         // if we wait here for a second, existingTime will include a hashmap(json)
 
@@ -50,7 +50,7 @@ public class admin_screen extends AppCompatActivity {
                     //Toast.makeText(admin_screen.this, "LOGIN SUCCESSFUL", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(admin_screen.this, "LOGIN FAILED", Toast.LENGTH_SHORT).show();
-                    Log.d("res", test.existingAppointments.toString()); // this will be empty now
+                    Log.d("res", test.toString()); // this will be empty now
 
                 }
             }
