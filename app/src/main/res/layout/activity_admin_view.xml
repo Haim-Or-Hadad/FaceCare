@@ -25,4 +25,13 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/weekly_workplan"
         />
+
+    <Button
+        android:id="@+id/ManageAppointments"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:text="Manage Appointments"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/myShifts"
+        />
 </RelativeLayout>

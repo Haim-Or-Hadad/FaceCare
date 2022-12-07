@@ -21,6 +21,14 @@ public class admin_view extends AppCompatActivity {
         Button shiftsButton = (Button) findViewById(R.id.myShifts);
         shiftsButton.setOnClickListener((view)-> showShifts());
 
+        //when admin want change client's appointments
+        Button manageButton = (Button) findViewById(R.id.ManageAppointments);
+        manageButton.setOnClickListener((view -> changeAppointments()));
+    }
+
+    private void changeAppointments() {
+        Intent intent = new Intent(admin_view.this, manageAppointments.class);
+        admin_view.this.startActivity(intent);
     }
 
     private void showShifts() {
