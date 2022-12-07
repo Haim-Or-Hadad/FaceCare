@@ -146,6 +146,33 @@ public class dataAccess {
 
     }
 
+    public Task cancelAppointment(String date, String time, String phoneNum) {
+        Log.d("test", phoneNum);
+        DatabaseReference myRef = database.getReference("users");
+        //Map<String, scheduledAppointment> schApps = new HashMap<>();
+        //schApps.put("alanisawesome", new scheduledAppointment("1", time, date, phoneNum));
+        //cheduledAppointment t = new scheduledAppointment("1", time, date, phoneNum);
+        //return myRef.child(date).setValue(t);
+
+        // DatabaseReference myRef = database.getReference("OpenAppointment");
+//        Log.d("test", date);
+//        Task addingAvailableTime = myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                List<String> times = (List<String>) task.getResult();
+//                times.add(time);
+//            }
+//        });
+//        Task removingAppointmentFromUser = myRef.child("users").child(phoneNum).child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DataSnapshot> task) {
+//
+//            }
+//        });
+        return null;
+    }
+
+
     public void adminSetWorkingTimes(String date,String startTime, String endTime){
         /*
         This function gets a date, a start time and an end time. It allocates available appointments
@@ -165,8 +192,13 @@ public class dataAccess {
             } else if (currTime.charAt(3) == '3') {
                 int H = Integer.parseInt(currTime.substring(0,2));
                 H++;
-                String newTime = String.valueOf(H)+':'+'0'+'0';
-                currTime = newTime;
+                if (H<10) {
+                    String newTime = '0' + String.valueOf(H) + ':' + '0' + '0';
+                    currTime = newTime;
+                } else {
+                    String newTime = String.valueOf(H) + ':' + '0' + '0';
+                    currTime = newTime;
+                }
             }
         }
         Log.d("time list added:", times.toString());
