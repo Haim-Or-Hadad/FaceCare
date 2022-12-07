@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private void clickOnFacebook() {
         String sAppLink = "fb://page/237564710351658";
         String sPackage = "com.facebook.katana";
-        String sWebLink = "https://www.facebook.com/12H1rDeveloper";
+        String sWebLink = "https://www.facebook.com";
         //create method
         openLink(sAppLink, sPackage, sWebLink);
     }
