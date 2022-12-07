@@ -67,21 +67,44 @@ public class dataAccess {
         return task;
     }
 
-    public Task scheduleAppointment(String phoneNumber,String date,String time){
+    public Task scheduleAppointment(String phoneNumber,String date,String time,String type){
+        //go to open Appointment check if the time selected is available after that delete the time and update the user that order that time
         // Create a map to store the Date objects
-        DatabaseReference myRef = database.getReference("OpenAppointment");
-        Map<String, List<String>> newAppointmentDate = new HashMap<>();
-        List<String> appointmentTime = new ArrayList<>();
-        // Add the Date objects to the map with unique keys
-        appointmentTime.add(time);
-        newAppointmentDate.put(date, appointmentTime);
+        DatabaseReference usersRef = database.getReference("users");
+        DatabaseReference openAppointRef = database.getReference("OpenAppointment");
+        DatabaseReference scheduledAppointmentRef = database.getReference("scheduledAppointment");
+
+        AppointmentCreator appointmentInfo=new AppointmentCreator(time,phoneNumber,type,"3");
         Task task =
-                myRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                openAppointRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        Task adminAppoint=scheduledAppointmentRef.child(date).get();
+                        if(task.getResult().exists()){
+                            List<String> tempAvailableTimesList=(List<String>) ((DataSnapshot) task.getResult()).getValue();
+                            int index = tempAvailableTimesList.indexOf(time);
+                            if (index != -1) {
+                                tempAvailableTimesList.remove(index);
+                                openAppointRef.child(date).setValue(tempAvailableTimesList);
+                                usersRef.child(phoneNumber).child(date).setValue(appointmentInfo);
+                                List<AppointmentCreator> adminAppointmentList=(List<AppointmentCreator>) ((DataSnapshot) adminAppoint.getResult()).getValue();
+                                appointmentInfo.setPhone(phoneNumber);
+                                if(adminAppointmentList!= null)
+                                    adminAppointmentList.add(appointmentInfo);
+                                else{
+                                    adminAppointmentList=new ArrayList<>();
+                                    adminAppointmentList.add(appointmentInfo);
+                                }
+                                scheduledAppointmentRef.child(date).setValue(adminAppointmentList);
+
+                            }
+                        }
+                        else{
+
+                        }
                         //need to check if the time is open for reservation
-                        task.getResult();//or times or null\
-                        database.getReference().child("users").child(phoneNumber).setValue(newAppointmentDate);
+//                        Object reciveddata=task.getResult();//or times or null\
+//                        database.getReference().child("users").child(phoneNumber).setValue(newAppointmentDate);
 
                     }
                 });
