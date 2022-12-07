@@ -67,23 +67,40 @@ public class dataAccess {
         return task;
     }
 
+    /**
+     *
+     * @param phoneNumber - Phone number of the client
+     * @param date - date of appointment
+     * @param time - time of the appointment
+     * @param type - type of the Appointment
+     * @return
+     */
     public Task scheduleAppointment(String phoneNumber,String date,String time,String type){
-        //go to open Appointment check if the time selected is available after that delete the time and update the user that order that time
-        // Create a map to store the Date objects
+        //Reference to user path where the users data are stored
         DatabaseReference usersRef = database.getReference("users");
+        //Reference to OpenAppointment path where the available appointment times data are stored
         DatabaseReference openAppointRef = database.getReference("OpenAppointment");
+        //Reference to scheduledAppointment path where the admin can see the appointment
         DatabaseReference scheduledAppointmentRef = database.getReference("scheduledAppointment");
-
+        //create an appointment with the data the user choose
         AppointmentCreator appointmentInfo=new AppointmentCreator(time,phoneNumber,type,"3");
-        Task task =
+
+        Task task = // A task that get all the available times from the OpenAppointment
                 openAppointRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        //get the data of all the appointment of that date
                         Task adminAppoint=scheduledAppointmentRef.child(date).get();
+                        //if the task found the requested time available for that date
                         if(task.getResult().exists()){
+                            //get the a list with all the available times
                             List<String> tempAvailableTimesList=(List<String>) ((DataSnapshot) task.getResult()).getValue();
+                            //find the time the client requset to see if its not taken/
                             int index = tempAvailableTimesList.indexOf(time);
                             if (index != -1) {
+                                //if found delete this time because he's taken by this client
+                                //then add the appointment to the user appointments list
+                                //add this appointment to the admin appointment list
                                 tempAvailableTimesList.remove(index);
                                 openAppointRef.child(date).setValue(tempAvailableTimesList);
                                 usersRef.child(phoneNumber).child(date).setValue(appointmentInfo);
@@ -102,10 +119,6 @@ public class dataAccess {
                         else{
 
                         }
-                        //need to check if the time is open for reservation
-//                        Object reciveddata=task.getResult();//or times or null\
-//                        database.getReference().child("users").child(phoneNumber).setValue(newAppointmentDate);
-
                     }
                 });
 
