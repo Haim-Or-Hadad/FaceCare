@@ -89,7 +89,7 @@
         android:backgroundTintMode="add"
         android:fadeScrollbars="false"
         android:maxDate="01/12/2023"
-        android:minDate="01/12/202"
+        android:minDate="01/12/2022"
         android:selectedWeekBackgroundColor="#684646"
         android:verticalScrollbarPosition="defaultPosition"
         android:visibility="visible"

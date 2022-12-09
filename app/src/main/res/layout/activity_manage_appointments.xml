@@ -11,38 +11,31 @@
         android:id="@+id/beard_listview"
         android:layout_marginStart="5dp"
         android:layout_marginTop="20dp"
-        android:layout_width="170dp"
-        android:layout_height="230dp"
+        android:layout_below="@+id/calendarView3"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
         android:background="@drawable/gradient_normal" />
 
-    <ListView
-        android:id="@+id/facial_listview"
-        android:layout_marginStart="5dp"
-        android:layout_width="170dp"
-        android:layout_height="230dp"
-        android:layout_marginTop="280dp"
-        android:background="@drawable/gradient_normal" />
-
-    <ListView
-        android:id="@+id/acne_listview"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="185dp"
-        android:layout_width="170dp"
-        android:layout_height="230dp"
-        android:background="@drawable/gradient_normal" />
-
-    <ListView
-        android:id="@+id/haircut_listview"
-        android:layout_marginTop="280dp"
-        android:layout_width="170dp"
-        android:layout_height="230dp"
-        android:layout_marginStart="185dp"
-        android:background="@drawable/gradient_normal" />
-
+    <CalendarView
+        android:id="@+id/calendarView3"
+        style="@android:style/Widget.Material.CalendarView"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        android:animateLayoutChanges="false"
+        android:animationCache="false"
+        android:backgroundTint="#322525"
+        android:backgroundTintMode="add"
+        android:fadeScrollbars="false"
+        android:maxDate="01/12/2023"
+        android:minDate="01/12/2022"
+        android:selectedWeekBackgroundColor="#684646"
+        android:verticalScrollbarPosition="defaultPosition"
+        android:visibility="visible"
+        android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Body2" />
     <TextView
         android:layout_width="350dp"
         android:layout_height="60dp"
-        android:layout_below="@+id/haircut_listview"
+        android:layout_below="@+id/beard_listview"
         android:text="Please click on a treatment to cancel it"
         android:textSize="18dp"
         android:textStyle="bold"

@@ -163,7 +163,7 @@ public class dataAccess {
 
                 //if the task found the requested time available for that date
                 if(task.getResult().exists()) {
-                    Log.d("res", (String) task.getResult().getValue()); // this will be empty now
+                    Log.d("res",  task.getResult().getValue().toString()); // this will be empty now
                 }
                 else{
 
@@ -209,7 +209,7 @@ public class dataAccess {
                 Log.d("res", appointmentCreatorList.toString());
                 for (int i = 0; i<appointmentCreatorList.size(); i++) {
                     AppointmentCreator currAppointment = new AppointmentCreator(appointmentCreatorList.get(i));
-                    if (currAppointment.getTime() == time) {
+                    if (currAppointment.getTime().equals(time)) {
                         appointmentCreatorList.remove(i);
                         break;
                     }
