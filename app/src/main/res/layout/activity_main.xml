@@ -17,6 +17,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="370dp"
         android:layout_centerHorizontal="true"
+        android:backgroundTint="#a67041"
         android:backgroundTintMode="add"
         android:text="user" />
 
@@ -26,6 +27,7 @@
         android:layout_height="50dp"
         android:layout_below="@id/user_phone"
         android:layout_centerHorizontal="true"
+        android:backgroundTint="#a67041"
         android:text="admin" />
 
     <EditText

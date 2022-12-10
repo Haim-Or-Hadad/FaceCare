@@ -13,7 +13,7 @@
         android:layout_height="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@android:color/holo_blue_light"
+        android:backgroundTint="#a67041"
         android:drawableEnd="@drawable/acne_icon"
         android:text="acne" />
 
@@ -23,7 +23,7 @@
         android:layout_height="40dp"
         android:layout_marginLeft="200dp"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@android:color/holo_blue_light"
+        android:backgroundTint="#a67041"
         android:drawableEnd="@drawable/haircut_icon"
         android:text="haircut" />
 
@@ -33,7 +33,7 @@
         android:layout_height="40dp"
         android:layout_below="@id/haircut"
         android:layout_marginLeft="20dp"
-        android:backgroundTint="@android:color/holo_blue_light"
+        android:backgroundTint="#a67041"
         android:backgroundTintMode="add"
         android:drawableEnd="@drawable/beard_icon"
         android:text="beard"
@@ -44,7 +44,7 @@
         android:layout_width="142dp"
         android:layout_height="40dp"
         android:layout_below="@id/haircut"
-        android:backgroundTint="@android:color/holo_blue_light"
+        android:backgroundTint="#a67041"
         android:layout_marginLeft="200dp"
         android:drawableEnd="@drawable/facecare_icon"
         android:text="facecare" />
@@ -55,27 +55,20 @@
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_below="@id/calendarView2"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="-1dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="#04dbcd"
+        android:layout_marginStart="200dp"
+        android:backgroundTint="#a67041"
         android:text="appointments"
-        android:textSize="10dp" />
+        />
 
     <Button
         android:id="@+id/reset"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_below="@id/calendarView2"
-        android:layout_alignParentStart="true"
         android:layout_marginStart="68dp"
-        android:layout_toLeftOf="@+id/mySlots"
-        android:backgroundTint="#04dbcd"
+        android:backgroundTint="#a67041"
         android:text="reset"
-        android:textSize="10dp" />
+      />
 
     <CalendarView
         android:id="@+id/calendarView2"
@@ -100,7 +93,7 @@
         android:layout_width="400dp"
         android:layout_height="140dp"
         android:layout_below="@+id/mySlots"
-        android:background="@drawable/gradient_normal" />
+        android:background="#bea18f" />
     <ProgressBar
         android:id="@+id/Progress"
         style="?android:attr/progressBarStyle"
