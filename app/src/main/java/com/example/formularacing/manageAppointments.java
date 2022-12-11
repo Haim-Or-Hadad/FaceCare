@@ -42,12 +42,14 @@ public class manageAppointments extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                    //allAppointments  = Collections.<String>emptyList();
+//                allAppointments  = Collections.<String>emptyList();
                 date = i2 + "-" + (i1 + 1)  + "-" + i;
                 Task task =dal.adminShowAppointment(date);
 
                 Progress.setVisibility(View.VISIBLE);
-                while (!task.isComplete()){}
+                while (!task.isComplete()){
+                    allAppointments.clear();
+                }
                 Progress.setVisibility(View.INVISIBLE);
                 List<HashMap<String, String>> appointmentCreatorList = (List<HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
                 if(appointmentCreatorList == null) {
