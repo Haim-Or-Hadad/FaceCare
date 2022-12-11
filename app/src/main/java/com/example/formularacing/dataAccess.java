@@ -231,6 +231,16 @@ public class dataAccess {
         return t;
     }
 
+    public Task adminGetShifts(){
+        DatabaseReference myRef = database.getReference("OpenAppointment");
+
+        Task task = myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+            }
+        });
+        return task;
+    }
 
     public void adminSetWorkingTimes(String date,String startTime, String endTime){
         /*
