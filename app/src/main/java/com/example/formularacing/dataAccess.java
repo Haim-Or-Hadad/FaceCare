@@ -29,15 +29,16 @@ public class dataAccess {
         // empty constructor
     }
 
-
+    /**
+     * This function is called when a user enters his phone number.
+     * The function asks the server if the user is a new user or returning user.
+     * The function returns a Task object, after the Task is completed: (task.isCompleted())
+     *     a. if user is new user task.getResult() will be null
+     *     b. else task.getResult() will be a hashmap of { date: listof(existing appointments) }
+     * @param phoneNum - the client phone number
+     * @return
+     */
     public Task loginUser(String phoneNum) {
-        /*
-        This function is called when a user enters his phone number.
-        The function asks the server if the user is a new user or returning user.
-        The function returns a Task object, after the Task is completed: (task.isCompleted())
-            a. if user is new user task.getResult() will be null
-            b. else task.getResult() will be a hashmap of { date: listof(existing appointments) }
-         */
         DatabaseReference myRef = database.getReference("users");
 
         Task<DataSnapshot> task =
@@ -68,7 +69,7 @@ public class dataAccess {
     }
 
     /**
-     *
+     * Function that schedule the appointments the client requested.
      * @param phoneNumber - Phone number of the client
      * @param date - date of appointment
      * @param time - time of the appointment
@@ -76,9 +77,7 @@ public class dataAccess {
      * @return
      */
     public Task scheduleAppointment(String phoneNumber,String date,String time,String type){
-        /*
 
-         */
         //Reference to user path where the users data are stored
         DatabaseReference usersRef = database.getReference("users");
         //Reference to OpenAppointment path where the available appointment times data are stored
@@ -134,13 +133,15 @@ public class dataAccess {
         return task;
     }
 
+    /**
+     *  This function gets a date and returns a task.
+     *  The task result will be a list of available times in this date.
+     *  If there are no available times in this date, task.getResult() will be null.
+     *  Else task.getResult() will be a list of dates.
+     * @param wantedDate
+     * @return
+     */
     public Task getAvailableTimes(String wantedDate) {
-        /*
-        This function gets a date and returns a task.
-        The task result will be a list of available times in this date.
-        If there are no available times in this date, task.getResult() will be null.
-        Else task.getResult() will be a list of dates.
-         */
         List<String> times = new ArrayList<>();
         DatabaseReference myRef = database.getReference("OpenAppointment");
 
@@ -154,6 +155,11 @@ public class dataAccess {
 
     }
 
+    /**
+     * This function Show all the appointment scheduled at the wanted date
+     * @param wantedDate
+     * @return Task with the info
+     */
     public Task adminShowAppointment(String wantedDate){
         //Reference to scheduledAppointment path where the admin can see the appointment
         DatabaseReference scheduledAppointmentRef = database.getReference("scheduledAppointment");
@@ -176,6 +182,13 @@ public class dataAccess {
 
     }
 
+    /**
+     * Function that give the user the option to cancel the appointment he made.
+     * @param date - date of the appointment
+     * @param time - time of the appointment
+     * @param phoneNum - the client phone number
+     * @return
+     */
     public Task cancelAppointment(String date, String time, String phoneNum) {
         /*
         TODO Go to user (phoneNum) get dates list, remove the time from the list and send the list back.
@@ -231,6 +244,10 @@ public class dataAccess {
         return t;
     }
 
+    /**
+     * Function that go to OpenAppointment and get the dates that the working days the admin inserted
+     * @return
+     */
     public Task adminGetShifts(){
         DatabaseReference myRef = database.getReference("OpenAppointment");
 
@@ -242,12 +259,15 @@ public class dataAccess {
         return task;
     }
 
+    /**
+     *  This function gets a date, a start time and an end time. It allocates available appointments
+     *  for the given date from startTime until endTime with 30m jumps between them.
+     *  THIS FUNCTIONS DESTROYS ANY DATA THAT WAS IN THE GIVEN DATE. DO NOT GIVE IT AN EXISTING DATE.
+     * @param date
+     * @param startTime
+     * @param endTime
+     */
     public void adminSetWorkingTimes(String date,String startTime, String endTime){
-        /*
-        This function gets a date, a start time and an end time. It allocates available appointments
-        for the given date from startTime until endTime with 30m jumps between them.
-        THIS FUNCTIONS DESTROYS ANY DATA THAT WAS IN THE GIVEN DATE. DO NOT GIVE IT AN EXISTING DATE.
-        */
         DatabaseReference myRef = database.getReference("OpenAppointment");
         Log.d("creating working time", "on "+date+" from "+startTime+" to "+endTime);
         List<String> times = new ArrayList<>();
@@ -274,6 +294,11 @@ public class dataAccess {
         myRef.child(date).setValue(times);
     }
 
+    /**
+     * Admin login.
+     * get the credentials for admin login,
+     * @return
+     */
     public Task getLoginAdmin() {
         DatabaseReference myRef = database.getReference("credentials");
         Task task = myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
