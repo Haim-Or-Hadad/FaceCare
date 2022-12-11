@@ -70,7 +70,7 @@ public class manageAppointments extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 String time = Appointments.getItemAtPosition(i).toString().substring(0,5);
-                String phoneNum = Appointments.getItemAtPosition(i).toString().substring(6,15);;
+                String phoneNum = Appointments.getItemAtPosition(i).toString().substring(6,16);;
 
                 Task task =dal.cancelAppointment(date,time,phoneNum);
                 //Progress.setVisibility(View.VISIBLE);

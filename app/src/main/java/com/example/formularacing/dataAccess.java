@@ -191,7 +191,15 @@ public class dataAccess {
         DatabaseReference scheduledAppointmentRef = database.getReference("scheduledAppointment");
         //create an appointment with the data the user choose
         //AppointmentCreator appointmentInfo=new AppointmentCreator(time,phoneNumber,type,"3");
-        Task t = usersRef.child(phoneNum).child(time).removeValue();
+        Task t = usersRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                Log.d("TEST TEST TEST", time+" "+phoneNum);
+                HashMap<String, String> times = (HashMap<String, String>) task.getResult().getValue();
+                times.remove(date);
+                usersRef.child(phoneNum).setValue(times);
+            }
+        });
 
         openAppointRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -206,6 +214,9 @@ public class dataAccess {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 List<HashMap<String, String>> appointmentCreatorList = (List<HashMap<String, String>>) task.getResult().getValue();
+                if (appointmentCreatorList == null) {
+                    return;
+                }
                 Log.d("res", appointmentCreatorList.toString());
                 for (int i = 0; i<appointmentCreatorList.size(); i++) {
                     AppointmentCreator currAppointment = new AppointmentCreator(appointmentCreatorList.get(i));
