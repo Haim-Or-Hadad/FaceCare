@@ -20,7 +20,7 @@ public class AppointmentCreator {
     public AppointmentCreator(HashMap<String, String> valueMap) {
         this.time=valueMap.get("time");
         this.length=valueMap.get("length");
-        this.Phone=valueMap.get("Phone");
+        this.Phone=valueMap.get("phone");
         this.type=valueMap.get("type");
     }
 

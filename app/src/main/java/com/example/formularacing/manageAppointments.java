@@ -43,14 +43,12 @@ public class manageAppointments extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
                     //allAppointments  = Collections.<String>emptyList();
-                    date = i2 + "-" + (i1 + 1)  + "-" + i;
-                    Task task =dal.adminShowAppointment(date);
+                date = i2 + "-" + (i1 + 1)  + "-" + i;
+                Task task =dal.adminShowAppointment(date);
 
-                    //Progress.setVisibility(View.VISIBLE);
-                    while (!task.isComplete()){
-
-                    }
-                //Progress.setVisibility(View.INVISIBLE);
+                Progress.setVisibility(View.VISIBLE);
+                while (!task.isComplete()){}
+                Progress.setVisibility(View.INVISIBLE);
                 List<HashMap<String, String>> appointmentCreatorList = (List<HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
                 if(appointmentCreatorList == null) {
                 allAppointments = Collections.<String>emptyList();
@@ -58,7 +56,7 @@ public class manageAppointments extends AppCompatActivity {
                 else {
                     for (int j = 0; j<appointmentCreatorList.size(); j++) {
                         AppointmentCreator currAppointment = new AppointmentCreator(appointmentCreatorList.get(j));
-                        String str = currAppointment.getTime();
+                        String str = currAppointment.getTime()+"|"+currAppointment.getPhone()+"|"+currAppointment.getType();
                         allAppointments.add(str);
                     }
                     }
@@ -72,8 +70,9 @@ public class manageAppointments extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 String time = Appointments.getItemAtPosition(i).toString().substring(0,5);
-                //String phoneNumber = Appointments.getItemAtPosition(i).toString().substring(5,15);
-                Task task =dal.cancelAppointment(date,time,"0549761170");
+                String phoneNum = Appointments.getItemAtPosition(i).toString().substring(6,15);;
+
+                Task task =dal.cancelAppointment(date,time,phoneNum);
                 //Progress.setVisibility(View.VISIBLE);
 //                while (!task.isComplete()){
 //

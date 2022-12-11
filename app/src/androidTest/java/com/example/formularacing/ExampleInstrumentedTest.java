@@ -52,13 +52,13 @@ public class ExampleInstrumentedTest {
         while(!testTask.isComplete()) {}
         Thread.sleep(1000);
 
-        testDal.adminSetWorkingTimes("testDate", "10:00", "11:00");
+        testDal.adminSetWorkingTimes("testDate", "10:00", "11:00"); // used to keep the testDate available for next test
         Thread.sleep(2000);
         testTask = testDal.loginUser(testUserPhone);
         while(!testTask.isComplete()) {}
         testResult = (HashMap<String, String>)((DataSnapshot) testTask.getResult()).getValue();
         Log.d(testTag, testResult.toString());
-        assertEquals("{ =[], testDate={phone="+testUserPhone+", length=3, time=10:00, type=Test}}", testResult.toString()); // TODO assert the actual result when finished (should include an appointment at "testDate" at "10:00" of type "Test"
+        assertEquals("{emptyDate=[], testDate={phone="+testUserPhone+", length=3, time=10:00, type=Test}}", testResult.toString()); // TODO assert the actual result when finished (should include an appointment at "testDate" at "10:00" of type "Test"
     }
 
     public void test_admin_show_appointments() {

@@ -55,7 +55,7 @@ public class dataAccess {
                                 Map<String, List<String>> emptyMap = new HashMap<>();
                                 List<String> newList = new ArrayList<>();
                                 newList.add("");
-                                emptyMap.put(" ",newList);
+                                emptyMap.put("emptyDate",newList);
                                 myRef.child(phoneNum).setValue(emptyMap);
 
                             } else {
