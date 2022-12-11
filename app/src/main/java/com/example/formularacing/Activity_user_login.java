@@ -18,11 +18,14 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Activity_user_login extends AppCompatActivity {
     /**
@@ -119,32 +122,44 @@ public class Activity_user_login extends AppCompatActivity {
         mySlots.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<String> l = new ArrayList<>();
+                String s = new String();
                 //Task from the fire base
-                Task test =dal.loginUser(MainActivity.phoneNumber);
+                Task test = dal.loginUser(MainActivity.phoneNumber);
                 //wait untill firebase data is received
                 Progress.setVisibility(View.VISIBLE);
-                while (!test.isComplete()){
+                while (!test.isComplete()) {
 
                 }
                 Progress.setVisibility(View.INVISIBLE);
                 //get the Available Times
-                DataSnapshot test2=(DataSnapshot)test.getResult();
+                //DataSnapshot test2=(DataSnapshot)test.getResult();
+                HashMap<String, HashMap<String,String>> map = (HashMap<String, HashMap<String,String>>) ((DataSnapshot) test.getResult()).getValue();
 
-                if(l.isEmpty()){
+                if (map == null) {
                     Toast.makeText(Activity_user_login.this, "no appointments", Toast.LENGTH_SHORT).show();
-                } else{
-                    l=(List<String>)test2.getValue();
+                } else {
+                    for(Map.Entry<String,HashMap<String,String>> entry : map.entrySet()) {
+                        if(entry.getKey().equals("emptyDate") || entry.getKey().equals(" ")  ){
+                            continue;
+                        }else {
+                            AppointmentCreator currAppointment = new AppointmentCreator(entry.getValue());
+                            s = s  +
+                                    currAppointment.getType() + " " +
+                                    currAppointment.getTime() + " " +
+                                    entry.getKey()+ "\n";
+                        }
+                        }
                 AlertDialog alertDialog = new AlertDialog.Builder(Activity_user_login.this).
                         setTitle("order").
-                        setMessage(Arrays.toString(l.toArray())).
+                        setMessage(s).
                         setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();//add finction to dal
                             }
                         }).create();
-                alertDialog.show();}
+                alertDialog.show();
+            }
             }
         });
     }
@@ -173,13 +188,6 @@ public class Activity_user_login extends AppCompatActivity {
 
 
 
-    private List<String> getMySlots(int phoneNumber) {
-        List<String> l = new ArrayList<>();
-        //need to add a data access function to get client slots
-        l.add("10:00");
-        l.add("10:30");
-        return l;
-    }
 
     /**
      * when the client choose a appointment the dialog box open and ask him if he want
@@ -237,7 +245,7 @@ public class Activity_user_login extends AppCompatActivity {
 
     private void resetAllButtons(){
         date = null;
-        selectedTreatment = " ";
+        selectedTreatment = null;
         date = null;
         haircutButton.setEnabled(true);
         classicFacial.setEnabled(true);

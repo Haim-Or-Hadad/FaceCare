@@ -58,7 +58,7 @@ public class manageAppointments extends AppCompatActivity {
                 else {
                     for (int j = 0; j<appointmentCreatorList.size(); j++) {
                         AppointmentCreator currAppointment = new AppointmentCreator(appointmentCreatorList.get(j));
-                        String str = currAppointment.getTime().toString();
+                        String str = currAppointment.getTime();
                         allAppointments.add(str);
                     }
                     }

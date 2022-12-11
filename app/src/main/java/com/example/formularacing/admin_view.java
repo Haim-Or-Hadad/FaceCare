@@ -34,8 +34,6 @@ public class admin_view extends AppCompatActivity {
     }
 
     private void showShifts() {
-//        Intent intent = new Intent(admin_view.this, my_shifts.class);
-//        admin_view.this.startActivity(intent);
         AlertDialog alertDialog = new AlertDialog.Builder(admin_view.this).
                 setTitle("shifts").
                 setMessage("Sunday\n" +
