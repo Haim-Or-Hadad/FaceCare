@@ -39,6 +39,15 @@ public class AdminView extends AppCompatActivity {
         //when admin want change client's appointments
         Button manageButton = (Button) findViewById(R.id.ManageAppointments);
         manageButton.setOnClickListener((view -> changeAppointments()));
+
+        //when admin want to make a appointment to client
+        Button updateClientAppointment = (Button) findViewById(R.id.updateClientAppointment);
+        updateClientAppointment.setOnClickListener((view)->openAdminSchedule());
+    }
+
+    private void openAdminSchedule() {
+        Intent intent = new Intent(AdminView.this, AdminScheduleClients.class);
+        AdminView.this.startActivity(intent);
     }
 
     private void changeAppointments() {
@@ -97,6 +106,8 @@ public class AdminView extends AppCompatActivity {
                 case Calendar.FRIDAY:
                     dayString = "Friday";
                     break;
+//                case "testDate":
+//                    dayString
             }
             key=key+" - " + dayString;
             shifts = shifts + (key) + "\n";

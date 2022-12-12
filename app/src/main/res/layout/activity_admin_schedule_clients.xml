@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/admin_view"
+    tools:context=".Adminworkplan">
+
+    <ListView
+        android:id="@+id/listview2"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/calendarView4"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:background="@drawable/gradient_normal" />
+
+    <CalendarView
+        android:id="@+id/calendarView4"
+        style="@android:style/Widget.Material.CalendarView"
+        android:layout_width="400dp"
+        android:layout_height="300dp"
+        android:animateLayoutChanges="false"
+        android:animationCache="false"
+        android:backgroundTint="#322525"
+        android:backgroundTintMode="add"
+        android:fadeScrollbars="false"
+        android:maxDate="01/12/2023"
+        android:minDate="01/12/2022"
+        android:selectedWeekBackgroundColor="#684646"
+        android:verticalScrollbarPosition="defaultPosition"
+        android:visibility="visible"
+        android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Body2" />
+    <TextView
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/listview2"
+        android:text="Please click on a treatment to cancel it"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_marginTop="280dp"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
