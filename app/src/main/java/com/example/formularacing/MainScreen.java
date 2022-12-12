@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainScreen extends AppCompatActivity {
     /**
      * @param userPhone
      * parameter to save the phone of the user
@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
     private void user_login(){
         phoneNumber = userPhone.getText().toString();
         if (phoneNumber.isEmpty()) {//check if the user press on user button in dont insert a pgone number
-            Toast.makeText(MainActivity.this, "enter phone number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainScreen.this, "enter phone number", Toast.LENGTH_SHORT).show();
         }else  if(!phoneNumber.matches("05[023489]-?\\d{3}-?\\d{4}")) {//check valid phone number
-            Toast.makeText(MainActivity.this, "invalid phone number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainScreen.this, "invalid phone number", Toast.LENGTH_SHORT).show();
         }
         else {
             //need to add a function that send to ilan and raz the phone number
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
      * func to open other intent(screen) when admin want to log in
      */
     public void openAdminScreen () {
-            Intent intent = new Intent(this, admin_screen.class);
+            Intent intent = new Intent(this, AdminLogin.class);
             startActivity(intent);
         }
 
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
      * func to open other intent when user want to log in to order
      */
     public void openActivity_user_login () {
-            Intent intent = new Intent(this, Activity_user_login.class);
+            Intent intent = new Intent(this, UserLogin.class);
             loginProgress.setVisibility(View.VISIBLE);
 
             ///try to connect to firebae..................

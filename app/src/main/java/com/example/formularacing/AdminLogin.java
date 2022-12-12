@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,10 +13,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.HashMap;
-import java.util.List;
 
 
-public class admin_screen extends AppCompatActivity {
+public class AdminLogin extends AppCompatActivity {
     dataAccess dal = new dataAccess();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +57,14 @@ public class admin_screen extends AppCompatActivity {
                 if (credentials.containsKey(adminName) && credentials.get(adminName).equals(adminPassword)) {
                     open_adminActivity();
                 } else {
-                    Toast.makeText(admin_screen.this, "LOGIN FAILED", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminLogin.this, "LOGIN FAILED", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
     public void open_adminActivity(){
 
-        Intent admin_intent = new Intent(admin_screen.this, admin_view.class);
-        admin_screen.this.startActivity(admin_intent);
+        Intent admin_intent = new Intent(AdminLogin.this, AdminView.class);
+        AdminLogin.this.startActivity(admin_intent);
     }
 }

@@ -3,9 +3,7 @@ package com.example.formularacing;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.icu.text.MessagePattern;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class manageAppointments extends AppCompatActivity {
+public class AdminManageAppointments extends AppCompatActivity {
     List<String> allAppointments = new ArrayList<String>();
     CalendarView calendarView;
     dataAccess dal = new dataAccess();
@@ -62,7 +60,7 @@ public class manageAppointments extends AppCompatActivity {
                         allAppointments.add(str);
                     }
                     }
-                ArrayAdapter arrayAdapter = new ArrayAdapter(manageAppointments.this, R.layout.text_style_list, allAppointments);
+                ArrayAdapter arrayAdapter = new ArrayAdapter(AdminManageAppointments.this, R.layout.text_style_list, allAppointments);
                 Appointments.setAdapter(arrayAdapter);
             }
         });
@@ -83,7 +81,7 @@ public class manageAppointments extends AppCompatActivity {
                 //Progress.setVisibility(view.INVISIBLE);
                 //adapter.remove(position);
                 //adapter.notifyDataSetChanged();
-                Toast.makeText(manageAppointments.this,
+                Toast.makeText(AdminManageAppointments.this,
                                 "appointment cancaled " ,
                                 Toast.LENGTH_SHORT).show();
                 }

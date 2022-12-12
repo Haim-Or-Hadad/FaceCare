@@ -13,7 +13,7 @@
         android:theme="@style/Theme.FormulaRacing"
         tools:targetApi="31">
         <activity
-            android:name=".manageAppointments"
+            android:name=".AdminManageAppointments"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -27,14 +27,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".workplanActivity"
+            android:name=".Adminworkplan"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".admin_view"
+            android:name=".AdminView"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -48,21 +48,21 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".Activity_user_login"
+            android:name=".UserLogin"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".admin_screen"
+            android:name=".AdminLogin"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".MainScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

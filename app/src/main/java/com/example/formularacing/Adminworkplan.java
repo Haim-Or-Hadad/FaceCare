@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class workplanActivity extends AppCompatActivity {
+public class Adminworkplan extends AppCompatActivity {
     List<String> daysList = new ArrayList<String>();
     CheckBox Sunday;
     CheckBox monday ;

@@ -18,16 +18,13 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Activity_user_login extends AppCompatActivity {
+public class UserLogin extends AppCompatActivity {
     /**
      * @param calanderView
      * to initialize the calander to pick a date fron client
@@ -100,7 +97,7 @@ public class Activity_user_login extends AppCompatActivity {
                     date = i2 + "-" + (i1 + 1)  + "-" + i;
                     slotsList = getSlots(date, selectedTreatment);
 
-                    ArrayAdapter arrayAdapter = new ArrayAdapter(Activity_user_login.this, R.layout.text_style_list, slotsList);
+                    ArrayAdapter arrayAdapter = new ArrayAdapter(UserLogin.this, R.layout.text_style_list, slotsList);
                     listView.setAdapter(arrayAdapter);
                 }
                 }
@@ -124,7 +121,7 @@ public class Activity_user_login extends AppCompatActivity {
             public void onClick(View view) {
                 String s = new String();
                 //Task from the fire base
-                Task test = dal.loginUser(MainActivity.phoneNumber);
+                Task test = dal.loginUser(MainScreen.phoneNumber);
                 //wait untill firebase data is received
                 Progress.setVisibility(View.VISIBLE);
                 while (!test.isComplete()) {
@@ -136,7 +133,7 @@ public class Activity_user_login extends AppCompatActivity {
                 HashMap<String, HashMap<String,String>> map = (HashMap<String, HashMap<String,String>>) ((DataSnapshot) test.getResult()).getValue();
 
                 if (map == null) {
-                    Toast.makeText(Activity_user_login.this, "no appointments", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserLogin.this, "no appointments", Toast.LENGTH_SHORT).show();
                 } else {
                     for(Map.Entry<String,HashMap<String,String>> entry : map.entrySet()) {
                         if(entry.getKey().equals("emptyDate") || entry.getKey().equals(" ")  ){
@@ -149,7 +146,7 @@ public class Activity_user_login extends AppCompatActivity {
                                     entry.getKey()+ "\n";
                         }
                         }
-                AlertDialog alertDialog = new AlertDialog.Builder(Activity_user_login.this).
+                AlertDialog alertDialog = new AlertDialog.Builder(UserLogin.this).
                         setTitle("order").
                         setMessage(s).
                         setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -195,13 +192,13 @@ public class Activity_user_login extends AppCompatActivity {
      */
     private void dialogBox(String boxType, String time) {
         if (boxType == "make appointment") {
-            AlertDialog alertDialog = new AlertDialog.Builder(Activity_user_login.this).
+            AlertDialog alertDialog = new AlertDialog.Builder(UserLogin.this).
                     setTitle("order").
                     setMessage("confirm the order").
                     setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Task test =dal.scheduleAppointment(MainActivity.phoneNumber, date, time , selectedTreatment);
+                            Task test =dal.scheduleAppointment(MainScreen.phoneNumber, date, time , selectedTreatment);
                             //wait untill firebase data is received
                             //Progress.setVisibility(View.VISIBLE);
                             while (!test.isComplete()){
@@ -220,7 +217,7 @@ public class Activity_user_login extends AppCompatActivity {
             alertDialog.show();
         }
             if (boxType == "empty") {
-                AlertDialog alertDialog = new AlertDialog.Builder(Activity_user_login.this).
+                AlertDialog alertDialog = new AlertDialog.Builder(UserLogin.this).
                         setTitle("error").
                         setMessage("no treatment type").
                         setNegativeButton("OK", new DialogInterface.OnClickListener() {
@@ -253,6 +250,6 @@ public class Activity_user_login extends AppCompatActivity {
         acneButton.setEnabled(true);
         listView.clearChoices();
         List<String> EmptyList = Collections.<String>emptyList();
-        listView.setAdapter(new ArrayAdapter(Activity_user_login.this, R.layout.text_style_list, EmptyList));
+        listView.setAdapter(new ArrayAdapter(UserLogin.this, R.layout.text_style_list, EmptyList));
     }
 }

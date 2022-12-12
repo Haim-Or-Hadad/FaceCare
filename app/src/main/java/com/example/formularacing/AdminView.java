@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -21,11 +19,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
-public class admin_view extends AppCompatActivity {
+public class AdminView extends AppCompatActivity {
     dataAccess dal =new dataAccess();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +42,13 @@ public class admin_view extends AppCompatActivity {
     }
 
     private void changeAppointments() {
-        Intent intent = new Intent(admin_view.this, manageAppointments.class);
-        admin_view.this.startActivity(intent);
+        Intent intent = new Intent(AdminView.this, AdminManageAppointments.class);
+        AdminView.this.startActivity(intent);
     }
 
     private void showShifts() {
         Task task=dal.adminGetShifts();
-        List<String> shiftList = new ArrayList<>();
+        String shifts = new String();
         while (!task.isComplete()){}
         HashMap<String, ArrayList<String>> appointmentCreatorList = (HashMap<String, ArrayList<String>>) ((DataSnapshot) task.getResult()).getValue();
         // Create a TreeSet object and add the dates to it (it sort the dates in the correct order)
@@ -103,14 +99,13 @@ public class admin_view extends AppCompatActivity {
                     break;
             }
             key=key+" - " + dayString;
-            shiftList.add(key);
+            shifts = shifts + (key) + "\n";
         }
         // TODO Display shiftList!!
 
-        AlertDialog alertDialog = new AlertDialog.Builder(admin_view.this).
+        AlertDialog alertDialog = new AlertDialog.Builder(AdminView.this).
                 setTitle("Shifts").
-                setMessage("Sunday\n" +
-                            "monday").
+                setMessage(shifts).
                 setNegativeButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -122,7 +117,7 @@ public class admin_view extends AppCompatActivity {
     }
 
     public void openWorkplanActivity(){
-        Intent intent = new Intent(admin_view.this, workplanActivity.class);
-        admin_view.this.startActivity(intent);
+        Intent intent = new Intent(AdminView.this, Adminworkplan.class);
+        AdminView.this.startActivity(intent);
     }
 }
