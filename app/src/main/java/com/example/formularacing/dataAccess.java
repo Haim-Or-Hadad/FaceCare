@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,13 +21,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
-import javax.security.auth.callback.Callback;
 
 public class dataAccess {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/");
+    DatabaseReference myRef;
     public dataAccess() {
         // empty constructor
+        myRef = database.getReference();
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                //String value = dataSnapshot.getValue();
+                Log.d(TAG, "got value");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
     /**
@@ -39,8 +56,9 @@ public class dataAccess {
      * @return
      */
     public Task loginUser(String phoneNum) {
-        DatabaseReference myRef = database.getReference("users");
-
+        Log.d("here with", phoneNum);
+        myRef = database.getReference("users");
+        Log.d("here with", myRef.getKey());
         Task<DataSnapshot> task =
                 myRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -64,7 +82,15 @@ public class dataAccess {
                             }
                         }
                     }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("here FAILED with", phoneNum);
+
+                    }
                 });
+        Log.d("here with", phoneNum);
+
         return task;
     }
 
@@ -191,9 +217,7 @@ public class dataAccess {
      */
     public Task cancelAppointment(String date, String time, String phoneNum) {
         /*
-        TODO Go to user (phoneNum) get dates list, remove the time from the list and send the list back.
-        TODO Append to openAppointments on this date the time
-        TODO On scheduleAppointment remove
+        TODO fix this
 
          */
         //Reference to user path where the users data are stored
@@ -207,8 +231,9 @@ public class dataAccess {
         Task t = usersRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                Log.d("TEST TEST TEST", time+" "+phoneNum);
+
                 HashMap<String, String> times = (HashMap<String, String>) task.getResult().getValue();
+                Log.d("TEST TEST TEST", time+" "+phoneNum+"result: "+times.toString());
                 times.remove(date);
                 usersRef.child(phoneNum).setValue(times);
             }

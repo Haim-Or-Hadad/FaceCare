@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -121,8 +122,9 @@ public class UserLogin extends AppCompatActivity {
             public void onClick(View view) {
                 String s = new String();
                 //Task from the fire base
+                Log.d("test", MainScreen.phoneNumber);
                 Task test = dal.loginUser(MainScreen.phoneNumber);
-                //wait untill firebase data is received
+                //wait until firebase data is received
                 Progress.setVisibility(View.VISIBLE);
                 while (!test.isComplete()) {
 
