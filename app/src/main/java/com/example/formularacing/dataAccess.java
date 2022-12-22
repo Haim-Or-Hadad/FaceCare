@@ -23,11 +23,13 @@ import java.util.concurrent.CountDownLatch;
 
 
 public class dataAccess {
+    //private FirebaseDatabase database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/"); // production ilan al tapil
+    FirebaseDatabase database = FirebaseDatabase.getInstance(); // added for test enviorment
 
-    private FirebaseDatabase database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/");
     DatabaseReference myRef;
     public dataAccess() {
-        // empty constructor
+        database.useEmulator("10.0.2.2", 9005); // added for test enviorment
+
         myRef = database.getReference();
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
