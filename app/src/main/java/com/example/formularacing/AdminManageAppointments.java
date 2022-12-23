@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminManageAppointments extends AppCompatActivity {
     List<String> allAppointments = new ArrayList<String>();
@@ -49,17 +50,17 @@ public class AdminManageAppointments extends AppCompatActivity {
                     allAppointments.clear();
                 }
                 Progress.setVisibility(View.INVISIBLE);
-                List<HashMap<String, String>> appointmentCreatorList = (List<HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
+                HashMap<String, HashMap<String, String>> appointmentCreatorList = (HashMap<String, HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
                 if(appointmentCreatorList == null) {
                 allAppointments = Collections.<String>emptyList();
                 }
                 else {
-                    for (int j = 0; j<appointmentCreatorList.size(); j++) {
-                        AppointmentCreator currAppointment = new AppointmentCreator(appointmentCreatorList.get(j));
+                    for (Map.Entry<String, HashMap<String, String>> entry : appointmentCreatorList.entrySet()) {
+                        AppointmentCreator currAppointment = new AppointmentCreator(entry.getValue());
                         String str = currAppointment.getTime()+"|"+currAppointment.getPhone()+"|"+currAppointment.getType();
                         allAppointments.add(str);
                     }
-                    }
+                }
                 ArrayAdapter arrayAdapter = new ArrayAdapter(AdminManageAppointments.this, R.layout.text_style_list, allAppointments);
                 Appointments.setAdapter(arrayAdapter);
             }

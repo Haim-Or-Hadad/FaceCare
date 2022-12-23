@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,13 +26,18 @@ import java.util.concurrent.CountDownLatch;
 
 public class dataAccess {
     //private FirebaseDatabase database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/"); // production ilan al tapil
-    FirebaseDatabase database = FirebaseDatabase.getInstance(); // added for test enviorment
+    FirebaseDatabase database = FirebaseDatabase.getInstance(); // added for test environment
 
     DatabaseReference myRef;
+
+    FirebaseUser user;
     public dataAccess() {
-        database.useEmulator("10.0.2.2", 9005); // added for test enviorment
+        database.useEmulator("10.0.2.2", 9005); // added for test environment
 
         myRef = database.getReference();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -61,6 +68,7 @@ public class dataAccess {
         Log.d("here with", phoneNum);
         myRef = database.getReference("users");
         Log.d("here with", myRef.getKey());
+        Log.d("HI", user.getUid()+user.getPhoneNumber()+user.toString());
         Task<DataSnapshot> task =
                 myRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -111,7 +119,7 @@ public class dataAccess {
         //Reference to OpenAppointment path where the available appointment times data are stored
         DatabaseReference openAppointRef = database.getReference("OpenAppointment");
         //Reference to scheduledAppointment path where the admin can see the appointment
-        DatabaseReference scheduledAppointmentRef = database.getReference("scheduledAppointment");
+        DatabaseReference scheduledAppointmentRef = database.getReference("scheduledAppointment").child(date).push();
         //create an appointment with the data the user choose
         AppointmentCreator appointmentInfo=new AppointmentCreator(time,phoneNumber,type,"3");
 
@@ -134,21 +142,22 @@ public class dataAccess {
                                 openAppointRef.child(date).setValue(tempAvailableTimesList);
                                 usersRef.child(phoneNumber).child(date).setValue(appointmentInfo);
                                 //get the data of all the appointment of that date
-                                Task adminAppoint=scheduledAppointmentRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-
-                                        List<AppointmentCreator> adminAppointmentList= (List<AppointmentCreator>) task.getResult().getValue();
-                                        appointmentInfo.setPhone(phoneNumber);
-                                        if(adminAppointmentList!= null)
-                                            adminAppointmentList.add(appointmentInfo);
-                                        else{
-                                            adminAppointmentList=new ArrayList<>();
-                                            adminAppointmentList.add(appointmentInfo);
-                                        }
-                                        scheduledAppointmentRef.child(date).setValue(adminAppointmentList);
-                                    }
-                                });
+                                scheduledAppointmentRef.setValue(appointmentInfo);
+//                                Task adminAppoint=scheduledAppointmentRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+//
+//                                        List<AppointmentCreator> adminAppointmentList= (List<AppointmentCreator>) task.getResult().getValue();
+//                                        appointmentInfo.setPhone(phoneNumber);
+//                                        if(adminAppointmentList!= null)
+//                                            adminAppointmentList.add(appointmentInfo);
+//                                        else{
+//                                            adminAppointmentList=new ArrayList<>();
+//                                            adminAppointmentList.add(appointmentInfo);
+//                                        }
+//                                        scheduledAppointmentRef.child(date).setValue(adminAppointmentList);
+//                                    }
+//                                });
                             }
                         }
                         else{
