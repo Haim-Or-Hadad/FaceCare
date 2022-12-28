@@ -262,18 +262,28 @@ public class dataAccess {
         scheduledAppointmentRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                List<HashMap<String, String>> appointmentCreatorList = (List<HashMap<String, String>>) task.getResult().getValue();
+                HashMap<String,HashMap<String, String>> appointmentCreatorList = (HashMap<String,HashMap<String, String>>) task.getResult().getValue();
                 if (appointmentCreatorList == null) {
                     return;
                 }
                 Log.d("res", appointmentCreatorList.toString());
-                for (int i = 0; i<appointmentCreatorList.size(); i++) {
-                    AppointmentCreator currAppointment = new AppointmentCreator(appointmentCreatorList.get(i));
-                    if (currAppointment.getTime().equals(time)) {
-                        appointmentCreatorList.remove(i);
+                for (Map.Entry<String, HashMap<String, String>> entry : appointmentCreatorList.entrySet()) {
+                    HashMap<String, String> appointmentDetails = entry.getValue();
+                    String appointmenttime = appointmentDetails.get("time");
+                    if (appointmenttime.equals(time)) {
+                        // delete the entry from the appointments HashMap
+                        appointmentCreatorList.remove(entry.getKey());
                         break;
                     }
                 }
+//                for (int i = 0; i<appointmentCreatorList.size(); i++) {
+//                    Object test=appointmentCreatorList.get(i);
+//                    AppointmentCreator currAppointment = new AppointmentCreator(appointmentCreatorList.get(i));
+//                    if (currAppointment.getTime().equals(time)) {
+//                        appointmentCreatorList.remove(i);
+//                        break;
+//                    }
+//                }
                 scheduledAppointmentRef.child(date).setValue(appointmentCreatorList);
             }
         });

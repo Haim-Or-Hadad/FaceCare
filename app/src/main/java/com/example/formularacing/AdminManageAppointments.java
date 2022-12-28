@@ -69,7 +69,10 @@ public class AdminManageAppointments extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 String time = Appointments.getItemAtPosition(i).toString().substring(0,5);
-                String phoneNum = Appointments.getItemAtPosition(i).toString().substring(6,16);;
+                String appointmentString = Appointments.getItemAtPosition(i).toString();;
+                int startIndex = appointmentString.indexOf("|") + 1;
+                int endIndex = appointmentString.indexOf("|", startIndex);
+                String phoneNum = appointmentString.substring(startIndex, endIndex);
 
                 Task task =dal.cancelAppointment(date,time,phoneNum);
                 //Progress.setVisibility(View.VISIBLE);
@@ -80,6 +83,15 @@ public class AdminManageAppointments extends AppCompatActivity {
                 //Progress.setVisibility(view.INVISIBLE);
                 //adapter.remove(position);
                 //adapter.notifyDataSetChanged();
+                for (int index = 0; i < allAppointments.size(); i++) {
+                    String appointment = allAppointments.get(i);
+                    if (appointment.startsWith(time)) {
+                        // delete the element from the appointments list
+                        allAppointments.remove(index);
+                    }
+                }
+                ArrayAdapter arrayAdapter = new ArrayAdapter(AdminManageAppointments.this, R.layout.text_style_list, allAppointments);
+                Appointments.setAdapter(arrayAdapter);
                 Toast.makeText(AdminManageAppointments.this,
                                 "appointment cancaled " ,
                                 Toast.LENGTH_SHORT).show();
