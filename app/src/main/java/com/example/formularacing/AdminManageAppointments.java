@@ -46,13 +46,11 @@ public class AdminManageAppointments extends AppCompatActivity {
                 Task task =dal.adminShowAppointment(date);
 
                 Progress.setVisibility(View.VISIBLE);
-                while (!task.isComplete()){
-                    allAppointments.clear();
-                }
+                while (!task.isComplete()){allAppointments.clear();}
                 Progress.setVisibility(View.INVISIBLE);
                 HashMap<String, HashMap<String, String>> appointmentCreatorList = (HashMap<String, HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
                 if(appointmentCreatorList == null) {
-                allAppointments = Collections.<String>emptyList();
+                    allAppointments.clear();
                 }
                 else {
                     for (Map.Entry<String, HashMap<String, String>> entry : appointmentCreatorList.entrySet()) {
