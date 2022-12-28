@@ -227,10 +227,6 @@ public class dataAccess {
      * @return
      */
     public Task cancelAppointment(String date, String time, String phoneNum) {
-        /*
-        TODO fix this
-
-         */
         //Reference to user path where the users data are stored
         DatabaseReference usersRef = database.getReference("users");
         //Reference to OpenAppointment path where the available appointment times data are stored
