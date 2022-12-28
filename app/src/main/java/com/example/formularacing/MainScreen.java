@@ -3,12 +3,15 @@ package com.example.formularacing;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +48,7 @@ public class MainScreen extends AppCompatActivity {
     ImageView whatsapp,facebook,instagram,support;
     ProgressBar loginProgress;
     public FirebaseUser user;
+    String code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +115,11 @@ public class MainScreen extends AppCompatActivity {
 //            Toast.makeText(MainScreen.this, "invalid phone number", Toast.LENGTH_SHORT).show();
         }
         else {
+            identification();
+        }
+    }
+
+    private void Verification() {
             //need to add a function that send to ilan and raz the phone number
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             //String mVerificationId;
@@ -151,10 +160,10 @@ public class MainScreen extends AppCompatActivity {
                     // now need to ask the user to enter the code and then construct a credential
                     // by combining the code with a verification ID.
                     Log.d(TAG, "onCodeSent:" + verificationId);
-                    String code = "123456"; // This is the code for the test user +1 650-555-3434
+                    //String code = "123456"; // This is the code for the test user +1 650-555-3434
                     // TODO Create a proper UI for 6 digit code input, give the input to 'code'
-                    Log.d(TAG, "code:" + code);
-
+                   //"123456" Log.d(TAG, "code:" + code);
+                    //String code = identification(); //get the identification code from client
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
                     signInWithPhoneAuthCredential(credential);
                 }
@@ -175,6 +184,7 @@ public class MainScreen extends AppCompatActivity {
                                         Log.w(TAG, "signInWithCredential:failure", task.getException());
                                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                             // The verification code entered was invalid
+                                            Toast.makeText(MainScreen.this, "incorrect code", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 }
@@ -199,8 +209,35 @@ public class MainScreen extends AppCompatActivity {
                             .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
                             .build();
             PhoneAuthProvider.verifyPhoneNumber(options);
-            //openActivity_user_login(); // This was moved to the function signInWithPhoneAuthCredential
-        }
+        //openActivity_user_login(); // This was moved to the function signInWithPhoneAuthCredential
+    }
+
+    private String identification() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Identification");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                code = input.getText().toString();
+                Verification();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+        return code;
     }
 
     private void using_support() {

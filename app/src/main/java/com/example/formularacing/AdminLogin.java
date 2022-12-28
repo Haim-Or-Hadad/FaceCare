@@ -1,5 +1,7 @@
 package com.example.formularacing;
 
+import static com.example.formularacing.MainScreen.phoneNumber;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,7 +13,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
-
 import java.util.HashMap;
 
 
@@ -26,8 +27,6 @@ public class AdminLogin extends AppCompatActivity {
 
         /*
         TEST AREA FOR DATAACSSESS MODULE
-         */
-
         // this block of code is for dataAccess testing
         //dal.loginUser("0527142312"); // connect to user and load info to test.existingTimes
         // test.existstingtimes is still empty:

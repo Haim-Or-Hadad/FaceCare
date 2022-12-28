@@ -1,5 +1,7 @@
 package com.example.formularacing;
 
+import static com.example.formularacing.MainScreen.phoneNumber;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -84,6 +86,8 @@ public class UserLogin extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         //save the date of calander picker
         calendarView = (CalendarView) findViewById(R.id.calendarView2);
+        Toast toast = Toast.makeText(UserLogin.this, "hello " + phoneNumber , Toast.LENGTH_SHORT);
+
         /**
          * When the customer chooses a date, so a list of available hours appears to him with
          * listview that use arrayAddapter to show the slots.
