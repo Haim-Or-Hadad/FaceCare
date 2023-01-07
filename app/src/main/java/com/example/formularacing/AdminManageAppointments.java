@@ -42,17 +42,20 @@ public class AdminManageAppointments extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
 //                allAppointments  = Collections.<String>emptyList();
-                date = i2 + "-" + (i1 + 1)  + "-" + i;
+                String month=String.format("%02d", (i1+1));
+                String day= String.format("%02d",i2);
+                date = day + "-" + month  + "-" + i;
                 Task task =dal.adminShowAppointment(date);
 
                 Progress.setVisibility(View.VISIBLE);
-                while (!task.isComplete()){allAppointments.clear();}
+                while (!task.isComplete()){}
                 Progress.setVisibility(View.INVISIBLE);
                 HashMap<String, HashMap<String, String>> appointmentCreatorList = (HashMap<String, HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
                 if(appointmentCreatorList == null) {
                     allAppointments.clear();
                 }
                 else {
+                    allAppointments.clear();
                     for (Map.Entry<String, HashMap<String, String>> entry : appointmentCreatorList.entrySet()) {
                         AppointmentCreator currAppointment = new AppointmentCreator(entry.getValue());
                         String str = currAppointment.getTime()+"|"+currAppointment.getPhone()+"|"+currAppointment.getType();

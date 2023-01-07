@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.Task;
@@ -45,7 +46,6 @@ public class AdminScheduleClients extends AppCompatActivity {
         acneButton = (Button) findViewById(R.id.acneAdmin);
         classicFacial = (Button) findViewById(R.id.classic_facialAdmin);
         resetAll = (Button) findViewById(R.id.resetAdmin);
-        mySlots = (Button) findViewById(R.id.mySlotsAdmin);
         listView = findViewById(R.id.listViewAdmin);
         cal = findViewById((R.id.calendarViewAdmin));
 
@@ -53,14 +53,18 @@ public class AdminScheduleClients extends AppCompatActivity {
         haircutButton.setOnClickListener((view) -> typeOfTreatment("haircut"));
         acneButton.setOnClickListener((view) -> typeOfTreatment("acne"));
         classicFacial.setOnClickListener((view) -> typeOfTreatment("classic_facial"));
+        resetAll.setOnClickListener((view)-> resetAllButtons());
 
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                if (selectedTreatment == null) {
-                    dialogBox("empty", " ");
-                } else {
-                    date = i2 + "-" + (i1 + 1) + "-" + i;
+                if(selectedTreatment == null){
+                    dialogBox("empty"," ");
+                }
+                else {
+                    String month=String.format("%02d", (i1+1));
+                    String day= String.format("%02d",i2);
+                    date = day + "-" + month  + "-" + i;
                     slotsList = getSlots(date, selectedTreatment);
 
                     ArrayAdapter arrayAdapter = new ArrayAdapter(AdminScheduleClients.this, R.layout.text_style_list, slotsList);
@@ -132,21 +136,41 @@ public class AdminScheduleClients extends AppCompatActivity {
      */
     private void dialogBox(String boxType, String time) {
         if (boxType == "make appointment") {
-            AlertDialog alertDialog = new AlertDialog.Builder(AdminScheduleClients.this).
-                    setTitle("order").
-                    setMessage("confirm the order").
+            // Create a new dialog box to prompt the user to enter a phone number
+            final EditText phoneNumberEditText = new EditText(AdminScheduleClients.this);
+            AlertDialog phoneNumberDialog = new AlertDialog.Builder(AdminScheduleClients.this).
+                    setTitle("Enter phone number").
+                    setView(phoneNumberEditText).
                     setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Task test = dal.scheduleAppointment(MainScreen.phoneNumber, date, time, selectedTreatment);
-                            //wait untill firebase data is received
-                            //Progress.setVisibility(View.VISIBLE);
-                            while (!test.isComplete()) {
+                            // Save the phone number entered by the user
+                            String phoneNumber = phoneNumberEditText.getText().toString();
+                            // Continue with the rest of the code in the "make appointment" block
+                            // (create and show the main alert dialog)
+                            AlertDialog alertDialog = new AlertDialog.Builder(AdminScheduleClients.this).
+                                    setTitle("Confirmation").
+                                    setMessage("Confirm appointment: \n "+ "Client Phone: "+ phoneNumber +"\n Treatment type: "+ selectedTreatment).
+                                    setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Task test = dal.scheduleAppointment(phoneNumber, date, time, selectedTreatment);
+                                            //wait untill firebase data is received
+                                            //Progress.setVisibility(View.VISIBLE);
+                                            while (!test.isComplete()) {
 
-                            }
-                            //Progress.setVisibility(View.INVISIBLE);
-                            //resetAllButtons();
-                            dialogInterface.dismiss();//add finction to dal
+                                            }
+                                            //Progress.setVisibility(View.INVISIBLE);
+                                            resetAllButtons();
+                                            dialogInterface.dismiss();//add finction to dal
+                                        }
+                                    }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    }).create();
+                            alertDialog.show();
                         }
                     }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -154,7 +178,7 @@ public class AdminScheduleClients extends AppCompatActivity {
                             dialogInterface.dismiss();
                         }
                     }).create();
-            alertDialog.show();
+            phoneNumberDialog.show();
         }
         if (boxType == "empty") {
             AlertDialog alertDialog = new AlertDialog.Builder(AdminScheduleClients.this).
@@ -169,6 +193,7 @@ public class AdminScheduleClients extends AppCompatActivity {
             alertDialog.show();
         }
     }
+
 
     private void resetAllButtons() {
         date = null;

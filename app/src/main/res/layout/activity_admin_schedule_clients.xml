@@ -50,25 +50,25 @@
         android:text="facecare" />
 
 
-    <Button
-        android:id="@+id/mySlotsAdmin"
-        android:layout_width="120dp"
-        android:layout_height="50dp"
-        android:layout_below="@id/calendarViewAdmin"
-        android:layout_marginStart="200dp"
-        android:backgroundTint="#a67041"
-        android:text="appointments"
-        />
+    <ListView
+        android:id="@+id/listViewAdmin"
+        android:layout_width="400dp"
+        android:layout_height="140dp"
+        android:layout_below="@+id/resetAdmin"
+        android:layout_marginTop="5dp"
+        android:background="#bea18f" />
 
     <Button
         android:id="@+id/resetAdmin"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:layout_below="@id/calendarViewAdmin"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="68dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="144dp"
         android:backgroundTint="#a67041"
-        android:text="reset"
-        />
+        android:text="reset" />
 
     <CalendarView
         android:id="@+id/calendarViewAdmin"
@@ -88,12 +88,6 @@
         android:visibility="visible"
         android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-    <ListView
-        android:id="@+id/listViewAdmin"
-        android:layout_width="400dp"
-        android:layout_height="140dp"
-        android:layout_below="@+id/mySlotsAdmin"
-        android:background="#bea18f" />
     <ProgressBar
         android:id="@+id/ProgressAdmin"
         style="?android:attr/progressBarStyle"

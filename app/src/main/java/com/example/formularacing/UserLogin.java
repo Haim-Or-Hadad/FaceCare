@@ -99,7 +99,9 @@ public class UserLogin extends AppCompatActivity {
                     dialogBox("empty"," ");
                 }
                 else {
-                    date = i2 + "-" + (i1 + 1)  + "-" + i;
+                    String month=String.format("%02d", (i1+1));
+                    String day= String.format("%02d",i2);
+                    date = day + "-" + month  + "-" + i;
                     slotsList = getSlots(date, selectedTreatment);
 
                     ArrayAdapter arrayAdapter = new ArrayAdapter(UserLogin.this, R.layout.text_style_list, slotsList);
