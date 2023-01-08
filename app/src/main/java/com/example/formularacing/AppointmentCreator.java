@@ -9,11 +9,20 @@ public class AppointmentCreator {
     private String Phone;
     private String type;
     private String length;
+    private String date;
     public AppointmentCreator(String time,String phone,String type,String length){
         this.time=time;
         this.length=length;
         this.Phone=phone;
         this.type=type;
+    }
+
+    public AppointmentCreator(String time,String phone,String type,String length, String date){
+        this.time=time;
+        this.length=length;
+        this.Phone=phone;
+        this.type=type;
+        this.date=date;
     }
 
     // ODM
@@ -22,7 +31,9 @@ public class AppointmentCreator {
         this.length=valueMap.get("length");
         this.Phone=valueMap.get("phone");
         this.type=valueMap.get("type");
+        this.date=valueMap.get("date");
     }
+
 
     public void setLength(String length) {
         this.length = length;
@@ -36,9 +47,13 @@ public class AppointmentCreator {
         this.type = type;
     }
 
-    public void setTime(String date) {
+    public void setTime(String time) {
         this.time = time;
     }
+
+    public void setDate(String date) { this.date = date;}
+
+    public String getDate() { if (date == null) return "nullDate"; else return date;}
 
     public String getLength() {
         return length;

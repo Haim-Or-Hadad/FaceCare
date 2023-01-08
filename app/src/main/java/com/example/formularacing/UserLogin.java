@@ -59,7 +59,7 @@ public class UserLogin extends AppCompatActivity {
     ListView listView;
     String date;
     List<String> slotsList;
-    dataAccess dal = new dataAccess();
+    dataAccess dal = new dataAccess(MainScreen.phoneNumber);
     ProgressBar Progress;
 
 
@@ -128,32 +128,25 @@ public class UserLogin extends AppCompatActivity {
             public void onClick(View view) {
                 String s = new String();
                 //Task from the fire base
-                Log.d("test", MainScreen.phoneNumber);
-                Task test = dal.loginUser(MainScreen.phoneNumber);
-                //wait until firebase data is received
-                Progress.setVisibility(View.VISIBLE);
-                while (!test.isComplete()) {
+                Log.d("click on show", MainScreen.phoneNumber);
 
-                }
-                Progress.setVisibility(View.INVISIBLE);
-                //get the Available Times
-                //DataSnapshot test2=(DataSnapshot)test.getResult();
-                HashMap<String, HashMap<String,String>> map = (HashMap<String, HashMap<String,String>>) ((DataSnapshot) test.getResult()).getValue();
-
-                if (map == null) {
+                if (dal.listOfAppointments.isEmpty()) {
                     Toast.makeText(UserLogin.this, "no appointments", Toast.LENGTH_SHORT).show();
                 } else {
-                    for(Map.Entry<String,HashMap<String,String>> entry : map.entrySet()) {
-                        if(entry.getKey().equals("emptyDate") || entry.getKey().equals(" ")  ){
+                    for (int i = 0; i < dal.listOfAppointments.size(); i++) {
+                        if (dal.listOfAppointments.get(i) == null) continue;
+                        HashMap<String,String> entry = dal.listOfAppointments.get(i);
+                        if (entry.get("date") == null) {}
+                        else if(entry.get("date").equals("emptyDate") || entry.get("date").equals(" ")){
                             continue;
-                        }else {
-                            AppointmentCreator currAppointment = new AppointmentCreator(entry.getValue());
+                        }
+                            AppointmentCreator currAppointment = new AppointmentCreator(entry);
                             s = s  +
                                     currAppointment.getType() + " " +
                                     currAppointment.getTime() + " " +
-                                    entry.getKey()+ "\n";
-                        }
-                        }
+                                    currAppointment.getDate() + "\n";
+
+                    }
                 AlertDialog alertDialog = new AlertDialog.Builder(UserLogin.this).
                         setTitle("order").
                         setMessage(s).
