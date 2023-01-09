@@ -160,10 +160,6 @@ public class MainScreen extends AppCompatActivity {
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
                 Log.d(TAG, "onCodeSent:" + verificationId);
-                //String code = "123456"; // This is the code for the test user +1 650-555-3434
-                // TODO Create a proper UI for 6 digit code input, give the input to 'code'
-                //"123456" Log.d(TAG, "code:" + code);
-                //String code = identification(); //get the identification code from client
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
                 signInWithPhoneAuthCredential(credential);
             }
@@ -200,7 +196,7 @@ public class MainScreen extends AppCompatActivity {
         } else {
             phoneNumToE164Format = phoneNumber;
         }
-        Log.d("test", "starting login precedure with number "+phoneNumToE164Format);
+        Log.d("test", "starting sms precedure with number "+phoneNumToE164Format);
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(phoneNumToE164Format)       // Phone number to verify
@@ -209,7 +205,6 @@ public class MainScreen extends AppCompatActivity {
                         .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
-        //openActivity_user_login(); // This was moved to the function signInWithPhoneAuthCredential
     }
 
     private String identification() {

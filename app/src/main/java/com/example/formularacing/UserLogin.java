@@ -49,13 +49,13 @@ public class UserLogin extends AppCompatActivity {
      * list that save the time slots to client
      */
     CalendarView calendarView;
-    Button beardButton;
-    Button haircutButton;
-    Button acneButton;
-    Button classicFacial;
+    Button beardButton; // TODO Should be changed to button1
+    Button haircutButton;  // TODO Should be changed to button2
+    Button acneButton;  // TODO Should be changed to button3
+    Button classicFacial;  // TODO Should be changed to button4
     Button resetAll;
     Button mySlots;
-    String selectedTreatment;
+    String selectedTreatment; // TODO Should actually be a serivce object to read the type, length, price from.
     ListView listView;
     String date;
     List<String> slotsList;
@@ -68,6 +68,7 @@ public class UserLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.client_order_screen);
+        // TODO Should load from the database the 4 available services (into a service object), and write on the buttons the "type" of each service
         /**
          * detects the id of the beard treatment button and saves the selection if the button is pressed
          */
@@ -102,7 +103,7 @@ public class UserLogin extends AppCompatActivity {
                     String month=String.format("%02d", (i1+1));
                     String day= String.format("%02d",i2);
                     date = day + "-" + month  + "-" + i;
-                    slotsList = getSlots(date, selectedTreatment);
+                    slotsList = getSlots(date, selectedTreatment); // TODO Should maybe send a date and serice object itself
 
                     ArrayAdapter arrayAdapter = new ArrayAdapter(UserLogin.this, R.layout.text_style_list, slotsList);
                     listView.setAdapter(arrayAdapter);

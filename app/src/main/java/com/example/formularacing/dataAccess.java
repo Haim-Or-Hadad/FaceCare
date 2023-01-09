@@ -84,6 +84,30 @@ public class dataAccess {
 
     }
 
+    public void setService(service newService, int index) { // TODO TEST WITH ADMIN FRONT FUNCTIONS
+        /*
+        Get a service object and an index [0, 3] and sets the service into the database
+         */
+        if (index > 3 || index < 0) {
+            Log.e("error", "index of service should be 0, 1, 2, or 3. Got:"+String.valueOf(index));
+        }
+        String key = "service"+String.valueOf(index);
+        Log.d("info", "putting a service into "+key);
+        DatabaseReference servicesReference = database.getReference("services").child(key);
+        servicesReference.setValue(newService);
+    }
+
+    public Task getServices() { // TODO TEST WITH USER FRONT FUNCTIONS
+        /*
+        Returns a task with the value of the services. Value is a hashmap and looks like:
+        { "service1": { "type" : TYPEVALUE, "price": PRICEVALUE, "length" : LENGTHVALUE }, "service2": { "type" : TYPEVALUE, "price": PRICEVALUE, "length" : LENGTHVALUE },
+        "service3": { "type" : TYPEVALUE, "price": PRICEVALUE, "length" : LENGTHVALUE }, "service4": { "type" : TYPEVALUE, "price": PRICEVALUE, "length" : LENGTHVALUE } }
+         */
+        DatabaseReference servicesReference = database.getReference("services");
+        return servicesReference.get();
+
+    }
+
     /**
      * This function is called when a user enters his phone number.
      * The function asks the server if the user is a new user or returning user.
