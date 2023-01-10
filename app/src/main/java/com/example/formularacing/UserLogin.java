@@ -5,8 +5,13 @@ import static com.example.formularacing.MainScreen.phoneNumber;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,12 +27,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class UserLogin extends AppCompatActivity {
     /**
@@ -239,6 +250,7 @@ public class UserLogin extends AppCompatActivity {
                             while (!test.isComplete()){
 
                             }
+                            sendFutureNotification(date,time);
                             //Progress.setVisibility(View.INVISIBLE);
                             resetAllButtons();
                             dialogInterface.dismiss();//add finction to dal
@@ -286,5 +298,58 @@ public class UserLogin extends AppCompatActivity {
         listView.clearChoices();
         List<String> EmptyList = Collections.<String>emptyList();
         listView.setAdapter(new ArrayAdapter(UserLogin.this, R.layout.text_style_list, EmptyList));
+    }
+
+
+
+    private void sendFutureNotification(String mydate, String mytime) {
+
+
+        // Parse the date and time string
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Calendar date = Calendar.getInstance();
+        try {
+            String formatString = mydate+" "+mytime+":00";
+            date.setTime(Objects.requireNonNull(format.parse(formatString)));
+            date.add(Calendar.MINUTE, -10);
+        } catch (ParseException e) {
+            // Handle parsing error
+        }
+
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                // This code will be executed at the specified date and time
+                sendNotification("Appointment in 10 minutes", "Appointment at: "+mydate+" "+mytime );
+            }
+        };
+
+        // Schedule the task to run at the specified date and time
+        timer.schedule(task, date.getTime());
+    }
+
+
+
+
+    public void sendNotification(String notificationTitle, String notificationBody)
+    {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel = new NotificationChannel("My Notification","My Notification",NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(UserLogin.this,"My Notification");
+        builder.setContentTitle(notificationTitle);
+        builder.setContentText(notificationBody);
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.drawable.acne_icon);
+
+
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+// notificationId is a unique int for each notification that you must define
+        notificationManager.notify(0, builder.build());
     }
 }
