@@ -7,38 +7,35 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
+import java.util.Calendar;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class UserLogin extends AppCompatActivity {
     /**
@@ -128,7 +125,7 @@ public class UserLogin extends AppCompatActivity {
                     ArrayAdapter arrayAdapter = new ArrayAdapter(UserLogin.this, R.layout.text_style_list, slotsList);
                     listView.setAdapter(arrayAdapter);
                 }
-                }
+            }
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -161,24 +158,24 @@ public class UserLogin extends AppCompatActivity {
                         else if(entry.get("date").equals("emptyDate") || entry.get("date").equals(" ")){
                             continue;
                         }
-                            AppointmentCreator currAppointment = new AppointmentCreator(entry);
-                            s = s  +
-                                    currAppointment.getType() + " " +
-                                    currAppointment.getTime() + " " +
-                                    currAppointment.getDate() + "\n";
+                        AppointmentCreator currAppointment = new AppointmentCreator(entry);
+                        s = s  +
+                                currAppointment.getType() + " " +
+                                currAppointment.getTime() + " " +
+                                currAppointment.getDate() + "\n";
 
                     }
-                AlertDialog alertDialog = new AlertDialog.Builder(UserLogin.this).
-                        setTitle("order").
-                        setMessage(s).
-                        setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();//add finction to dal
-                            }
-                        }).create();
-                alertDialog.show();
-            }
+                    AlertDialog alertDialog = new AlertDialog.Builder(UserLogin.this).
+                            setTitle("order").
+                            setMessage(s).
+                            setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();//add finction to dal
+                                }
+                            }).create();
+                    alertDialog.show();
+                }
             }
         });
     }
@@ -204,9 +201,9 @@ public class UserLogin extends AppCompatActivity {
                     buttonList.get(i).setText(servicesList.get(i));
                     i++;
                 }
-                }
+            }
         });
-           //beardButton.setText(servicesList.get(0));
+        //beardButton.setText(servicesList.get(0));
 //        haircutButton.setText(servicesList.get(1));
 //        acneButton.setText(servicesList.get(2));
 //        classicFacial.setText(servicesList.get(3));
@@ -269,17 +266,17 @@ public class UserLogin extends AppCompatActivity {
                     }).create();
             alertDialog.show();
         }
-            if (boxType == "empty") {
-                AlertDialog alertDialog = new AlertDialog.Builder(UserLogin.this).
-                        setTitle("error").
-                        setMessage("no treatment type").
-                        setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).create();
-                alertDialog.show();
+        if (boxType == "empty") {
+            AlertDialog alertDialog = new AlertDialog.Builder(UserLogin.this).
+                    setTitle("error").
+                    setMessage("no treatment type").
+                    setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).create();
+            alertDialog.show();
         }
     }
 
@@ -298,16 +295,13 @@ public class UserLogin extends AppCompatActivity {
         selectedTreatment = null;
         date = null;
         service3.setEnabled(true);
-        service4.setEnabled(true);
+        service2.setEnabled(true);
         service1.setEnabled(true);
         service2.setEnabled(true);
         listView.clearChoices();
         List<String> EmptyList = Collections.<String>emptyList();
         listView.setAdapter(new ArrayAdapter(UserLogin.this, R.layout.text_style_list, EmptyList));
     }
-
-
-
     private void sendFutureNotification(String mydate, String mytime) {
 
 

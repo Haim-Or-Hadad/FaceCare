@@ -63,7 +63,7 @@ public class AdminServices extends AppCompatActivity {
 
     private void manageServices(String str) {
         if(str.equals("current")){
-           String selectedServices = String.join(", ", services);
+            String selectedServices = String.join(", ", services);
             Toast.makeText(AdminServices.this, selectedServices, Toast.LENGTH_SHORT).show();
         }
         else {
