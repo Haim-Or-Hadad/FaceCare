@@ -43,6 +43,15 @@ public class AdminView extends AppCompatActivity {
         //when admin want to make a appointment to client
         Button updateClientAppointment = (Button) findViewById(R.id.updateClientAppointment);
         updateClientAppointment.setOnClickListener((view)->openAdminSchedule());
+
+        //when admin want to set a services to client screen
+        Button setService = (Button) findViewById(R.id.setService);
+        setService.setOnClickListener((view)->openAvilableServices());
+    }
+
+    private void openAvilableServices() {
+        Intent intent = new Intent(AdminView.this, AdminServices.class);
+        AdminView.this.startActivity(intent);
     }
 
     private void openAdminSchedule() {
