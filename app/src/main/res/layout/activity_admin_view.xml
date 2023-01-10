@@ -43,4 +43,14 @@
         android:layout_centerHorizontal="true"
         android:text="Add Appoinments"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/setService"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:text="SET SERVICES"
+        android:textStyle="bold"
+        android:layout_below="@+id/updateClientAppointment"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

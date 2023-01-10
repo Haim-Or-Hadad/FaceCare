@@ -8,46 +8,42 @@
     tools:context=".MainScreen">
 
     <Button
-        android:id="@+id/acne"
+        android:id="@+id/service1"
         android:layout_width="142dp"
         android:layout_height="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="#a67041"
-        android:drawableEnd="@drawable/acne_icon"
-        android:text="acne" />
+        android:drawableEnd="@drawable/acne_icon" />
 
     <Button
-        android:id="@+id/haircut"
+        android:id="@+id/service2"
         android:layout_width="142dp"
         android:layout_height="40dp"
         android:layout_marginLeft="200dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="#a67041"
-        android:drawableEnd="@drawable/haircut_icon"
-        android:text="haircut" />
+        android:drawableEnd="@drawable/haircut_icon" />
 
     <Button
-        android:id="@+id/beard"
+        android:id="@+id/service3"
         android:layout_width="142dp"
         android:layout_height="40dp"
-        android:layout_below="@id/haircut"
+        android:layout_below="@id/service2"
         android:layout_marginLeft="20dp"
         android:backgroundTint="#a67041"
         android:backgroundTintMode="add"
         android:drawableEnd="@drawable/beard_icon"
-        android:text="beard"
         android:visibility="visible" />
 
     <Button
-        android:id="@+id/classic_facial"
+        android:id="@+id/service4"
         android:layout_width="142dp"
         android:layout_height="40dp"
-        android:layout_below="@id/haircut"
+        android:layout_below="@id/service2"
         android:backgroundTint="#a67041"
         android:layout_marginLeft="200dp"
-        android:drawableEnd="@drawable/facecare_icon"
-        android:text="facecare" />
+        android:drawableEnd="@drawable/facecare_icon" />
 
 
     <Button
@@ -75,7 +71,7 @@
         style="@android:style/Widget.Material.CalendarView"
         android:layout_width="400dp"
         android:layout_height="300dp"
-        android:layout_below="@id/classic_facial"
+        android:layout_below="@id/service4"
         android:animateLayoutChanges="false"
         android:animationCache="false"
         android:backgroundTint="#322525"

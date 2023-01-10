@@ -3,6 +3,7 @@ package com.example.formularacing;
 import static android.content.ContentValues.TAG;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -31,8 +32,10 @@ public class dataAccess {
     DatabaseReference myRef;
 
     FirebaseUser user;
+
+    ArrayList<HashMap<String, String>> listOfAppointments = new ArrayList<>();
     public dataAccess() {
-        database.useEmulator("10.0.2.2", 9005); // added for test environment
+        database.useEmulator("10.0.2.2", 9009); // added for test environment
 
         myRef = database.getReference();
 
@@ -55,6 +58,56 @@ public class dataAccess {
         });
     }
 
+    public dataAccess(String phone) {
+        database.useEmulator("10.0.2.2", 9009); // added for test environment
+
+        myRef = database.getReference();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                //String value = dataSnapshot.getValue();
+                Log.d(TAG, "got value");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+        loginUser(phone);
+
+    }
+
+    public void setService(service newService, int index) { // TODO TEST WITH ADMIN FRONT FUNCTIONS
+        /*
+        Get a service object and an index [0, 3] and sets the service into the database
+         */
+        if (index > 3 || index < 0) {
+            Log.e("error", "index of service should be 0, 1, 2, or 3. Got:"+String.valueOf(index));
+        }
+        String key = "service"+String.valueOf(index);
+        Log.d("info", "putting a service into "+key);
+        DatabaseReference servicesReference = database.getReference("services").child(key);
+        servicesReference.setValue(newService);
+    }
+
+    public Task getServices() { // TODO TEST WITH USER FRONT FUNCTIONS
+        /*
+        Returns a task with the value of the services. Value is a hashmap and looks like:
+        { "service1": { "type" : TYPEVALUE, "price": PRICEVALUE, "length" : LENGTHVALUE }, "service2": { "type" : TYPEVALUE, "price": PRICEVALUE, "length" : LENGTHVALUE },
+        "service3": { "type" : TYPEVALUE, "price": PRICEVALUE, "length" : LENGTHVALUE }, "service4": { "type" : TYPEVALUE, "price": PRICEVALUE, "length" : LENGTHVALUE } }
+         */
+        DatabaseReference servicesReference = database.getReference("services");
+        return servicesReference.get();
+
+    }
+
     /**
      * This function is called when a user enters his phone number.
      * The function asks the server if the user is a new user or returning user.
@@ -65,12 +118,12 @@ public class dataAccess {
      * @return
      */
     public Task loginUser(String phoneNum) {
-        Log.d("here with", phoneNum);
+        Log.d("got show appointments", phoneNum);
         myRef = database.getReference("users");
-        Log.d("here with", myRef.getKey());
-        Log.d("HI", user.getUid()+user.getPhoneNumber()+user.toString());
-        Task<DataSnapshot> task =
-                myRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        DatabaseReference scheduledRef = database.getReference("scheduledAppointment");
+
+        //listOfAppointments.clear();
+        Task<DataSnapshot> task = myRef.child(phoneNum).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         if (!task.isSuccessful()) {
@@ -86,20 +139,41 @@ public class dataAccess {
                                 newList.add("");
                                 emptyMap.put("emptyDate",newList);
                                 myRef.child(phoneNum).setValue(emptyMap);
-
                             } else {
                                 Log.d("returning user", returnedValue);
-                            }
+                                HashMap<String, ArrayList<String>> map = (HashMap<String, ArrayList<String>>) ((DataSnapshot) task.getResult()).getValue();
+                                if (map == null) {
+                                } else {
+                                    for(Map.Entry<String,ArrayList<String>> entry : map.entrySet()) {
+                                        if(entry.getKey().equals("emptyDate") || entry.getKey().equals(" ")  ){
+                                            continue;
+                                        } else {
+                                            String currentDate = entry.getKey();
+                                            ArrayList<String> listOfAppointmentIds = entry.getValue();
+                                            for (int i = 0; i < listOfAppointmentIds.size(); i++) {
+                                                String currentId = listOfAppointmentIds.get(i);
+                                                task = scheduledRef.child(currentDate).child(currentId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                                        if (task.getResult().getValue() == null) {
+                                                            Log.d("task", "is null");
+                                                            return;
+                                                        }
+                                                        listOfAppointments.add((HashMap<String, String>) task.getResult().getValue());
+                                                        Log.d("got task", task.getResult().getValue().toString());
+                                                    }
+                                                });
+
+                                            }
+                                            if (listOfAppointments.size() == 1) {
+                                                listOfAppointments.clear();
+                                            }
+                                        }
+                                    }
+                                }
                         }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("here FAILED with", phoneNum);
-
-                    }
-                });
-        Log.d("here with", phoneNum);
+                }});
 
         return task;
     }
@@ -120,8 +194,9 @@ public class dataAccess {
         DatabaseReference openAppointRef = database.getReference("OpenAppointment");
         //Reference to scheduledAppointment path where the admin can see the appointment
         DatabaseReference scheduledAppointmentRef = database.getReference("scheduledAppointment").child(date).push();
+        String sceduledId = scheduledAppointmentRef.getKey();
         //create an appointment with the data the user choose
-        AppointmentCreator appointmentInfo=new AppointmentCreator(time,phoneNumber,type,"3");
+        AppointmentCreator appointmentInfo=new AppointmentCreator(time,phoneNumber,type,"3", date);
 
         Task task = // A task that get all the available times from the OpenAppointment
                 openAppointRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -140,9 +215,27 @@ public class dataAccess {
                                 //add this appointment to the admin appointment list
                                 tempAvailableTimesList.remove(index);
                                 openAppointRef.child(date).setValue(tempAvailableTimesList);
-                                usersRef.child(phoneNumber).child(date).setValue(appointmentInfo);
-                                //get the data of all the appointment of that date
                                 scheduledAppointmentRef.setValue(appointmentInfo);
+                                usersRef.child(phoneNumber).child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        if (task.getResult().getValue() == null) {
+                                            ArrayList<String> listOfIds = new ArrayList<>();
+                                            listOfIds.add(sceduledId);
+                                            usersRef.child(phoneNumber).child(date).setValue(listOfIds);
+                                            loginUser(phoneNumber);
+                                        } else {
+                                            ArrayList<String> listOfIds = (ArrayList<String>) task.getResult().getValue();
+                                            listOfIds.add(sceduledId);
+                                            usersRef.child(phoneNumber).child(date).setValue(listOfIds);
+                                            loginUser(phoneNumber);
+                                        }
+                                    }
+                                });
+                                        //get the data of all the appointment of that date
+
+
+
 //                                Task adminAppoint=scheduledAppointmentRef.child(date).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
 //                                    @Override
 //                                    public void onComplete(@NonNull Task<DataSnapshot> task) {

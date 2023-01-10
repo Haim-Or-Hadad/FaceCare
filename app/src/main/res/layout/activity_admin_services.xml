@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/admin_view"
+    tools:context=".AdminServices">
+
+    <Button
+        android:id="@+id/haircutService"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:text="haircut"
+        android:textStyle="bold"
+        android:textSize="13dp"
+        android:layout_marginLeft="30dp"
+        android:backgroundTint="#a67041"
+        android:layout_marginTop="25dp"
+
+        />
+    <Button
+        android:id="@+id/acneService"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:textSize="13dp"
+        android:text="acne"
+        android:layout_marginLeft="30dp"
+        android:backgroundTint="#a67041"
+        android:layout_below="@+id/haircutService"
+        />
+
+    <Button
+        android:id="@+id/beardService"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:textSize="13dp"
+        android:text="beard"
+        android:layout_marginLeft="30dp"
+        android:backgroundTint="#a67041"
+        android:layout_below="@+id/acneService"
+        />
+
+    <Button
+        android:id="@+id/faceCareService"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:textSize="13dp"
+        android:text="faceCare"
+        android:layout_marginLeft="30dp"
+        android:backgroundTint="#a67041"
+        android:layout_below="@+id/beardService"
+        />
+
+    <Button
+        android:id="@+id/perfectService"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="60dp"
+        android:backgroundTint="#a67041"
+        android:text="Haircut + hot towel + wax"
+        android:textSize="13dp"
+        android:textStyle="bold" />
+
+
+    <Button
+        android:id="@+id/currentServices"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="60dp"
+        android:layout_below="@+id/perfectService"
+        android:backgroundTint="#a67041"
+        android:text="current selected Services"
+        android:textSize="13dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/addServices"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="60dp"
+        android:layout_below="@+id/currentServices"
+        android:backgroundTint="#a67041"
+        android:text="add Services"
+        android:textSize="13dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/resetServices"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="60dp"
+        android:layout_below="@+id/addServices"
+        android:text="reset"
+        android:backgroundTint="#a67041"
+        android:textSize="13dp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

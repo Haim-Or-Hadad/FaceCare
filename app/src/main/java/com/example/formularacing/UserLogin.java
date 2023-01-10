@@ -5,8 +5,13 @@ import static com.example.formularacing.MainScreen.phoneNumber;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,14 +23,22 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class UserLogin extends AppCompatActivity {
     /**
@@ -49,17 +62,19 @@ public class UserLogin extends AppCompatActivity {
      * list that save the time slots to client
      */
     CalendarView calendarView;
-    Button beardButton;
-    Button haircutButton;
-    Button acneButton;
-    Button classicFacial;
+    Button service1; // TODO Should be changed to button1
+    Button service2;  // TODO Should be changed to button2
+    Button service3;  // TODO Should be changed to button3
+    Button service4;  // TODO Should be changed to button4
     Button resetAll;
     Button mySlots;
-    String selectedTreatment;
+    String selectedTreatment; // TODO Should actually be a serivce object to read the type, length, price from.
     ListView listView;
     String date;
     List<String> slotsList;
-    dataAccess dal = new dataAccess();
+    List<String> servicesList = new ArrayList<>();
+    List<Button> buttonList = new ArrayList<>();
+    dataAccess dal = new dataAccess(MainScreen.phoneNumber);
     ProgressBar Progress;
 
 
@@ -68,19 +83,25 @@ public class UserLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.client_order_screen);
+        // TODO Should load from the database the 4 available services (into a service object), and write on the buttons the "type" of each service
         /**
          * detects the id of the beard treatment button and saves the selection if the button is pressed
          */
-        beardButton = (Button) findViewById(R.id.beard);
-        haircutButton = (Button) findViewById(R.id.haircut);
-        acneButton = (Button) findViewById(R.id.acne);
-        classicFacial = (Button) findViewById(R.id.classic_facial);
+        service1 = (Button) findViewById(R.id.service1);
+        service2 = (Button) findViewById(R.id.service2);
+        service3 = (Button) findViewById(R.id.service3);
+        service4 = (Button) findViewById(R.id.service4);
         resetAll = (Button) findViewById(R.id.reset);
         mySlots = (Button) findViewById(R.id.mySlots);
-        beardButton.setOnClickListener((view)->typeOfTreatment("beard"));
-        haircutButton.setOnClickListener((view)->typeOfTreatment("haircut"));
-        acneButton.setOnClickListener((view)->typeOfTreatment("acne"));
-        classicFacial.setOnClickListener((view)->typeOfTreatment("classic_facial"));
+        buttonList.add(service1);
+        buttonList.add(service2);
+        buttonList.add(service3);
+        buttonList.add(service4);
+        setServices();
+        service1.setOnClickListener((view)->typeOfTreatment("beard"));
+        service2.setOnClickListener((view)->typeOfTreatment("haircut"));
+        service3.setOnClickListener((view)->typeOfTreatment("acne"));
+        service4.setOnClickListener((view)->typeOfTreatment("classic_facial"));
         resetAll.setOnClickListener((view)-> resetAllButtons());
         Progress = findViewById(R.id.Progress);
         listView = findViewById(R.id.listView);
@@ -102,7 +123,7 @@ public class UserLogin extends AppCompatActivity {
                     String month=String.format("%02d", (i1+1));
                     String day= String.format("%02d",i2);
                     date = day + "-" + month  + "-" + i;
-                    slotsList = getSlots(date, selectedTreatment);
+                    slotsList = getSlots(date, selectedTreatment); // TODO Should maybe send a date and serice object itself
 
                     ArrayAdapter arrayAdapter = new ArrayAdapter(UserLogin.this, R.layout.text_style_list, slotsList);
                     listView.setAdapter(arrayAdapter);
@@ -128,32 +149,25 @@ public class UserLogin extends AppCompatActivity {
             public void onClick(View view) {
                 String s = new String();
                 //Task from the fire base
-                Log.d("test", MainScreen.phoneNumber);
-                Task test = dal.loginUser(MainScreen.phoneNumber);
-                //wait until firebase data is received
-                Progress.setVisibility(View.VISIBLE);
-                while (!test.isComplete()) {
+                Log.d("click on show", MainScreen.phoneNumber);
 
-                }
-                Progress.setVisibility(View.INVISIBLE);
-                //get the Available Times
-                //DataSnapshot test2=(DataSnapshot)test.getResult();
-                HashMap<String, HashMap<String,String>> map = (HashMap<String, HashMap<String,String>>) ((DataSnapshot) test.getResult()).getValue();
-
-                if (map == null) {
+                if (dal.listOfAppointments.isEmpty()) {
                     Toast.makeText(UserLogin.this, "no appointments", Toast.LENGTH_SHORT).show();
                 } else {
-                    for(Map.Entry<String,HashMap<String,String>> entry : map.entrySet()) {
-                        if(entry.getKey().equals("emptyDate") || entry.getKey().equals(" ")  ){
+                    for (int i = 0; i < dal.listOfAppointments.size(); i++) {
+                        if (dal.listOfAppointments.get(i) == null) continue;
+                        HashMap<String,String> entry = dal.listOfAppointments.get(i);
+                        if (entry.get("date") == null) {}
+                        else if(entry.get("date").equals("emptyDate") || entry.get("date").equals(" ")){
                             continue;
-                        }else {
-                            AppointmentCreator currAppointment = new AppointmentCreator(entry.getValue());
+                        }
+                            AppointmentCreator currAppointment = new AppointmentCreator(entry);
                             s = s  +
                                     currAppointment.getType() + " " +
                                     currAppointment.getTime() + " " +
-                                    entry.getKey()+ "\n";
-                        }
-                        }
+                                    currAppointment.getDate() + "\n";
+
+                    }
                 AlertDialog alertDialog = new AlertDialog.Builder(UserLogin.this).
                         setTitle("order").
                         setMessage(s).
@@ -167,6 +181,36 @@ public class UserLogin extends AppCompatActivity {
             }
             }
         });
+    }
+
+    private void setServices() {
+//        Task task = dal.getServices();
+//        while(task.isComplete()){}
+//        //HashMap<String, HashMap<String, String>> l = (HashMap<String, HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
+//        Map<String, Object> services = (Map<String, Object>) dataSnapshot.getValue();
+//        System.out.println("haim");
+        Task<DataSnapshot> task = dal.getServices();
+        task.addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                // Extract the services from the DataSnapshot
+                Map<String, HashMap<String, String>> services = (Map<String, HashMap<String, String>>) dataSnapshot.getValue();
+                // Do something with the services, like assign them to a member variable
+                System.out.println("haim");
+                int i = 0;
+                for (Map.Entry<String, HashMap<String, String>> entry : services.entrySet()) {
+                    service currService = new service(entry.getValue());
+                    servicesList.add(currService.getType());
+                    buttonList.get(i).setText(servicesList.get(i));
+                    i++;
+                }
+                }
+        });
+           //beardButton.setText(servicesList.get(0));
+//        haircutButton.setText(servicesList.get(1));
+//        acneButton.setText(servicesList.get(2));
+//        classicFacial.setText(servicesList.get(3));
+
     }
 
     private void typeOfTreatment(String type){
@@ -212,6 +256,7 @@ public class UserLogin extends AppCompatActivity {
                             while (!test.isComplete()){
 
                             }
+                            sendFutureNotification(date,time);
                             //Progress.setVisibility(View.INVISIBLE);
                             resetAllButtons();
                             dialogInterface.dismiss();//add finction to dal
@@ -242,22 +287,75 @@ public class UserLogin extends AppCompatActivity {
      * when the client press on type of any treatment all the button become disabled
      */
     private void disabledAllButtons(){
-        haircutButton.setEnabled(false);
-        classicFacial.setEnabled(false);
-        beardButton.setEnabled(false);
-        acneButton.setEnabled(false);
+        service2.setEnabled(false);
+        service4.setEnabled(false);
+        service1.setEnabled(false);
+        service3.setEnabled(false);
     }
 
     private void resetAllButtons(){
         date = null;
         selectedTreatment = null;
         date = null;
-        haircutButton.setEnabled(true);
-        classicFacial.setEnabled(true);
-        beardButton.setEnabled(true);
-        acneButton.setEnabled(true);
+        service3.setEnabled(true);
+        service4.setEnabled(true);
+        service1.setEnabled(true);
+        service2.setEnabled(true);
         listView.clearChoices();
         List<String> EmptyList = Collections.<String>emptyList();
         listView.setAdapter(new ArrayAdapter(UserLogin.this, R.layout.text_style_list, EmptyList));
+    }
+
+
+
+    private void sendFutureNotification(String mydate, String mytime) {
+
+
+        // Parse the date and time string
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Calendar date = Calendar.getInstance();
+        try {
+            String formatString = mydate+" "+mytime+":00";
+            date.setTime(Objects.requireNonNull(format.parse(formatString)));
+            date.add(Calendar.MINUTE, -10);
+        } catch (ParseException e) {
+            // Handle parsing error
+        }
+
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask() {
+            public void run() {
+                // This code will be executed at the specified date and time
+                sendNotification("Appointment in 10 minutes", "Appointment at: "+mydate+" "+mytime );
+            }
+        };
+
+        // Schedule the task to run at the specified date and time
+        timer.schedule(task, date.getTime());
+    }
+
+
+
+
+    public void sendNotification(String notificationTitle, String notificationBody)
+    {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel = new NotificationChannel("My Notification","My Notification",NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(UserLogin.this,"My Notification");
+        builder.setContentTitle(notificationTitle);
+        builder.setContentText(notificationBody);
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.drawable.acne_icon);
+
+
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+// notificationId is a unique int for each notification that you must define
+        notificationManager.notify(0, builder.build());
     }
 }
