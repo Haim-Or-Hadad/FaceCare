@@ -18,10 +18,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +61,7 @@ public class UserLogin extends AppCompatActivity {
     ListView listView;
     String date;
     List<String> slotsList;
+    List<String> servicesList = new ArrayList<>();
     dataAccess dal = new dataAccess(MainScreen.phoneNumber);
     ProgressBar Progress;
 
@@ -78,6 +81,7 @@ public class UserLogin extends AppCompatActivity {
         classicFacial = (Button) findViewById(R.id.classic_facial);
         resetAll = (Button) findViewById(R.id.reset);
         mySlots = (Button) findViewById(R.id.mySlots);
+        setServices();
         beardButton.setOnClickListener((view)->typeOfTreatment("beard"));
         haircutButton.setOnClickListener((view)->typeOfTreatment("haircut"));
         acneButton.setOnClickListener((view)->typeOfTreatment("acne"));
@@ -161,6 +165,35 @@ public class UserLogin extends AppCompatActivity {
             }
             }
         });
+    }
+
+    private void setServices() {
+//        Task task = dal.getServices();
+//        while(task.isComplete()){}
+//        //HashMap<String, HashMap<String, String>> l = (HashMap<String, HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
+//        Map<String, Object> services = (Map<String, Object>) dataSnapshot.getValue();
+//        System.out.println("haim");
+        Task<DataSnapshot> task = dal.getServices();
+        task.addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                // Extract the services from the DataSnapshot
+                Map<String, HashMap<String, String>> services = (Map<String, HashMap<String, String>>) dataSnapshot.getValue();
+                // Do something with the services, like assign them to a member variable
+                System.out.println("haim");
+                int i = 0;
+                for (Map.Entry<String, HashMap<String, String>> entry : services.entrySet()) {
+                    service currService = new service(entry.getValue());
+                    servicesList.add(currService.getType());
+                    beardButton.setText(servicesList.get(i));
+                }
+                }
+        });
+           //beardButton.setText(servicesList.get(0));
+//        haircutButton.setText(servicesList.get(1));
+//        acneButton.setText(servicesList.get(2));
+//        classicFacial.setText(servicesList.get(3));
+
     }
 
     private void typeOfTreatment(String type){
