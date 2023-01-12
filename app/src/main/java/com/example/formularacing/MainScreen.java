@@ -42,6 +42,9 @@ public class MainScreen extends AppCompatActivity {
      * phone number save the input phone that the user insert
      * @params whatsapp,facebook,instagram
      * imageviews to link the user to home page of company and to chat in whatsapp
+     * @param loginProgress
+     *  show progressBar to user
+     * @param user
      */
     EditText userPhone;
     static String phoneNumber;
@@ -54,56 +57,60 @@ public class MainScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        loginProgress = findViewById(R.id.progressBar);
         //assign variable
         whatsapp = findViewById(R.id.whatsapp);
         facebook = findViewById(R.id.facebook);
         instagram = findViewById(R.id.instagram);
+        support = findViewById(R.id.support);
+        userPhone = (EditText) findViewById(R.id.user_phone);//text box to write a phone number
+
         //when whatsapp,facebook or instagram logo clicked
         whatsapp.setOnClickListener((view)->clickOnWhatsapp());
         facebook.setOnClickListener((view)->clickOnFacebook());
         instagram.setOnClickListener((view)->clickOnInstagram());
-        //text box to write a phone number
-        userPhone = (EditText) findViewById(R.id.user_phone);
-        //button to login
-        Button userButton = (Button) findViewById(R.id.user_button);
-        //button to admin login
-        Button adminButton = (Button) findViewById(R.id.admin_button);
-        //when admin button clicked it's trigger this function and open admin screen
-        adminButton.setOnClickListener((view)->openAdminScreen());
-        //when user button clicked this trigger this function and check the pgone number
-        userButton.setOnClickListener((v)-> user_login());
-        //support logo clicked
-         support = findViewById(R.id.support);
-         support.setOnClickListener((v)-> using_support());
-         loginProgress = findViewById(R.id.progressBar);
+        support.setOnClickListener((v)-> using_support());
+
+
+        Button userButton = (Button) findViewById(R.id.user_button);//button to login
+        Button adminButton = (Button) findViewById(R.id.admin_button);//button to admin login
+        adminButton.setOnClickListener((view)->openAdminScreen());//open admin screen
+        userButton.setOnClickListener((v)-> user_login());//check the phone number
     }
 
     private void clickOnInstagram() {
+        /**
+         * The method sets two string variables, "sAppLink" and "sPackage",
+         * to the Instagram website URL and the package name for the Instagram app for Android,
+         */
         String sAppLink = "https://www.instagram.com";
         String sPackage = "com.instagram.android";
         openLink(sAppLink, sPackage, sAppLink);
     }
 
     private void clickOnFacebook() {
+        /**
+         * The method sets two string variables, "sAppLink" and "sPackage",
+         * to the Instagram website URL and the package name for the Instagram app for Android,
+         */
         String sAppLink = "fb://page/237564710351658";
         String sPackage = "com.facebook.katana";
         String sWebLink = "https://www.facebook.com";
-        //create method
         openLink(sAppLink, sPackage, sWebLink);
     }
 
     private void clickOnWhatsapp() {
-        //initialize mobile number with country code
+        /*
+        The method creates a String variable called "sNumber" and assigns it the value of a phone number
+         in international format. It then creates a Uri variable called "uri" and assigns it the value
+         of the WhatsApp API URL along with the phone number passed as a parameter. Then it creates a new
+         Intent variable called "intent" and assigns it the value of an Intent with the action view.
+         */
         String sNumber = "+972549761170";
-        //initialize uri
         Uri uri = Uri.parse(String.format("https://api.whatsapp.com/send?phone=%s", sNumber));
-        //init intent
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        //set data
         intent.setData(uri);
-        //set flag
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //
         startActivity(intent);
     }
 
@@ -111,8 +118,6 @@ public class MainScreen extends AppCompatActivity {
         phoneNumber = userPhone.getText().toString();
         if (phoneNumber.isEmpty()) {//check if the user press on user button in dont insert a pgone number
             Toast.makeText(MainScreen.this, "enter phone number", Toast.LENGTH_SHORT).show();
-//        }else  if(!phoneNumber.matches("05[023489]-?\\d{3}-?\\d{4}")) {//check valid phone number
-//            Toast.makeText(MainScreen.this, "invalid phone number", Toast.LENGTH_SHORT).show();
         }
         else {
             //identification();
@@ -286,7 +291,6 @@ public class MainScreen extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
-
     }
 }
 
