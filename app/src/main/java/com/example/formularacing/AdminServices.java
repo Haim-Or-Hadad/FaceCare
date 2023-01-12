@@ -3,17 +3,24 @@ package com.example.formularacing;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminServices extends AppCompatActivity {
     //declare buttons for each service
-    private Button haircutService;
-    private Button acneService;
-    private Button beardService;
-    private Button faceCareService;
-    private Button perfectService;
+    private EditText service1;
+    private EditText service2;
+    private EditText service3;
+    private EditText service4;
+    private EditText service5;
+    private ImageButton imgService1;
+    private ImageButton imgService2;
+    private ImageButton imgService3;
+    private ImageButton imgService4;
+    private ImageButton imgService5;
     private Button addServices;
     private Button currentServices;
     private Button resetServices;
@@ -28,22 +35,24 @@ public class AdminServices extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_services);
         //find views by id
-        haircutService = findViewById(R.id.haircutService);
-        acneService = findViewById(R.id.acneService);
-        beardService = findViewById(R.id.beardService);
-        faceCareService = findViewById(R.id.faceCareService);
-        perfectService = findViewById(R.id.perfectService);
+        service1 = findViewById(R.id.service1);
+        service2 = findViewById(R.id.service2);
+        service3 = findViewById(R.id.service3);
+        service4 = findViewById(R.id.service4);
+        imgService1 = findViewById(R.id.button1);
+        imgService2 = findViewById(R.id.button2);
+        imgService3 = findViewById(R.id.button3);
+        imgService4 = findViewById(R.id.button4);
         addServices = findViewById(R.id.addServices);
         currentServices = findViewById(R.id.currentServices);
         resetServices = findViewById(R.id.resetServices);
 
 
         //set onClickListener for each service button
-        haircutService.setOnClickListener(view -> addToServices("haircut"));
-        acneService.setOnClickListener(view -> addToServices("acne"));
-        beardService.setOnClickListener(view -> addToServices("beard"));
-        faceCareService.setOnClickListener(view -> addToServices("facecare"));
-        perfectService.setOnClickListener(view -> addToServices("perfect"));
+        imgService1.setOnClickListener(view -> addToServices(service1.getText().toString()));
+        imgService2.setOnClickListener(view -> addToServices(service2.getText().toString()));
+        imgService3.setOnClickListener(view -> addToServices(service3.getText().toString()));
+        imgService4.setOnClickListener(view -> addToServices(service4.getText().toString()));
 
         //set onClickListener for adding and viewing selected services
         addServices.setOnClickListener(view -> sendToDal());
@@ -57,13 +66,13 @@ public class AdminServices extends AppCompatActivity {
     private void sendToDal() {
         if (services.isEmpty()) {
             Toast.makeText(this, "No services selected!", Toast.LENGTH_SHORT).show();
-            return;
+
         }
         else if(services.size() < 4) {
             Toast.makeText(this, "please select 4 services", Toast.LENGTH_SHORT).show();
         }
         else{
-        for (int i = 0; i < 3 && i < services.size(); i++) {
+        for (int i = 0; i <= 3 && i < services.size(); i++) {
             service tempService = new service("test", services.get(i), "test");
             dal.setService(tempService, i);
         }
