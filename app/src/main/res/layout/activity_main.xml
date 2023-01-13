@@ -8,9 +8,6 @@
     tools:context=".MainScreen">
         />
     <!--login admin button-->
-
-    <!--login user button-->
-
     <Button
         android:id="@+id/user_button"
         android:layout_width="75dp"
@@ -84,4 +81,5 @@
         android:layout_marginTop="425dp"
         android:visibility="invisible"
         />
+
 </RelativeLayout>

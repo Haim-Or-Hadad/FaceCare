@@ -11,17 +11,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
@@ -46,6 +53,7 @@ public class MainScreen extends AppCompatActivity {
      *  show progressBar to user
      * @param user
      */
+    private static int SPLASH_TIME_OUT=4000;
     EditText userPhone;
     static String phoneNumber;
     ImageView whatsapp,facebook,instagram,support;
@@ -57,6 +65,15 @@ public class MainScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent homeIntent = new Intent(MainScreen.this, HomeActivity.class);
+//                startActivity(homeIntent);
+//                finish();
+//            }
+//        },SPLASH_TIME_OUT);
+
         loginProgress = findViewById(R.id.progressBar);
         //assign variable
         whatsapp = findViewById(R.id.whatsapp);
@@ -76,6 +93,8 @@ public class MainScreen extends AppCompatActivity {
         Button adminButton = (Button) findViewById(R.id.admin_button);//button to admin login
         adminButton.setOnClickListener((view)->openAdminScreen());//open admin screen
         userButton.setOnClickListener((v)-> user_login());//check the phone number
+
+
     }
 
     private void clickOnInstagram() {
