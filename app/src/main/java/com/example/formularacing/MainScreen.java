@@ -139,8 +139,8 @@ public class MainScreen extends AppCompatActivity {
             Toast.makeText(MainScreen.this, "enter phone number", Toast.LENGTH_SHORT).show();
         }
         else {
-            //identification();
-            openActivity_user_login(); // test - remove
+            identification();
+            //openActivity_user_login(); // test - remove
         }
     }
 

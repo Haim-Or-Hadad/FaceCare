@@ -1,7 +1,5 @@
 package com.example.formularacing;
 
-import static com.example.formularacing.MainScreen.phoneNumber;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,7 +15,7 @@ import java.util.HashMap;
 
 
 public class AdminLogin extends AppCompatActivity {
-    dataAccess dal = new dataAccess();
+    businessLogic dal = new businessLogic();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -28,7 +28,7 @@ public class AdminServices extends AppCompatActivity {
     //create a list to hold the selected services
     private List<String> services = new ArrayList<>();
     //create an instance of the dataAccess class
-    dataAccess dal = new dataAccess();
+    businessLogic dal = new businessLogic();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ import java.util.Map;
 public class AdminManageAppointments extends AppCompatActivity {
     List<String> allAppointments = new ArrayList<String>();
     CalendarView calendarView;
-    dataAccess dal = new dataAccess();
+    businessLogic dal = new businessLogic();
     String date;
     ProgressBar Progress;
     @Override

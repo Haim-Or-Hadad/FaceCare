@@ -33,7 +33,7 @@ public class AdminScheduleClients extends AppCompatActivity {
     ListView listView;
     String selectedTreatment;
     List<String> slotsList;
-    dataAccess dal = new dataAccess();
+    businessLogic dal = new businessLogic();
     String date;
 
     @Override
@@ -101,7 +101,7 @@ public class AdminScheduleClients extends AppCompatActivity {
         if (l == null) {
             return new ArrayList<>();
         }
-        ;
+
         return l;
     }
 

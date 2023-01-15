@@ -31,7 +31,6 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +70,7 @@ public class UserLogin extends AppCompatActivity {
     List<String> slotsList;
     List<String> servicesList = new ArrayList<>();
     List<Button> buttonList = new ArrayList<>();
-    dataAccess dal = new dataAccess(MainScreen.phoneNumber);
+    businessLogic dal = new businessLogic(MainScreen.phoneNumber);
     ProgressBar Progress;
 
 
@@ -193,7 +192,6 @@ public class UserLogin extends AppCompatActivity {
                 // Extract the services from the DataSnapshot
                 Map<String, HashMap<String, String>> services = (Map<String, HashMap<String, String>>) dataSnapshot.getValue();
                 // Do something with the services, like assign them to a member variable
-                System.out.println("haim");
                 int i = 0;
                 for (Map.Entry<String, HashMap<String, String>> entry : services.entrySet()) {
                     service currService = new service(entry.getValue());
@@ -247,7 +245,7 @@ public class UserLogin extends AppCompatActivity {
                     setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Task test =dal.scheduleAppointment(MainScreen.phoneNumber, date, time , selectedTreatment);
+                            Task test = dal.scheduleAppointment(MainScreen.phoneNumber, date, time , selectedTreatment);
                             //wait untill firebase data is received
                             //Progress.setVisibility(View.VISIBLE);
                             while (!test.isComplete()){

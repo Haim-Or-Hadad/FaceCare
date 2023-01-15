@@ -22,7 +22,7 @@ public class Adminworkplan extends AppCompatActivity {
     CheckBox friday;
 
 
-    dataAccess dal = new dataAccess();
+    businessLogic dal = new businessLogic();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
