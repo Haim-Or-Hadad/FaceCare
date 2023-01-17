@@ -24,6 +24,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import java.util.Calendar;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -247,14 +249,20 @@ public class UserLogin extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Task test = dal.scheduleAppointment(MainScreen.phoneNumber, date, time , selectedTreatment);
                             //wait untill firebase data is received
-                            //Progress.setVisibility(View.VISIBLE);
-                            while (!test.isComplete()){
 
-                            }
-                            sendFutureNotification(date,time);
-                            //Progress.setVisibility(View.INVISIBLE);
-                            resetAllButtons();
-                            dialogInterface.dismiss();//add finction to dal
+                            //Progress.setVisibility(View.VISIBLE);
+                            test.addOnCompleteListener(new OnCompleteListener<Task>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Task> t) {
+                                    // Code to run when the task is complete
+                                    //sendNotification("amit","test");
+                                    sendFutureNotification(date,time);
+                                    //Progress.setVisibility(View.INVISIBLE);
+                                    resetAllButtons();
+                                    dialogInterface.dismiss();//add finction to dal
+                                }
+                            });
+
                         }
                     }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                         @Override

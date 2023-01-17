@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
@@ -47,22 +48,27 @@ public class AdminManageAppointments extends AppCompatActivity {
                 Task task =dal.adminShowAppointment(date);
 
                 Progress.setVisibility(View.VISIBLE);
-                while (!task.isComplete()){}
-                Progress.setVisibility(View.INVISIBLE);
-                HashMap<String, HashMap<String, String>> appointmentCreatorList = (HashMap<String, HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
-                if(appointmentCreatorList == null) {
-                    allAppointments.clear();
-                }
-                else {
-                    allAppointments.clear();
-                    for (Map.Entry<String, HashMap<String, String>> entry : appointmentCreatorList.entrySet()) {
-                        AppointmentCreator currAppointment = new AppointmentCreator(entry.getValue());
-                        String str = currAppointment.getTime()+"|"+currAppointment.getPhone()+"|"+currAppointment.getType();
-                        allAppointments.add(str);
+
+                task.addOnCompleteListener((OnCompleteListener<Task>) task1 -> {
+                    // Code to run when the task is complete
+                    Progress.setVisibility(View.INVISIBLE);
+                    HashMap<String, HashMap<String, String>> appointmentCreatorList = (HashMap<String, HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
+                    if(appointmentCreatorList == null) {
+                        allAppointments.clear();
                     }
-                }
-                ArrayAdapter arrayAdapter = new ArrayAdapter(AdminManageAppointments.this, R.layout.text_style_list, allAppointments);
-                Appointments.setAdapter(arrayAdapter);
+                    else {
+                        allAppointments.clear();
+                        for (Map.Entry<String, HashMap<String, String>> entry : appointmentCreatorList.entrySet()) {
+                            AppointmentCreator currAppointment = new AppointmentCreator(entry.getValue());
+                            String str = currAppointment.getTime()+"|"+currAppointment.getPhone()+"|"+currAppointment.getType();
+                            allAppointments.add(str);
+                        }
+                    }
+                    ArrayAdapter arrayAdapter = new ArrayAdapter(AdminManageAppointments.this, R.layout.text_style_list, allAppointments);
+                    Appointments.setAdapter(arrayAdapter);
+                });
+
+
             }
         });
 

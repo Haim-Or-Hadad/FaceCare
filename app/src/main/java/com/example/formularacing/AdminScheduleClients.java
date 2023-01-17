@@ -14,6 +14,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
@@ -131,7 +132,7 @@ public class AdminScheduleClients extends AppCompatActivity {
 //    }
 
     /**
-     * when the client choose a appointment the dialog box open and ask him if he want
+     * when the client choose an appointment the dialog box open and ask him if he want
      * to confirm the order
      */
     private void dialogBox(String boxType, String time) {
@@ -157,12 +158,12 @@ public class AdminScheduleClients extends AppCompatActivity {
                                             Task test = dal.scheduleAppointment(phoneNumber, date, time, selectedTreatment);
                                             //wait untill firebase data is received
                                             //Progress.setVisibility(View.VISIBLE);
-                                            while (!test.isComplete()) {
-
-                                            }
+                                            test.addOnCompleteListener((OnCompleteListener<Task>) task -> {
+                                                // Code to run when the task is complete
+                                                resetAllButtons();
+                                                dialogInterface.dismiss();//add finction to dal
+                                            });
                                             //Progress.setVisibility(View.INVISIBLE);
-                                            resetAllButtons();
-                                            dialogInterface.dismiss();//add finction to dal
                                         }
                                     }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                                         @Override

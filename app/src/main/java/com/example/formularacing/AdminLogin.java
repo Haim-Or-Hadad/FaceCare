@@ -1,5 +1,6 @@
 package com.example.formularacing;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
@@ -47,15 +49,18 @@ public class AdminLogin extends AppCompatActivity {
                 String adminName = username.getText().toString();
                 String adminPassword = password.getText().toString();
                 // TODO SHOW LOADING SCREEN - -
-                while (!task.isComplete()) {}
+                task.addOnCompleteListener((OnCompleteListener<Task>) t -> {
+                    // Code to run when the task is complete
+                    HashMap<String, String> credentials = (HashMap<String, String>) ((DataSnapshot) task.getResult()).getValue();
+                    if (credentials.containsKey(adminName) && credentials.get(adminName).equals(adminPassword)) {
+                        open_adminActivity();
+                    } else {
+                        Toast.makeText(AdminLogin.this, "LOGIN FAILED", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 // TODO REMOVE LOADING SCREEN
 
-                HashMap<String, String> credentials = (HashMap<String, String>) ((DataSnapshot) task.getResult()).getValue();
-                if (credentials.containsKey(adminName) && credentials.get(adminName).equals(adminPassword)) {
-                    open_adminActivity();
-                } else {
-                    Toast.makeText(AdminLogin.this, "LOGIN FAILED", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
     }
