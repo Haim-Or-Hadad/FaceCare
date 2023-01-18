@@ -1,8 +1,5 @@
 package com.example.formularacing;
 
-import static android.content.ContentValues.TAG;
-
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,33 +8,27 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
-public class businessLogic {
+public class businessLogicController {
 
 
     FirebaseUser user;
-    dataAccess dal;
+    dataAccessModel dal;
 
     ArrayList<HashMap<String, String>> listOfAppointments = new ArrayList<>();
-    public businessLogic() {
+    public businessLogicController() {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        dal = new dataAccess();
+        dal = new dataAccessModel();
     }
 
-    public businessLogic(String phone) {
+    public businessLogicController(String phone) {
         user = FirebaseAuth.getInstance().getCurrentUser();
-        dal = new dataAccess();
+        dal = new dataAccessModel();
         getUserAppointment(phone);
 
     }

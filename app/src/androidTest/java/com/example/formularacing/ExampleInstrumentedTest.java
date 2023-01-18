@@ -11,10 +11,6 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-
-import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -24,7 +20,7 @@ import java.util.Random;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
-    businessLogic testDal = new businessLogic();
+    businessLogicController testDal = new businessLogicController();
     String testTag = "test_msg";
     Random randnum;
     @Test

@@ -2,14 +2,12 @@ package com.example.formularacing;
 
 import static android.content.ContentValues.TAG;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,12 +20,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class dataAccess {
+public class dataAccessModel {
     //private FirebaseDatabase database = FirebaseDatabase.getInstance("https://test3-a0cfd-default-rtdb.europe-west1.firebasedatabase.app/"); // production environment
     private FirebaseDatabase database = FirebaseDatabase.getInstance(); // test environment
     private DatabaseReference myRef;
 
-    public dataAccess() {
+    public dataAccessModel() {
         database.useEmulator("10.0.2.2", 9009); // added for test environment
 
         myRef = database.getReference();

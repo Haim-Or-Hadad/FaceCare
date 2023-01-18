@@ -24,7 +24,7 @@ import java.util.Map;
 public class AdminManageAppointments extends AppCompatActivity {
     List<String> allAppointments = new ArrayList<String>();
     CalendarView calendarView;
-    businessLogic dal = new businessLogic();
+    businessLogicController dal = new businessLogicController();
     String date;
     ProgressBar Progress;
     @Override

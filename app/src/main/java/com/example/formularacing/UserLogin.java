@@ -72,19 +72,15 @@ public class UserLogin extends AppCompatActivity {
     List<String> slotsList;
     List<String> servicesList = new ArrayList<>();
     List<Button> buttonList = new ArrayList<>();
-    businessLogic dal = new businessLogic(MainScreen.phoneNumber);
+    businessLogicController dal = new businessLogicController(MainScreen.phoneNumber);
     ProgressBar Progress;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.client_order_screen);
-        // TODO Should load from the database the 4 available services (into a service object), and write on the buttons the "type" of each service
-        /**
-         * detects the id of the beard treatment button and saves the selection if the button is pressed
-         */
+
         service1 = (Button) findViewById(R.id.service1);
         service2 = (Button) findViewById(R.id.service2);
         service3 = (Button) findViewById(R.id.service3);
@@ -358,4 +354,5 @@ public class UserLogin extends AppCompatActivity {
 // notificationId is a unique int for each notification that you must define
         notificationManager.notify(0, builder.build());
     }
+
 }

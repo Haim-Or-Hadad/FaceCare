@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 public class AdminView extends AppCompatActivity {
-    businessLogic dal =new businessLogic();
+    businessLogicController dal =new businessLogicController();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

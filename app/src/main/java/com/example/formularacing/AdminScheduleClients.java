@@ -34,7 +34,7 @@ public class AdminScheduleClients extends AppCompatActivity {
     ListView listView;
     String selectedTreatment;
     List<String> slotsList;
-    businessLogic dal = new businessLogic();
+    businessLogicController dal = new businessLogicController();
     String date;
 
     @Override
