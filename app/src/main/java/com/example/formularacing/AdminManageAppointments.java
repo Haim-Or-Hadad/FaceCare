@@ -31,9 +31,12 @@ public class AdminManageAppointments extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_appointments);
+
         calendarView = findViewById(R.id.calendarView3);
         ListView Appointments = findViewById(R.id.beard_listview);
         Progress = findViewById(R.id.progressBar2);
+
+
 /**
  * When the customer chooses a date, so a list of available hours appears to him with
  * listview that use arrayAddapter to show the slots.

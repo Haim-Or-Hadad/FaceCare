@@ -49,18 +49,23 @@ public class AdminScheduleClients extends AppCompatActivity {
         service2_ = (Button) findViewById(R.id.service2_);
         service3_ = (Button) findViewById(R.id.service3_);
         service4_ = (Button) findViewById(R.id.service4_);
+
         buttonList.add(service1_);
         buttonList.add(service2_);
         buttonList.add(service3_);
         buttonList.add(service4_);
+
         resetAll = (Button) findViewById(R.id.resetAdmin);
         listView = findViewById(R.id.listViewAdmin);
         cal = findViewById((R.id.calendarViewAdmin));
+
         setServices();
+
         service1_.setOnClickListener((view) -> typeOfTreatment(service1_.getText().toString()));
         service2_.setOnClickListener((view) -> typeOfTreatment(service2_.getText().toString()));
         service3_.setOnClickListener((view) -> typeOfTreatment(service3_.getText().toString()));
         service4_.setOnClickListener((view) -> typeOfTreatment(service4_.getText().toString()));
+
         resetAll.setOnClickListener((view)-> resetAllButtons());
 
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {

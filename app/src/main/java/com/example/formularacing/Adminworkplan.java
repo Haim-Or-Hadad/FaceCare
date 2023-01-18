@@ -65,11 +65,6 @@ public class Adminworkplan extends AppCompatActivity {
          * when confirm buttton is clicked all selected days are sent to a database
          */
         confirmWorkplan.setOnClickListener((view)->sendDaysToDB());
-
-        /**
-         * need to send the list to firebase
-         */
-
     }
 
     private void sendDaysToDB() {

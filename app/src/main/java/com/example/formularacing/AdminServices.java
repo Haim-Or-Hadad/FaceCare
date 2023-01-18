@@ -15,12 +15,12 @@ public class AdminServices extends AppCompatActivity {
     private EditText service2;
     private EditText service3;
     private EditText service4;
-    private EditText service5;
+
     private ImageButton imgService1;
     private ImageButton imgService2;
     private ImageButton imgService3;
     private ImageButton imgService4;
-    private ImageButton imgService5;
+
     private Button addServices;
     private Button currentServices;
     private Button resetServices;
@@ -65,15 +65,12 @@ public class AdminServices extends AppCompatActivity {
     // Method for sending selected services to the Data Access Layer
     private void sendToDal() {
         if (services.isEmpty()) {
-            Toast.makeText(this, "No services selected!", Toast.LENGTH_SHORT).show();
-
-        }
+            Toast.makeText(this, "No services selected!", Toast.LENGTH_SHORT).show();}
         else if(services.size() < 4) {
-            Toast.makeText(this, "please select 4 services", Toast.LENGTH_SHORT).show();
-        }
+            Toast.makeText(this, "please select 4 services", Toast.LENGTH_SHORT).show();}
         else{
         for (int i = 0; i <= 3 && i < services.size(); i++) {
-            service tempService = new service("test", services.get(i), "test");
+            service tempService = new service("25", services.get(i), "1");
             bll.setService(tempService, i);
         }
             Toast.makeText(this, "services selected and display in user screen", Toast.LENGTH_SHORT).show();

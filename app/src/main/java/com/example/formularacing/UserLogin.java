@@ -60,13 +60,13 @@ public class UserLogin extends AppCompatActivity {
      * list that save the time slots to client
      */
     CalendarView calendarView;
-    Button service1; // TODO Should be changed to button1
-    Button service2;  // TODO Should be changed to button2
-    Button service3;  // TODO Should be changed to button3
-    Button service4;  // TODO Should be changed to button4
+    Button service1;
+    Button service2;
+    Button service3;
+    Button service4;
     Button resetAll;
     Button mySlots;
-    String selectedTreatment; // TODO Should actually be a serivce object to read the type, length, price from.
+    String selectedTreatment;
     ListView listView;
     String date;
     List<String> slotsList;
@@ -274,23 +274,22 @@ public class UserLogin extends AppCompatActivity {
      * when the client press on type of any treatment all the button become disabled
      */
     private void disabledAllButtons(){
-        service2.setEnabled(false);
-        service4.setEnabled(false);
-        service1.setEnabled(false);
-        service3.setEnabled(false);
+        for ( Button temp_service : buttonList){
+            temp_service.setEnabled(false);
+        }
     }
 
     private void resetAllButtons(){
         selectedTreatment = null;
         date = null;
-        service3.setEnabled(true);
-        service2.setEnabled(true);
-        service1.setEnabled(true);
-        service2.setEnabled(true);
+        for ( Button temp_service : buttonList){
+            temp_service.setEnabled(true);
+        }
         listView.clearChoices();
         List<String> EmptyList = Collections.<String>emptyList();
         listView.setAdapter(new ArrayAdapter(UserLogin.this, R.layout.text_style_list, EmptyList));
     }
+
     private void sendFutureNotification(String mydate, String mytime) {
         // Parse the date and time string
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");

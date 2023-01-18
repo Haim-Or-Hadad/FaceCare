@@ -121,7 +121,6 @@ public class AdminView extends AppCompatActivity {
             key=key+" - " + dayString;
             shifts = shifts + (key) + "\n";
         }
-        // TODO Display shiftList!!
 
         AlertDialog alertDialog = new AlertDialog.Builder(AdminView.this).
                 setTitle("Shifts").
@@ -133,7 +132,6 @@ public class AdminView extends AppCompatActivity {
                     }
                 }).create();
         alertDialog.show();
-        //need add here function that get the the work days of employee
     }
 
     public void openWorkplanActivity(){

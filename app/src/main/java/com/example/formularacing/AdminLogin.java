@@ -31,7 +31,6 @@ public class AdminLogin extends AppCompatActivity {
                 Task task = bll.getLoginAdmin();
                 String adminName = username.getText().toString();
                 String adminPassword = password.getText().toString();
-                // TODO SHOW LOADING SCREEN - -
                 task.addOnCompleteListener((OnCompleteListener<Task>) t -> {
                     // Code to run when the task is complete
                     HashMap<String, String> credentials = (HashMap<String, String>) ((DataSnapshot) task.getResult()).getValue();
@@ -41,7 +40,6 @@ public class AdminLogin extends AppCompatActivity {
                         Toast.makeText(AdminLogin.this, "LOGIN FAILED", Toast.LENGTH_SHORT).show();
                     }
                 });
-                // TODO REMOVE LOADING SCREEN - -
 
 
             }
