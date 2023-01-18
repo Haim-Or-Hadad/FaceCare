@@ -72,7 +72,7 @@ public class UserLogin extends AppCompatActivity {
     List<String> slotsList;
     List<String> servicesList = new ArrayList<>();
     List<Button> buttonList = new ArrayList<>();
-    businessLogicController dal = new businessLogicController(MainScreen.phoneNumber);
+    businessLogicController bll = new businessLogicController(MainScreen.phoneNumber);
     ProgressBar Progress;
 
 
@@ -92,10 +92,10 @@ public class UserLogin extends AppCompatActivity {
         buttonList.add(service3);
         buttonList.add(service4);
         setServices();
-        service1.setOnClickListener((view)->typeOfTreatment("beard"));
-        service2.setOnClickListener((view)->typeOfTreatment("haircut"));
-        service3.setOnClickListener((view)->typeOfTreatment("acne"));
-        service4.setOnClickListener((view)->typeOfTreatment("classic_facial"));
+        service1.setOnClickListener((view)->typeOfTreatment(service1.getText().toString()));
+        service2.setOnClickListener((view)->typeOfTreatment(service2.getText().toString()));
+        service3.setOnClickListener((view)->typeOfTreatment(service3.getText().toString()));
+        service4.setOnClickListener((view)->typeOfTreatment(service4.getText().toString()));
         resetAll.setOnClickListener((view)-> resetAllButtons());
         Progress = findViewById(R.id.Progress);
         listView = findViewById(R.id.listView);
@@ -145,12 +145,12 @@ public class UserLogin extends AppCompatActivity {
                 //Task from the fire base
                 Log.d("click on show", MainScreen.phoneNumber);
 
-                if (dal.listOfAppointments.isEmpty()) {
+                if (bll.listOfAppointments.isEmpty()) {
                     Toast.makeText(UserLogin.this, "no appointments", Toast.LENGTH_SHORT).show();
                 } else {
-                    for (int i = 0; i < dal.listOfAppointments.size(); i++) {
-                        if (dal.listOfAppointments.get(i) == null) continue;
-                        HashMap<String,String> entry = dal.listOfAppointments.get(i);
+                    for (int i = 0; i < bll.listOfAppointments.size(); i++) {
+                        if (bll.listOfAppointments.get(i) == null) continue;
+                        HashMap<String,String> entry = bll.listOfAppointments.get(i);
                         if (entry.get("date") == null) {}
                         else if(entry.get("date").equals("emptyDate") || entry.get("date").equals(" ")){
                             continue;
@@ -178,12 +178,7 @@ public class UserLogin extends AppCompatActivity {
     }
 
     private void setServices() {
-//        Task task = dal.getServices();
-//        while(task.isComplete()){}
-//        //HashMap<String, HashMap<String, String>> l = (HashMap<String, HashMap<String, String>>)((DataSnapshot) task.getResult()).getValue();
-//        Map<String, Object> services = (Map<String, Object>) dataSnapshot.getValue();
-//        System.out.println("haim");
-        Task<DataSnapshot> task = dal.getServices();
+        Task<DataSnapshot> task = bll.getServices();
         task.addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(DataSnapshot dataSnapshot) {
@@ -199,10 +194,6 @@ public class UserLogin extends AppCompatActivity {
                 }
             }
         });
-        //beardButton.setText(servicesList.get(0));
-//        haircutButton.setText(servicesList.get(1));
-//        acneButton.setText(servicesList.get(2));
-//        classicFacial.setText(servicesList.get(3));
 
     }
 
@@ -214,7 +205,7 @@ public class UserLogin extends AppCompatActivity {
     private List<String> getSlots(String date, String treatmentType) {
         List<String> l;
         //Task from the fire base
-        Task test =dal.getAvailableTimes(date);
+        Task test =bll.getAvailableTimes(date);
         //wait untill firebase data is received
         while (!test.isComplete()){
 
@@ -229,8 +220,6 @@ public class UserLogin extends AppCompatActivity {
     }
 
 
-
-
     /**
      * when the client choose a appointment the dialog box open and ask him if he want
      * to confirm the order
@@ -243,7 +232,7 @@ public class UserLogin extends AppCompatActivity {
                     setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Task test = dal.scheduleAppointment(MainScreen.phoneNumber, date, time , selectedTreatment);
+                            Task test = bll.scheduleAppointment(MainScreen.phoneNumber, date, time , selectedTreatment);
                             //wait untill firebase data is received
 
                             //Progress.setVisibility(View.VISIBLE);
@@ -251,7 +240,6 @@ public class UserLogin extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Task> t) {
                                     // Code to run when the task is complete
-                                    //sendNotification("amit","test");
                                     sendFutureNotification(date,time);
                                     //Progress.setVisibility(View.INVISIBLE);
                                     resetAllButtons();
@@ -293,7 +281,6 @@ public class UserLogin extends AppCompatActivity {
     }
 
     private void resetAllButtons(){
-        date = null;
         selectedTreatment = null;
         date = null;
         service3.setEnabled(true);
@@ -305,8 +292,6 @@ public class UserLogin extends AppCompatActivity {
         listView.setAdapter(new ArrayAdapter(UserLogin.this, R.layout.text_style_list, EmptyList));
     }
     private void sendFutureNotification(String mydate, String mytime) {
-
-
         // Parse the date and time string
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Calendar date = Calendar.getInstance();
@@ -330,9 +315,6 @@ public class UserLogin extends AppCompatActivity {
         timer.schedule(task, date.getTime());
     }
 
-
-
-
     public void sendNotification(String notificationTitle, String notificationBody)
     {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
@@ -346,8 +328,6 @@ public class UserLogin extends AppCompatActivity {
         builder.setContentText(notificationBody);
         builder.setAutoCancel(true);
         builder.setSmallIcon(R.drawable.acne_icon);
-
-
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 

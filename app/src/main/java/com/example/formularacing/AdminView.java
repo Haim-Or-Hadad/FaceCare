@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 public class AdminView extends AppCompatActivity {
-    businessLogicController dal =new businessLogicController();
+    businessLogicController bll =new businessLogicController();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +65,7 @@ public class AdminView extends AppCompatActivity {
     }
 
     private void showShifts() {
-        Task task=dal.adminGetShifts();
+        Task task= bll.adminGetShifts();
         String shifts = new String();
         while (!task.isComplete()){}
         HashMap<String, ArrayList<String>> appointmentCreatorList = (HashMap<String, ArrayList<String>>) ((DataSnapshot) task.getResult()).getValue();

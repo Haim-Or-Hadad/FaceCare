@@ -24,7 +24,7 @@ import java.util.Map;
 public class AdminManageAppointments extends AppCompatActivity {
     List<String> allAppointments = new ArrayList<String>();
     CalendarView calendarView;
-    businessLogicController dal = new businessLogicController();
+    businessLogicController bll = new businessLogicController();
     String date;
     ProgressBar Progress;
     @Override
@@ -45,7 +45,7 @@ public class AdminManageAppointments extends AppCompatActivity {
                 String month=String.format("%02d", (i1+1));
                 String day= String.format("%02d",i2);
                 date = day + "-" + month  + "-" + i;
-                Task task =dal.adminShowAppointment(date);
+                Task task =bll.adminShowAppointment(date);
 
                 Progress.setVisibility(View.VISIBLE);
 
@@ -77,20 +77,13 @@ public class AdminManageAppointments extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 String time = Appointments.getItemAtPosition(i).toString().substring(0,5);
-                String appointmentString = Appointments.getItemAtPosition(i).toString();;
+                String appointmentString = Appointments.getItemAtPosition(i).toString();
                 int startIndex = appointmentString.indexOf("|") + 1;
                 int endIndex = appointmentString.indexOf("|", startIndex);
                 String phoneNum = appointmentString.substring(startIndex, endIndex);
 
-                Task task =dal.cancelAppointment(date,time,phoneNum);
-                //Progress.setVisibility(View.VISIBLE);
-//                while (!task.isComplete()){
-//
-//                }
-//                DataSnapshot test=(DataSnapshot)task.getResult();
-                //Progress.setVisibility(view.INVISIBLE);
-                //adapter.remove(position);
-                //adapter.notifyDataSetChanged();
+                bll.cancelAppointment(date,time,phoneNum);
+
                 for (int index = 0; i < allAppointments.size(); i++) {
                     String appointment = allAppointments.get(i);
                     if (appointment.startsWith(time)) {

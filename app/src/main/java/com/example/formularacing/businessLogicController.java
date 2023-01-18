@@ -16,7 +16,6 @@ import java.util.List;
 
 public class businessLogicController {
 
-
     FirebaseUser user;
     dataAccessModel dal;
 

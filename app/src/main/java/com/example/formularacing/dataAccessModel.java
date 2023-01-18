@@ -29,7 +29,6 @@ public class dataAccessModel {
         database.useEmulator("10.0.2.2", 9009); // added for test environment
 
         myRef = database.getReference();
-
         //user = FirebaseAuth.getInstance().getCurrentUser();
 
         myRef.addValueEventListener(new ValueEventListener() {
@@ -89,9 +88,8 @@ public class dataAccessModel {
             Log.e("firebase", "Error getting data", task.getException());
         } else {
             String returnedValue = String.valueOf(task.getResult().getValue());
-            Log.d("user trying to connect:", returnedValue);
             if (returnedValue == "null") {
-                Log.d("creating new user", returnedValue);
+                Log.d("new user", returnedValue);
                 Map<String, List<String>> emptyMap = new HashMap<>();
                 List<String> newList = new ArrayList<>();
                 newList.add("");
@@ -112,11 +110,9 @@ public class dataAccessModel {
                                 Task<DataSnapshot> innerTask = scheduledRef.child(currentDate).child(currentId).get();
                                 while (!innerTask.isComplete()) {}
                                 if (innerTask.getResult().getValue() == null) {
-                                    Log.d("task", "is null");
                                     continue;
                                 }
                                 listOfAppointments.add((HashMap<String, String>) innerTask.getResult().getValue());
-                                Log.d("got task", innerTask.getResult().getValue().toString());
                             }
 
                             }
@@ -256,7 +252,7 @@ public class dataAccessModel {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 HashMap<String, String> times = (HashMap<String, String>) task.getResult().getValue();
-                Log.d("TEST TEST TEST", time+" "+phoneNum+"result: "+times.toString());
+                Log.d("DAL", time+" "+phoneNum+"result: "+times.toString());
                 times.remove(date);
                 usersRef.child(phoneNum).setValue(times);
             }

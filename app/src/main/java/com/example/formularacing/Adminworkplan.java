@@ -22,7 +22,7 @@ public class Adminworkplan extends AppCompatActivity {
     CheckBox friday;
 
 
-    businessLogicController dal = new businessLogicController();
+    businessLogicController bll = new businessLogicController();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +81,7 @@ public class Adminworkplan extends AppCompatActivity {
         if(((CheckBox) findViewById(R.id.FridayBox)).isChecked()){daysList.add(friday.getText().toString());}
         String str = daysList.get(0).toString();
         for(int i = 0; i < daysList.size() ; i++) {
-            dal.adminSetWorkingTimes(daysList.get(i) ,"08:00","16:00");
+            bll.adminSetWorkingTimes(daysList.get(i) ,"08:00","16:00");
         }
     }
 }

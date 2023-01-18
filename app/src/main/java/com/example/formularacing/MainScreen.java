@@ -65,14 +65,6 @@ public class MainScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent homeIntent = new Intent(MainScreen.this, HomeActivity.class);
-//                startActivity(homeIntent);
-//                finish();
-//            }
-//        },SPLASH_TIME_OUT);
 
         loginProgress = findViewById(R.id.progressBar);
         //assign variable
@@ -140,15 +132,11 @@ public class MainScreen extends AppCompatActivity {
         }
         else {
             identification();
-            //openActivity_user_login(); // test - remove
         }
     }
 
     private void Verification() {
-        //need to add a function that send to ilan and raz the phone number
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        //String mVerificationId;
-        //PhoneAuthProvider.ForceResendingToken mResendToken;
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
@@ -212,7 +200,7 @@ public class MainScreen extends AppCompatActivity {
                         });
             }
             public void onCodeAutoRetrievalTimeOut(String verificationId) {
-                Log.d("her", "code timed out ");
+                Log.d("sns", "code timed out ");
             }
         };
         String phoneNumToE164Format;
@@ -221,7 +209,7 @@ public class MainScreen extends AppCompatActivity {
         } else {
             phoneNumToE164Format = phoneNumber;
         }
-        Log.d("test", "starting sms precedure with number "+phoneNumToE164Format);
+        Log.d("sms", "starting sms precedure with number "+phoneNumToE164Format);
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(phoneNumToE164Format)       // Phone number to verify
@@ -280,7 +268,6 @@ public class MainScreen extends AppCompatActivity {
     public void openActivity_user_login () {
             Intent intent = new Intent(this, UserLogin.class);
             loginProgress.setVisibility(View.VISIBLE);
-            ///try to connect to firebae..................
             startActivity(intent);
             loginProgress.setVisibility(View.INVISIBLE);
         }

@@ -28,7 +28,7 @@ public class AdminServices extends AppCompatActivity {
     //create a list to hold the selected services
     private List<String> services = new ArrayList<>();
     //create an instance of the dataAccess class
-    businessLogicController dal = new businessLogicController();
+    businessLogicController bll = new businessLogicController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +74,7 @@ public class AdminServices extends AppCompatActivity {
         else{
         for (int i = 0; i <= 3 && i < services.size(); i++) {
             service tempService = new service("test", services.get(i), "test");
-            dal.setService(tempService, i);
+            bll.setService(tempService, i);
         }
             Toast.makeText(this, "services selected and display in user screen", Toast.LENGTH_SHORT).show();
         }

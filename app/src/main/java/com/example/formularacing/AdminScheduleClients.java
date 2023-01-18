@@ -34,7 +34,7 @@ public class AdminScheduleClients extends AppCompatActivity {
     ListView listView;
     String selectedTreatment;
     List<String> slotsList;
-    businessLogicController dal = new businessLogicController();
+    businessLogicController bll = new businessLogicController();
     String date;
 
     @Override
@@ -91,7 +91,7 @@ public class AdminScheduleClients extends AppCompatActivity {
     private List<String> getSlots(String date, String treatmentType) {
         List<String> l;
         //Task from the fire base
-        Task test = dal.getAvailableTimes(date);
+        Task test = bll.getAvailableTimes(date);
         //wait untill firebase data is received
         while (!test.isComplete()) {
 
@@ -155,7 +155,7 @@ public class AdminScheduleClients extends AppCompatActivity {
                                     setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            Task test = dal.scheduleAppointment(phoneNumber, date, time, selectedTreatment);
+                                            Task test = bll.scheduleAppointment(phoneNumber, date, time, selectedTreatment);
                                             //wait untill firebase data is received
                                             //Progress.setVisibility(View.VISIBLE);
                                             test.addOnCompleteListener((OnCompleteListener<Task>) task -> {
