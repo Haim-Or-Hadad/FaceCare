@@ -8,46 +8,46 @@
     tools:context=".Adminworkplan">
 
     <Button
-        android:id="@+id/acneAdmin"
+        android:id="@+id/service1_"
         android:layout_width="142dp"
         android:layout_height="40dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="#a67041"
         android:drawableEnd="@drawable/acne_icon"
-        android:text="acne" />
+         />
 
     <Button
-        android:id="@+id/haircutAdmin"
+        android:id="@+id/service2_"
         android:layout_width="142dp"
         android:layout_height="40dp"
         android:layout_marginLeft="200dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="#a67041"
         android:drawableEnd="@drawable/haircut_icon"
-        android:text="haircut" />
+        />
 
     <Button
-        android:id="@+id/beardAdmin"
+        android:id="@+id/service3_"
         android:layout_width="142dp"
         android:layout_height="40dp"
-        android:layout_below="@id/haircutAdmin"
+        android:layout_below="@id/service1_"
         android:layout_marginLeft="20dp"
         android:backgroundTint="#a67041"
         android:backgroundTintMode="add"
         android:drawableEnd="@drawable/beard_icon"
-        android:text="beard"
+
         android:visibility="visible" />
 
     <Button
-        android:id="@+id/classic_facialAdmin"
+        android:id="@+id/service4_"
         android:layout_width="142dp"
         android:layout_height="40dp"
-        android:layout_below="@id/haircutAdmin"
+        android:layout_below="@id/service2_"
         android:backgroundTint="#a67041"
         android:layout_marginLeft="200dp"
         android:drawableEnd="@drawable/facecare_icon"
-        android:text="facecare" />
+        />
 
 
     <ListView
@@ -75,7 +75,7 @@
         style="@android:style/Widget.Material.CalendarView"
         android:layout_width="400dp"
         android:layout_height="300dp"
-        android:layout_below="@id/classic_facialAdmin"
+        android:layout_below="@id/service3_"
         android:animateLayoutChanges="false"
         android:animationCache="false"
         android:backgroundTint="#322525"

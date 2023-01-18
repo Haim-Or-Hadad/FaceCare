@@ -15,45 +15,52 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminScheduleClients extends AppCompatActivity {
-    CalendarView calendarView;
-    Button beardButton;
-    Button haircutButton;
-    Button acneButton;
-    Button classicFacial;
+    Button service1_;
+    Button service2_;
+    Button service3_;
+    Button service4_;
     Button resetAll;
-    Button mySlots;
     CalendarView cal;
     ListView listView;
     String selectedTreatment;
     List<String> slotsList;
     businessLogicController bll = new businessLogicController();
     String date;
-
+    List<String> servicesList = new ArrayList<>();
+    List<Button> buttonList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_schedule_clients);
 
-        beardButton = (Button) findViewById(R.id.beardAdmin);
-        haircutButton = (Button) findViewById(R.id.haircutAdmin);
-        acneButton = (Button) findViewById(R.id.acneAdmin);
-        classicFacial = (Button) findViewById(R.id.classic_facialAdmin);
+
+        service1_ = (Button) findViewById(R.id.service1_);
+        service2_ = (Button) findViewById(R.id.service2_);
+        service3_ = (Button) findViewById(R.id.service3_);
+        service4_ = (Button) findViewById(R.id.service4_);
+        buttonList.add(service1_);
+        buttonList.add(service2_);
+        buttonList.add(service3_);
+        buttonList.add(service4_);
         resetAll = (Button) findViewById(R.id.resetAdmin);
         listView = findViewById(R.id.listViewAdmin);
         cal = findViewById((R.id.calendarViewAdmin));
-
-        beardButton.setOnClickListener((view) -> typeOfTreatment("beard"));
-        haircutButton.setOnClickListener((view) -> typeOfTreatment("haircut"));
-        acneButton.setOnClickListener((view) -> typeOfTreatment("acne"));
-        classicFacial.setOnClickListener((view) -> typeOfTreatment("classic_facial"));
+        setServices();
+        service1_.setOnClickListener((view) -> typeOfTreatment(service1_.getText().toString()));
+        service2_.setOnClickListener((view) -> typeOfTreatment(service2_.getText().toString()));
+        service3_.setOnClickListener((view) -> typeOfTreatment(service3_.getText().toString()));
+        service4_.setOnClickListener((view) -> typeOfTreatment(service4_.getText().toString()));
         resetAll.setOnClickListener((view)-> resetAllButtons());
 
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -116,20 +123,30 @@ public class AdminScheduleClients extends AppCompatActivity {
      * when the client press on type of any treatment all the button become disabled
      */
     private void disabledAllButtons() {
-        haircutButton.setEnabled(false);
-        classicFacial.setEnabled(false);
-        beardButton.setEnabled(false);
-        acneButton.setEnabled(false);
+        service1_.setEnabled(false);
+        service2_.setEnabled(false);
+        service3_.setEnabled(false);
+        service4_.setEnabled(false);
     }
+    private void setServices() {
+        Task<DataSnapshot> task = bll.getServices();
+        task.addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                // Extract the services from the DataSnapshot
+                Map<String, HashMap<String, String>> services = (Map<String, HashMap<String, String>>) dataSnapshot.getValue();
+                // Do something with the services, like assign them to a member variable
+                int i = 0;
+                for (Map.Entry<String, HashMap<String, String>> entry : services.entrySet()) {
+                    service currService = new service(entry.getValue());
+                    servicesList.add(currService.getType());
+                    buttonList.get(i).setText(servicesList.get(i));
+                    i++;
+                }
+            }
+        });
 
-//
-//    /**
-//     * this function get a phone number , type of treatment , date and time and schedule
-//     * to client appointment
-//     */
-//    private void scheduleToClient(){
-//
-//    }
+    }
 
     /**
      * when the client choose an appointment the dialog box open and ask him if he want
@@ -200,10 +217,10 @@ public class AdminScheduleClients extends AppCompatActivity {
         date = null;
         selectedTreatment = null;
         date = null;
-        haircutButton.setEnabled(true);
-        classicFacial.setEnabled(true);
-        beardButton.setEnabled(true);
-        acneButton.setEnabled(true);
+        service1_.setEnabled(true);
+        service2_.setEnabled(true);
+        service3_.setEnabled(true);
+        service4_.setEnabled(true);
         listView.clearChoices();
         List<String> EmptyList = Collections.<String>emptyList();
         listView.setAdapter(new ArrayAdapter(AdminScheduleClients.this, R.layout.text_style_list, EmptyList));

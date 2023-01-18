@@ -15,7 +15,7 @@
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-
+        android:backgroundTint="#a67041"
         />
     <Button
         android:id="@+id/myShifts"
@@ -24,6 +24,7 @@
         android:text="My Shifts"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/weekly_workplan"
+        android:backgroundTint="#a67041"
         />
 
     <Button
@@ -33,6 +34,7 @@
         android:text="Manage Appointments"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/myShifts"
+        android:backgroundTint="#a67041"
         />
 
     <Button
@@ -42,6 +44,7 @@
         android:layout_below="@+id/ManageAppointments"
         android:layout_centerHorizontal="true"
         android:text="Add Appoinments"
+        android:backgroundTint="#a67041"
         android:textStyle="bold" />
 
     <Button
@@ -51,6 +54,7 @@
         android:text="SET SERVICES"
         android:textStyle="bold"
         android:layout_below="@+id/updateClientAppointment"
+        android:backgroundTint="#a67041"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
