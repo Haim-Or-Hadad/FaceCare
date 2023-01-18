@@ -147,6 +147,7 @@ public class UserLogin extends AppCompatActivity {
 
                 if (bll.listOfAppointments.isEmpty()) {
                     Toast.makeText(UserLogin.this, "no appointments", Toast.LENGTH_SHORT).show();
+                    Log.d("no appointments", bll.listOfAppointments.toString());
                 } else {
                     for (int i = 0; i < bll.listOfAppointments.size(); i++) {
                         if (bll.listOfAppointments.get(i) == null) continue;
@@ -244,6 +245,7 @@ public class UserLogin extends AppCompatActivity {
                                     //Progress.setVisibility(View.INVISIBLE);
                                     resetAllButtons();
                                     dialogInterface.dismiss();//add finction to dal
+                                    bll.getUserAppointment(MainScreen.phoneNumber);
                                 }
                             });
 

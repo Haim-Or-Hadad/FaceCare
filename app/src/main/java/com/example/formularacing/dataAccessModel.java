@@ -116,9 +116,6 @@ public class dataAccessModel {
                             }
 
                             }
-                            if (listOfAppointments.size() == 1) {
-                                listOfAppointments.clear();
-                            }
                         }
                     }
                 }
